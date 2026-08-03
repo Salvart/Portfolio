@@ -39,7 +39,7 @@
       </div>
     </div>
 
-    <!-- Project Detail Modal (Game Screen View) -->
+    <!-- Project Detail Modal — only shows the external link button(s) -->
     <div v-if="activeProject" class="modal-overlay" @click.self="activeProject = null">
       <div class="modal-content">
         <div class="modal-header">
@@ -48,51 +48,20 @@
         </div>
 
         <div class="modal-body">
-          <div class="preview-banner">
-            <span class="banner-icon">{{ activeProject.icon }}</span>
-            <div class="banner-info">
-              <span class="banner-genre">{{ activeProject.genre }}</span>
-              <span class="banner-date">{{ activeProject.date }}</span>
-            </div>
+          <p v-if="!activeProject.links.length" class="no-link">{{ noLinkLabel }}</p>
+          <div class="link-buttons">
+            <a
+              v-for="link in activeProject.links"
+              :key="link.url"
+              :href="link.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="action-btn link-btn"
+              @click="triggerConfetti()"
+            >
+              {{ link.label }}
+            </a>
           </div>
-
-          <p class="project-description">{{ activeProject.description }}</p>
-
-          <div class="highlights-box">
-            <span class="box-label">{{ keyFeaturesLabel }}:</span>
-            <ul class="highlights-list">
-              <li v-for="h in activeProject.highlights" :key="h">✔ {{ h }}</li>
-            </ul>
-          </div>
-
-          <div class="tech-stack-row">
-            <span class="stack-label">STACK:</span>
-            <div class="stack-chips">
-              <span class="chip" v-for="tag in activeProject.tags" :key="tag">{{ tag }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="modal-footer">
-          <a 
-            :href="activeProject.demoUrl !== '#' ? activeProject.demoUrl : null" 
-            :target="activeProject.demoUrl !== '#' ? '_blank' : null"
-            rel="noopener noreferrer"
-            class="action-btn demo-btn"
-            :class="{ disabled: activeProject.demoUrl === '#' }"
-            @click="activeProject.demoUrl !== '#' ? triggerConfetti() : null"
-          >
-            🚀 {{ demoLabel }}
-          </a>
-          <a 
-            :href="activeProject.repoUrl !== 'https://github.com' ? activeProject.repoUrl : null"
-            :target="activeProject.repoUrl !== 'https://github.com' ? '_blank' : null"
-            rel="noopener noreferrer"
-            class="action-btn repo-btn"
-            :class="{ disabled: activeProject.repoUrl === 'https://github.com' }"
-          >
-            👾 {{ sourceCodeLabel }}
-          </a>
         </div>
       </div>
     </div>
@@ -107,9 +76,7 @@ import { lang, t } from '../../utils/i18n.js'
 const activeProject = ref(null)
 
 const vaultLabel = t('PROYECTOS', 'PROJECTS')
-const keyFeaturesLabel = t('CARACTERÍSTICAS CLAVE', 'KEY FEATURES')
-const demoLabel = t('PROBAR DEMO', 'TRY DEMO')
-const sourceCodeLabel = t('CÓDIGO FUENTE', 'SOURCE CODE')
+const noLinkLabel = t('NO HAY ENLACE DISPONIBLE', 'NO LINK AVAILABLE')
 
 function selectProject(proj) {
   activeProject.value = proj
@@ -149,8 +116,11 @@ const projectsDef = [
       ]
     },
     tags: ['Unreal Engine 4', '3ds Max', 'ZBrush', 'Substance', 'Rigging'],
-    demoUrl: '#',
-    repoUrl: 'https://github.com'
+    links: [
+      { label: '▶ PLAY STATION STORE', url: 'https://store.playstation.com/es-es/product/EP0811-CUSA25829_00-6756474835074646' },
+      { label: '🎮 NINTENDO SWITCH', url: 'https://www.nintendo.com/es-es/Juegos/Programas-descargables-Nintendo-Switch/Insomnis-2281154.html?srsltid=AfmBOoqsdivojGRs0CYNu4T8-pkKgbf9J1dJqWRYVnTtNj9HADPuuLJP' },
+      { label: '🖥️ STEAM', url: 'https://store.steampowered.com/app/1000700/Insomnis/?l=spanish' }
+    ]
   },
   {
     id: 2,
@@ -177,8 +147,7 @@ const projectsDef = [
       ]
     },
     tags: ['Unreal Engine', 'Quixel', '3ds Max', 'Material Setup'],
-    demoUrl: '#',
-    repoUrl: 'https://github.com'
+    links: []
   },
   {
     id: 3,
@@ -205,8 +174,7 @@ const projectsDef = [
       ]
     },
     tags: ['3ds Max', 'ZBrush', 'Substance', 'Unreal Engine'],
-    demoUrl: '#',
-    repoUrl: 'https://github.com'
+    links: []
   },
   {
     id: 4,
@@ -233,8 +201,7 @@ const projectsDef = [
       ]
     },
     tags: ['3ds Max', 'ZBrush', 'Substance Painter', 'Marmoset'],
-    demoUrl: '#',
-    repoUrl: 'https://github.com'
+    links: []
   },
   {
     id: 5,
@@ -261,8 +228,34 @@ const projectsDef = [
       ]
     },
     tags: ['Unreal Engine 4', '3ds Max', 'Substance', 'VR'],
-    demoUrl: '#',
-    repoUrl: 'https://github.com'
+    links: []
+  },
+  {
+    id: 6,
+    title: 'Valdecarros Digital Twin (PPG Studios)',
+    icon: '🏗️',
+    date: '2023 - Actualidad',
+    genre: { es: 'Gemelo Digital / Arquitectura en Tiempo Real', en: 'Digital Twin / Real-Time Architecture' },
+    description: {
+      es: 'Gemelo digital creado con Unreal Engine 5 para el proyecto de construcción del barrio de Valdecarros, el primer desarrollo urbano que puede recorrerse virtualmente. Diseño de aplicaciones para la visualización de entornos arquitectónicos con base de datos para clientes, desempeñando el rol de Senior Technical Artist / Programador de software en PPG Studios.',
+      en: 'Digital twin created with Unreal Engine 5 for the construction project of the Valdecarros neighborhood, the first urban development that can be toured virtually. Design of applications for architectural environment visualization with a client database, working as Senior Technical Artist / Software Programmer at PPG Studios.'
+    },
+    highlights: {
+      es: [
+        'Gemelo digital en Unreal Engine 5',
+        'Primer desarrollo urbano que puede recorrerse virtualmente',
+        'Aplicaciones de visualización con base de datos para clientes',
+        'Rol: Senior Technical Artist / Programador de software'
+      ],
+      en: [
+        'Digital twin in Unreal Engine 5',
+        'First urban development that can be toured virtually',
+        'Visualization applications with client database',
+        'Role: Senior Technical Artist / Software Programmer'
+      ]
+    },
+    tags: ['Unreal Engine 5', '3ds Max', 'SQL Server', 'C++', 'Python', 'React'],
+    links: []
   }
 ]
 
@@ -271,7 +264,8 @@ const projects = computed(() =>
     ...p,
     genre: p.genre[lang.value],
     description: p.description[lang.value],
-    highlights: p.highlights[lang.value]
+    highlights: p.highlights[lang.value],
+    links: p.links || []
   }))
 )
 </script>
@@ -450,114 +444,39 @@ const projects = computed(() =>
 .modal-body {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-}
-
-.preview-banner {
-  display: flex;
-  align-items: center;
   gap: 12px;
-  background: rgba(0, 0, 0, 0.05);
-  padding: 10px;
-  border: 2px solid var(--bg-darkest);
 }
 
-.banner-icon {
-  font-size: 28px;
-}
-
-.banner-info {
-  display: flex;
-  flex-direction: column;
-  font-size: 10px;
-}
-
-.project-description {
+.no-link {
   font-size: 11px;
-  line-height: 1.5;
-}
-
-.highlights-box {
-  background: rgba(0, 0, 0, 0.04);
-  padding: 8px;
+  text-align: center;
+  opacity: 0.8;
+  padding: 12px;
   border: 1px dashed var(--bg-darkest);
+}
+
+.link-buttons {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-}
-
-.box-label {
-  font-size: 10px;
-  font-weight: bold;
-}
-
-.highlights-list {
-  list-style: none;
-  font-size: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.tech-stack-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 10px;
-}
-
-.stack-label {
-  font-weight: bold;
-}
-
-.stack-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.chip {
-  background: var(--bg-darkest);
-  color: var(--bg-lightest);
-  padding: 3px 6px;
-  border-radius: 2px;
-  font-size: 9px;
-}
-
-.modal-footer {
-  display: flex;
   gap: 10px;
 }
 
 .action-btn {
   flex: 1;
   font-family: var(--font-pixel);
-  font-size: 10px;
+  font-size: 11px;
   text-align: center;
-  padding: 10px;
+  padding: 12px;
   text-decoration: none;
   border: 2px solid var(--bg-darkest);
   cursor: pointer;
   transition: all 0.1s ease;
-}
-
-.demo-btn {
   background: var(--bg-darkest);
   color: var(--bg-lightest);
 }
 
-.repo-btn {
-  background: transparent;
-  color: var(--bg-darkest);
-}
-
 .action-btn:hover {
   transform: translateY(-2px);
-}
-
-.action-btn.disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-  pointer-events: none;
+  box-shadow: 0 3px 0 var(--bg-dark);
 }
 </style>
