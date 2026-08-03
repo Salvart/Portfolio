@@ -81,8 +81,12 @@
           <div class="enemy-sprite">👾</div>
         </div>
 
-        <!-- Tombstone (when dead) -->
-        <div v-if="isDead && dyingStage === 'done'" class="tombstone">
+        <!-- Tombstone (when dead) — appears over the corpse -->
+        <div
+          v-if="isDead && dyingStage === 'done'"
+          class="tombstone"
+          :style="{ left: `${characterWorldX}px` }"
+        >
           🪦
         </div>
 
@@ -95,7 +99,8 @@
             jumping: isJumping,
             hurt: isHurt,
             dying: isDead,
-            sunk: isDead && (dyingStage === 'sunk' || dyingStage === 'done')
+            sunk: isDead && (dyingStage === 'sunk' || dyingStage === 'done'),
+            emerging: isEmerging
           }"
           :style="{ left: `${characterWorldX}px` }"
         >
@@ -221,6 +226,7 @@ const healthUnits = ref(MAX_HEALTH_UNITS)
 const isDead = ref(false)
 const dyingStage = ref('') // '' | 'fall' | 'sunk' | 'done'
 const reviveCountdown = ref(0)
+const isEmerging = ref(false)
 const killCount = ref(0)
 const levelComplete = ref(false)
 const KILLS_TO_WIN = 5
@@ -229,7 +235,7 @@ const enemies = ref([])
 let enemyId = 0
 
 const ENEMY_SPEED = 45
-const KILL_WINDOW = 20
+const KILL_WINDOW = 32
 const HIT_WINDOW = 14
 const SPAWN_INTERVAL = 7000
 const MAX_ALIVE_ENEMIES = 3
@@ -277,7 +283,9 @@ function revive() {
   isDead.value = false
   dyingStage.value = ''
   healthUnits.value = MAX_HEALTH_UNITS
+  isEmerging.value = true
   playReviveSFX()
+  setTimeout(() => { isEmerging.value = false }, 700)
   triggerTypewriter(lang.value === 'es' ? '¡Has revivido!' : 'You revived!')
 }
 
@@ -650,7 +658,7 @@ onUnmounted(() => {
 }
 
 .enemy-wrapper.killed .enemy-sprite {
-  animation: enemy-poof 0.5s ease-out forwards;
+  animation: enemy-squash 0.45s ease-out forwards;
 }
 
 @keyframes enemy-bob {
@@ -658,19 +666,26 @@ onUnmounted(() => {
   to { transform: translateY(-3px); }
 }
 
-@keyframes enemy-poof {
-  0% { opacity: 1; transform: translateY(0) scale(1); }
-  100% { opacity: 0; transform: translateY(-24px) scale(0.4); }
+@keyframes enemy-squash {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  40%  { opacity: 1; transform: translateY(6px) scale(1.6, 0.35); }
+  100% { opacity: 0; transform: translateY(12px) scale(1.2, 0.15); }
 }
 
-/* Tombstone */
+/* Tombstone — rises over the corpse, centered on the character position */
 .tombstone {
   position: absolute;
   bottom: 22px;
-  left: 0;
+  transform: translateX(-50%);
   font-size: 26px;
   z-index: 14;
-  animation: fadeIn 0.6s ease;
+  animation: tombstone-rise 0.5s ease-out;
+}
+
+@keyframes tombstone-rise {
+  0%   { transform: translateX(-50%) translateY(26px) scale(0.4); opacity: 0; }
+  70%  { transform: translateX(-50%) translateY(-4px) scale(1.1); opacity: 1; }
+  100% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
 }
 
 /* Level Complete Banner */
@@ -759,6 +774,17 @@ onUnmounted(() => {
 @keyframes sink {
   0%   { transform: rotate(90deg) translateY(6px); opacity: 1; }
   100% { transform: rotate(90deg) translateY(60px); opacity: 0; }
+}
+
+/* Revive: character emerges from the grave */
+.character-wrapper.emerging .pixel-hero {
+  animation: emerge 0.7s ease-out;
+}
+
+@keyframes emerge {
+  0%   { transform: translateY(60px); opacity: 0; }
+  70%  { transform: translateY(-6px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; }
 }
 
 .speech-bubble {
