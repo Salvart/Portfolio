@@ -1,0 +1,144 @@
+/* Game Boy Retro Stylesheet - Fullscreen 100vh Layout */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&display=swap');
+
+:root {
+  /* Default DMG Palette (Classic Green) */
+  --bg-darkest: #0f380f;
+  --bg-dark: #306230;
+  --bg-light: #8bac0f;
+  --bg-lightest: #9bbc0f;
+  
+  --shell-color: #c4bebb;
+  --shell-dark: #9f9996;
+  --shell-border: #686360;
+  --screen-bezel: #545873;
+  --screen-glass: #8bac0f;
+  
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-silkscreen: 'Silkscreen', cursive;
+  --font-vt: 'VT323', monospace;
+}
+
+/* Theme: Game Boy Pocket (Grey Monochromatic) */
+.theme-pocket {
+  --bg-darkest: #0f1412;
+  --bg-dark: #3d4a41;
+  --bg-light: #7c8f82;
+  --bg-lightest: #c4d4c7;
+  --shell-color: #e0dede;
+  --shell-dark: #b8b6b6;
+  --screen-glass: #c4d4c7;
+}
+
+/* Theme: Game Boy Color (Vibrant Retro) */
+.theme-gbc {
+  --bg-darkest: #181028;
+  --bg-dark: #402868;
+  --bg-light: #9840a8;
+  --bg-lightest: #f8a038;
+  --shell-color: #7b3fb6;
+  --shell-dark: #58248d;
+  --screen-glass: #f8a038;
+}
+
+/* Theme: Cyberpunk LCD */
+.theme-cyber {
+  --bg-darkest: #060a17;
+  --bg-dark: #122248;
+  --bg-light: #00d2b8;
+  --bg-lightest: #00ffda;
+  --shell-color: #1a1e2e;
+  --shell-dark: #0e1220;
+  --screen-glass: #00ffda;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+html, body, #app {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: var(--font-pixel);
+  background-color: #12141a;
+  color: var(--bg-darkest);
+}
+
+/* Image Crisp Pixelation */
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Scanlines and CRT LCD Texture */
+.scanlines {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanlines::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.12) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Grid Matrix Pixel Effect */
+.pixel-grid {
+  position: relative;
+}
+
+.pixel-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-size: 3px 3px;
+  pointer-events: none;
+  z-index: 19;
+}
+
+/* Scrollbar Pixel Style */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-light);
+  border: 2px solid var(--bg-darkest);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-darkest);
+  border: 1px solid var(--bg-lightest);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-dark);
+}
+
+/* Common Animations */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 0.8s infinite;
+}
