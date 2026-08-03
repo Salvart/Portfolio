@@ -74,10 +74,23 @@
         </div>
 
         <div class="modal-footer">
-          <a :href="activeProject.demoUrl" target="_blank" class="action-btn demo-btn" @click="triggerConfetti">
+          <a 
+            :href="activeProject.demoUrl !== '#' ? activeProject.demoUrl : null" 
+            :target="activeProject.demoUrl !== '#' ? '_blank' : null"
+            rel="noopener noreferrer"
+            class="action-btn demo-btn"
+            :class="{ disabled: activeProject.demoUrl === '#' }"
+            @click="activeProject.demoUrl !== '#' ? triggerConfetti() : null"
+          >
             🚀 PROBAR DEMO
           </a>
-          <a :href="activeProject.repoUrl" target="_blank" class="action-btn repo-btn">
+          <a 
+            :href="activeProject.repoUrl !== 'https://github.com' ? activeProject.repoUrl : null"
+            :target="activeProject.repoUrl !== 'https://github.com' ? '_blank' : null"
+            rel="noopener noreferrer"
+            class="action-btn repo-btn"
+            :class="{ disabled: activeProject.repoUrl === 'https://github.com' }"
+          >
             👾 CÓDIGO SOURCE
           </a>
         </div>
@@ -453,5 +466,11 @@ const projects = [
 
 .action-btn:hover {
   transform: translateY(-2px);
+}
+
+.action-btn.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 </style>

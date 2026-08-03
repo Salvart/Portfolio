@@ -15,7 +15,7 @@
       >
         <span class="cursor-indicator" :class="{ visible: activeIndex === index }">▶</span>
         <span class="menu-icon">{{ item.icon }}</span>
-        <span class="menu-label">{{ item.label }}</span>
+        <span class="menu-label">{{ item.name }}</span>
       </button>
     </nav>
 
