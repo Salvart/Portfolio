@@ -119,7 +119,8 @@ const projectsDef = [
     links: [
       { label: '▶ PLAY STATION STORE', url: 'https://store.playstation.com/es-es/product/EP0811-CUSA25829_00-6756474835074646' },
       { label: '🎮 NINTENDO SWITCH', url: 'https://www.nintendo.com/es-es/Juegos/Programas-descargables-Nintendo-Switch/Insomnis-2281154.html?srsltid=AfmBOoqsdivojGRs0CYNu4T8-pkKgbf9J1dJqWRYVnTtNj9HADPuuLJP' },
-      { label: '🖥️ STEAM', url: 'https://store.steampowered.com/app/1000700/Insomnis/?l=spanish' }
+      { label: '🖥️ STEAM', url: 'https://store.steampowered.com/app/1000700/Insomnis/?l=spanish' },
+      { label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/Oygnvy' }
     ]
   },
   {
@@ -147,7 +148,7 @@ const projectsDef = [
       ]
     },
     tags: ['Unreal Engine', 'Quixel', '3ds Max', 'Material Setup'],
-    links: []
+    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/w8zvNV' }]
   },
   {
     id: 3,
@@ -174,7 +175,7 @@ const projectsDef = [
       ]
     },
     tags: ['3ds Max', 'ZBrush', 'Substance', 'Unreal Engine'],
-    links: []
+    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/1xL1wZ' }]
   },
   {
     id: 4,
@@ -201,7 +202,7 @@ const projectsDef = [
       ]
     },
     tags: ['3ds Max', 'ZBrush', 'Substance Painter', 'Marmoset'],
-    links: []
+    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/klZ0bd' }]
   },
   {
     id: 5,
@@ -228,7 +229,7 @@ const projectsDef = [
       ]
     },
     tags: ['Unreal Engine 4', '3ds Max', 'Substance', 'VR'],
-    links: []
+    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/Yk2yb' }]
   },
   {
     id: 6,
@@ -256,6 +257,356 @@ const projectsDef = [
     },
     tags: ['Unreal Engine 5', '3ds Max', 'SQL Server', 'C++', 'Python', 'React'],
     links: []
+  },
+  {
+    id: 7,
+    title: 'M4A1',
+    icon: '🔫',
+    date: '2023',
+    genre: { es: 'Modelo de Arma / Hard Surface', en: 'Weapon Model / Hard Surface' },
+    description: {
+      es: 'Modelo high y low poly del fusil M4A1: modelado hard surface, texturizado PBR y render de presentación.',
+      en: 'High and low poly model of the M4A1 rifle: hard surface modeling, PBR texturing and presentation render.'
+    },
+    highlights: {
+      es: [
+        'Modelado hard surface del fusil',
+        'Low poly con bake de texturas',
+        'Texturizado PBR en Substance Painter'
+      ],
+      en: [
+        'Hard surface rifle modeling',
+        'Low poly with texture baking',
+        'PBR texturing in Substance Painter'
+      ]
+    },
+    tags: ['3ds Max', 'ZBrush', 'Substance Painter', 'Hard Surface'],
+    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/4JzRW' }]
+  },
+  {
+    id: 8,
+    title: 'Gun Low Poly Model',
+    icon: '🔫',
+    date: '2023',
+    genre: { es: 'Modelo Low Poly / Arma', en: 'Low Poly Model / Weapon' },
+    description: {
+      es: 'Pistola low poly optimizada para videojuegos: topología limpia, UVs y texturizado ligero.',
+      en: 'Low poly gun optimized for games: clean topology, UVs and light texturing.'
+    },
+    highlights: {
+      es: [
+        'Modelado low poly',
+        'Topología optimizada para juegos',
+        'Unwrap de UVs'
+      ],
+      en: [
+        'Low poly modeling',
+        'Game-ready topology',
+        'UV unwrapping'
+      ]
+    },
+    tags: ['3ds Max', 'Low Poly', 'UV Mapping'],
+    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/X0Xxl' }]
+  },
+  {
+    id: 9,
+    title: '"FAKE ME" – Anuncio Navidad Campofrío 2019',
+    icon: '🎄',
+    date: '2019',
+    genre: { es: 'Comercial / Animación Navideña', en: 'Commercial / Christmas Animation' },
+    description: {
+      es: 'Participación en el anuncio de Navidad 2019 de Campofrío: creación de entornos y props navideños para el spot "FAKE ME".',
+      en: 'Work on the 2019 Campofrío Christmas ad: creation of Christmas environments and props for the "FAKE ME" spot.'
+    },
+    highlights: {
+      es: [
+        'Entornos y props para spot publicitario',
+        'Estética navideña retro',
+        'Producción para TV'
+      ],
+      en: [
+        'Environments and props for a TV spot',
+        'Retro Christmas aesthetic',
+        'TV production'
+      ]
+    },
+    tags: ['3ds Max', 'Substance', 'Set Design', 'Navidad'],
+    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/RY4ane' }]
+  },
+  {
+    id: 10,
+    title: 'Let It Snow on WEWORK!',
+    icon: '❄️',
+    date: '2019',
+    genre: { es: 'Escena Navideña / Entorno', en: 'Christmas Scene / Environment' },
+    description: {
+      es: 'Versión navideña nevada del entorno de WEWORK Factory: nieve, decoración navideña e iluminación festiva.',
+      en: 'Snowy Christmas version of the WEWORK Factory environment: snow, Christmas decoration and festive lighting.'
+    },
+    highlights: {
+      es: [
+        'Escena invernal con nieve',
+        'Decoración navideña',
+        'Iluminación festiva'
+      ],
+      en: [
+        'Winter scene with snow',
+        'Christmas decoration',
+        'Festive lighting'
+      ]
+    },
+    tags: ['Unreal Engine', 'Quixel', '3ds Max', 'Iluminación'],
+    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/A9bgvo' }]
+  },
+  {
+    id: 11,
+    title: 'Insomnis – Halloween Edition Props',
+    icon: '🎃',
+    date: '2018',
+    genre: { es: 'Props / Terror', en: 'Props / Horror' },
+    description: {
+      es: 'Props especiales de la edición de Halloween de Insomnis: objetos de terror con estética envejecida.',
+      en: 'Special props for the Halloween edition of Insomnis: horror props with an aged aesthetic.'
+    },
+    highlights: {
+      es: [
+        'Props temáticos de Halloween',
+        'Texturizado envejecido',
+        'Ambientación de terror'
+      ],
+      en: [
+        'Halloween themed props',
+        'Aged texturing',
+        'Horror atmosphere'
+      ]
+    },
+    tags: ['3ds Max', 'Substance', 'Insomnis', 'Props'],
+    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/3ooRzY' }]
+  },
+  {
+    id: 12,
+    title: 'Old Projector – Insomnis',
+    icon: '🎞️',
+    date: '2018',
+    genre: { es: 'Prop / Insomnis', en: 'Prop / Insomnis' },
+    description: {
+      es: 'Proyector antiguo para el universo de Insomnis: modelado detallado y texturizado con desgaste del tiempo.',
+      en: 'Old projector for the Insomnis universe: detailed modeling and aged texturing.'
+    },
+    highlights: {
+      es: [
+        'Prop high poly detallado',
+        'Texturizado de desgaste',
+        'Integrado en Insomnis'
+      ],
+      en: [
+        'Detailed high poly prop',
+        'Wear texturing',
+        'Integrated in Insomnis'
+      ]
+    },
+    tags: ['3ds Max', 'ZBrush', 'Substance', 'Insomnis'],
+    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/dOONNe' }]
+  },
+  {
+    id: 13,
+    title: 'Old Doors – Insomnis',
+    icon: '🚪',
+    date: '2018',
+    genre: { es: 'Props / Insomnis', en: 'Props / Insomnis' },
+    description: {
+      es: 'Colección de puertas antiguas para la mansión de Insomnis: modelado y texturizado con aspecto deteriorado.',
+      en: 'Collection of old doors for the Insomnis mansion: modeling and texturing with a weathered look.'
+    },
+    highlights: {
+      es: [
+        'Varias puertas con variaciones',
+        'Estética deteriorada',
+        'Listas para el juego'
+      ],
+      en: [
+        'Multiple door variations',
+        'Weathered aesthetic',
+        'Game-ready'
+      ]
+    },
+    tags: ['3ds Max', 'Substance', 'Insomnis', 'Props'],
+    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/Qzz4Nx' }]
+  },
+  {
+    id: 14,
+    title: 'Old Lamps – Insomnis',
+    icon: '💡',
+    date: '2018',
+    genre: { es: 'Props / Insomnis', en: 'Props / Insomnis' },
+    description: {
+      es: 'Lámparas antiguas para Insomnis: props de iluminación con materiales y desgaste de época.',
+      en: 'Old lamps for Insomnis: lighting props with period materials and wear.'
+    },
+    highlights: {
+      es: [
+        'Props de iluminación antiguos',
+        'Materiales de época',
+        'Texturizado con desgaste'
+      ],
+      en: [
+        'Old lighting props',
+        'Period materials',
+        'Aged texturing'
+      ]
+    },
+    tags: ['3ds Max', 'Substance', 'Insomnis', 'Props'],
+    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/rRR3v2' }]
+  },
+  {
+    id: 15,
+    title: 'Modular Environment – UE4',
+    icon: '🧱',
+    date: '2023',
+    genre: { es: 'Entorno Modular / UE4', en: 'Modular Environment / UE4' },
+    description: {
+      es: 'Entorno modular creado en Unreal Engine 4: kit de piezas para construir escenarios de forma flexible y optimizada.',
+      en: 'Modular environment built in Unreal Engine 4: a kit of pieces to build sets flexibly and efficiently.'
+    },
+    highlights: {
+      es: [
+        'Kit modular de piezas',
+        'Ensamblaje en UE4',
+        'Optimización de assets'
+      ],
+      en: [
+        'Modular kit of pieces',
+        'UE4 assembly',
+        'Asset optimization'
+      ]
+    },
+    tags: ['Unreal Engine 4', '3ds Max', 'Modular', 'Environment'],
+    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/8nmnw' }]
+  },
+  {
+    id: 16,
+    title: 'Old Frames – Insomnis',
+    icon: '🖼️',
+    date: '2018',
+    genre: { es: 'Props / Insomnis', en: 'Props / Insomnis' },
+    description: {
+      es: 'Marcos antiguos para las paredes de la mansión de Insomnis: variaciones con cuadros y texturizado desgastado.',
+      en: 'Old frames for the walls of the Insomnis mansion: variations with paintings and weathered texturing.'
+    },
+    highlights: {
+      es: [
+        'Marcos con variaciones',
+        'Cuadros integrados',
+        'Estética desgastada'
+      ],
+      en: [
+        'Frames with variations',
+        'Integrated paintings',
+        'Weathered aesthetic'
+      ]
+    },
+    tags: ['3ds Max', 'Substance', 'Insomnis', 'Props'],
+    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/0XXWLV' }]
+  },
+  {
+    id: 17,
+    title: 'Low Poly Cardboard Boxes & Paper Cards',
+    icon: '📦',
+    date: '2018',
+    genre: { es: 'Props Low Poly / Insomnis', en: 'Low Poly Props / Insomnis' },
+    description: {
+      es: 'Cajas de cartón y cartas de papel low poly para Insomnis: props ligeros y optimizados para el juego.',
+      en: 'Low poly cardboard boxes and paper cards for Insomnis: light props optimized for the game.'
+    },
+    highlights: {
+      es: [
+        'Props low poly',
+        'Cajas y cartas de papel',
+        'Optimizados para juegos'
+      ],
+      en: [
+        'Low poly props',
+        'Boxes and paper cards',
+        'Game optimized'
+      ]
+    },
+    tags: ['3ds Max', 'Low Poly', 'Insomnis', 'Props'],
+    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/588GPJ' }]
+  },
+  {
+    id: 18,
+    title: 'Laptop',
+    icon: '💻',
+    date: '2018',
+    genre: { es: 'Prop / Hard Surface', en: 'Prop / Hard Surface' },
+    description: {
+      es: 'Portátil modelado como prop hard surface: detalle de teclado, bisagras y texturizado realista.',
+      en: 'Laptop modeled as a hard surface prop: keyboard detail, hinges and realistic texturing.'
+    },
+    highlights: {
+      es: [
+        'Modelado hard surface',
+        'Detalle de teclado y bisagras',
+        'Texturizado realista'
+      ],
+      en: [
+        'Hard surface modeling',
+        'Keyboard and hinge detail',
+        'Realistic texturing'
+      ]
+    },
+    tags: ['3ds Max', 'Substance', 'Hard Surface'],
+    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/zoAZ4' }]
+  },
+  {
+    id: 19,
+    title: 'Old Cage',
+    icon: '🐦',
+    date: '2017',
+    genre: { es: 'Prop / Insomnis', en: 'Prop / Insomnis' },
+    description: {
+      es: 'Jaula antigua para Insomnis: prop metálico con óxido y detalle de época.',
+      en: 'Old cage for Insomnis: metal prop with rust and period detail.'
+    },
+    highlights: {
+      es: [
+        'Prop metálico detallado',
+        'Texturizado con óxido',
+        'Estética de época'
+      ],
+      en: [
+        'Detailed metal prop',
+        'Rust texturing',
+        'Period aesthetic'
+      ]
+    },
+    tags: ['3ds Max', 'Substance', 'Insomnis', 'Props'],
+    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/qR5wR' }]
+  },
+  {
+    id: 20,
+    title: 'Temple Scene',
+    icon: '🏛️',
+    date: '2017',
+    genre: { es: 'Escena / Entorno', en: 'Scene / Environment' },
+    description: {
+      es: 'Escena de templo antiguo: composición de entorno con columnas, iluminación volumétrica y atmósfera.',
+      en: 'Ancient temple scene: environment composition with columns, volumetric lighting and atmosphere.'
+    },
+    highlights: {
+      es: [
+        'Entorno de templo antiguo',
+        'Iluminación volumétrica',
+        'Composición de escena'
+      ],
+      en: [
+        'Ancient temple environment',
+        'Volumetric lighting',
+        'Scene composition'
+      ]
+    },
+    tags: ['3ds Max', 'Substance', 'Environment', 'Iluminación'],
+    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/KByVx' }]
   }
 ]
 
