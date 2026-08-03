@@ -431,19 +431,6 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: idle-bob 2s ease-in-out infinite;
-}
-
-/* Subtle idle animation when standing still */
-@keyframes idle-bob {
-  0%   { transform: translateY(0); }
-  50%  { transform: translateY(-2px); }
-  100% { transform: translateY(0); }
-}
-
-/* While walking the hero doesn't idle-bob, legs animate instead */
-.character-wrapper.walking .pixel-hero {
-  animation: none;
 }
 
 /* Hop with A — vertical only */
