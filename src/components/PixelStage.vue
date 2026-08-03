@@ -79,8 +79,9 @@
             </div>
             <!-- Body / Torso -->
             <div class="hero-body"></div>
-            <!-- Animated Legs -->
-            <div class="hero-legs" :class="`step-${legPhase}`">
+            <!-- Animated Legs — only step while walking; on arrival the legs
+                 snap back to a neutral standing pose -->
+            <div class="hero-legs" :class="isWalking ? `step-${legPhase}` : ''">
               <div class="leg leg-left"></div>
               <div class="leg leg-right"></div>
             </div>
