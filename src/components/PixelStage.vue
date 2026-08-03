@@ -5,7 +5,9 @@
       <span class="location-tag">
         {{ locationLabel }} {{ currentSection.name }}
       </span>
-      <span class="walk-status">{{ stationStatus }}</span>
+      <span class="walk-status" :class="{ walking: isWalking }">
+        {{ isWalking ? walkingStatus : stationStatus }}
+      </span>
     </div>
 
     <!-- Parallax Background Horizon Stage -->
@@ -56,14 +58,15 @@
           <div class="sign-post"></div>
         </div>
 
-        <!-- Pixel Character Sprite — static, always at a fixed screen position -->
+        <!-- Pixel Character Sprite — the character has its own position in the
+             world; camera and location text follow it -->
         <div
           class="character-wrapper"
-          :class="{ jumping: isJumping }"
-          :style="{ left: `${characterWorldX}px` }"
+          :class="{ walking: isWalking, jumping: isJumping }"
+          :style="{ left: `${characterX}px` }"
         >
           <!-- Speech Bubble -->
-          <div v-if="typewriterText" class="speech-bubble">
+          <div v-if="!isWalking && typewriterText" class="speech-bubble">
             {{ typewriterText }}
           </div>
 
@@ -76,8 +79,8 @@
             </div>
             <!-- Body / Torso -->
             <div class="hero-body"></div>
-            <!-- Legs -->
-            <div class="hero-legs">
+            <!-- Animated Legs -->
+            <div class="hero-legs" :class="`step-${legPhase}`">
               <div class="leg leg-left"></div>
               <div class="leg leg-right"></div>
             </div>
@@ -86,7 +89,7 @@
       </div>
     </div>
 
-    <!-- Active Section Content -->
+    <!-- Active Section Content (follows the character's current position) -->
     <div class="content-display-area">
       <div class="section-content-wrapper">
         <component :is="activeComponent" />
@@ -96,8 +99,13 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
-import { playArrivalSFX, playTextBlipSFX, playJumpSFX } from '../utils/retroAudio.js'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import {
+  playStepSFX,
+  playArrivalSFX,
+  playTextBlipSFX,
+  playJumpSFX
+} from '../utils/retroAudio.js'
 import { lang, t } from '../utils/i18n.js'
 import InfoSection from './sections/InfoSection.vue'
 import TechSection from './sections/TechSection.vue'
@@ -121,22 +129,27 @@ const props = defineProps({
 
 // i18n labels
 const locationLabel = t('📍 LOCALIZACIÓN:', '📍 LOCATION:')
+const walkingStatus = t('🚶 CAMINANDO...', '🚶 WALKING...')
 const stationStatus = t('🛑 EN ESTACIÓN', '🛑 AT STATION')
 
-// State
-const cameraX = ref(0)
-const typewriterText = ref('')
-const isJumping = ref(false)
-
-// The character is static: its world position tracks the camera so it always
-// stays at the same screen position (CHARACTER_OFFSET) while the world scrolls.
+// ===== The character drives everything =====
+// characterX is the character's own world position. The camera keeps the
+// character at a fixed screen offset, and the location text/content derive
+// from where the character actually is.
 const CHARACTER_OFFSET = 290
-const characterWorldX = computed(() => cameraX.value + CHARACTER_OFFSET)
+const SECTION_SPACING = 550
+const characterX = ref(props.targetIndex * SECTION_SPACING + CHARACTER_OFFSET)
+const cameraX = computed(() => characterX.value - CHARACTER_OFFSET)
 
-const currentSection = computed(() => props.sections[props.targetIndex] || props.sections[0])
+const currentSectionIndex = computed(() => {
+  const raw = Math.round((characterX.value - CHARACTER_OFFSET) / SECTION_SPACING)
+  const max = props.sections.length - 1
+  return Math.max(0, Math.min(raw, max))
+})
+const currentSection = computed(() => props.sections[currentSectionIndex.value] || props.sections[0])
 
 const activeComponent = computed(() => {
-  switch (props.targetIndex) {
+  switch (currentSectionIndex.value) {
     case 0: return InfoSection
     case 1: return TechSection
     case 2: return StudiesSection
@@ -145,8 +158,74 @@ const activeComponent = computed(() => {
   }
 })
 
-function getTargetCameraX(idx) {
-  return idx * 550
+// State
+const isWalking = ref(false)
+const isJumping = ref(false)
+const legPhase = ref(0)
+const typewriterText = ref('')
+
+let animFrameId = null
+let legIntervalId = null
+let stepAudioCounter = 0
+
+const WALK_SPEED = 150 // px/s — slow walk towards the next section
+
+function getTargetX(idx) {
+  return idx * SECTION_SPACING + CHARACTER_OFFSET
+}
+
+function startTravel(targetIdx) {
+  const targetX = getTargetX(targetIdx)
+  const diff = targetX - characterX.value
+
+  if (Math.abs(diff) < 2) {
+    onArrived()
+    return
+  }
+
+  isWalking.value = true
+  typewriterText.value = ''
+
+  if (!legIntervalId) {
+    legIntervalId = setInterval(() => {
+      legPhase.value = (legPhase.value + 1) % 4
+      stepAudioCounter++
+      if (stepAudioCounter % 2 === 0) {
+        playStepSFX()
+      }
+    }, 150)
+  }
+
+  cancelAnimationFrame(animFrameId)
+  function step() {
+    const remaining = targetX - characterX.value
+    const dist = Math.abs(remaining)
+    const stepSize = WALK_SPEED * (1 / 60)
+
+    if (dist <= stepSize) {
+      characterX.value = targetX
+      onArrived()
+    } else {
+      characterX.value += Math.sign(remaining) * stepSize
+      animFrameId = requestAnimationFrame(step)
+    }
+  }
+  animFrameId = requestAnimationFrame(step)
+}
+
+function onArrived() {
+  isWalking.value = false
+  if (legIntervalId) {
+    clearInterval(legIntervalId)
+    legIntervalId = null
+  }
+  legPhase.value = 0
+  playArrivalSFX()
+  triggerTypewriter(
+    lang.value === 'es'
+      ? `¡Llegaste a ${currentSection.value.name}!`
+      : `Welcome to ${currentSection.value.name}!`
+  )
 }
 
 function triggerTypewriter(text) {
@@ -163,32 +242,31 @@ function triggerTypewriter(text) {
   }, 40)
 }
 
-// Jump with A — simple hop in place (no movement)
+// Jump with A — a hop in place (vertical only)
 watch(() => props.characterAction, (action) => {
   if (!action || !action.type) return
-  if (action.type === 'jump' && !isJumping.value) {
+  if (action.type === 'jump' && !isJumping.value && !isWalking.value) {
     isJumping.value = true
     playJumpSFX()
     setTimeout(() => { isJumping.value = false }, 500)
   }
 })
 
-// Section change: only the camera/world scrolls, the character never moves
+// Section change: walk slowly towards it (no teleport)
 watch(() => props.targetIndex, (newVal) => {
-  cameraX.value = getTargetCameraX(newVal)
-  playArrivalSFX()
-  triggerTypewriter(
-    lang.value === 'es'
-      ? `¡Llegaste a ${currentSection.value.name}!`
-      : `Welcome to ${currentSection.value.name}!`
-  )
+  startTravel(newVal)
 })
 
 onMounted(() => {
-  cameraX.value = getTargetCameraX(props.targetIndex)
+  characterX.value = getTargetX(props.targetIndex)
   triggerTypewriter(lang.value === 'es'
     ? '¡Bienvenido! Explora las secciones'
     : 'Welcome! Explore the sections')
+})
+
+onUnmounted(() => {
+  cancelAnimationFrame(animFrameId)
+  if (legIntervalId) clearInterval(legIntervalId)
 })
 </script>
 
@@ -212,6 +290,11 @@ onMounted(() => {
   font-size: 11px;
   font-weight: bold;
   border-bottom: 3px solid var(--bg-dark);
+}
+
+.walk-status.walking {
+  color: #ffd700;
+  animation: blink 0.5s infinite alternate;
 }
 
 /* 8-Bit Canvas Viewport */
@@ -306,7 +389,7 @@ onMounted(() => {
 }
 
 /* =============================================
-   CHARACTER — static in place
+   CHARACTER — walks slowly through the world
    ============================================= */
 .character-wrapper {
   position: absolute;
@@ -315,7 +398,6 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   z-index: 15;
-  transition: left 0.08s linear;
 }
 
 .speech-bubble {
@@ -351,14 +433,19 @@ onMounted(() => {
   animation: idle-bob 2s ease-in-out infinite;
 }
 
-/* Subtle idle animation — the character stays in place */
+/* Subtle idle animation when standing still */
 @keyframes idle-bob {
   0%   { transform: translateY(0); }
   50%  { transform: translateY(-2px); }
   100% { transform: translateY(0); }
 }
 
-/* Hop with A — still in place, no horizontal movement */
+/* While walking the hero doesn't idle-bob, legs animate instead */
+.character-wrapper.walking .pixel-hero {
+  animation: none;
+}
+
+/* Hop with A — vertical only */
 .character-wrapper.jumping .pixel-hero {
   animation: jump 0.5s ease-out;
 }
@@ -414,6 +501,11 @@ onMounted(() => {
   background: var(--bg-darkest);
 }
 
+/* Leg Walking Cycle */
+.hero-legs.step-1 .leg-left { transform: translateY(-3px); }
+.hero-legs.step-2 .leg-right { transform: translateY(-3px); }
+.hero-legs.step-3 .leg-left { transform: translateY(-4px); }
+
 /* Main Section Content Area */
 .content-display-area {
   flex: 1;
@@ -430,5 +522,10 @@ onMounted(() => {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes blink {
+  from { opacity: 1; }
+  to { opacity: 0.2; }
 }
 </style>
