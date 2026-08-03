@@ -174,7 +174,7 @@ let animFrameId = null
 let legIntervalId = null
 let stepAudioCounter = 0
 
-const WALK_SPEED = 150 // px/s — slow walk towards the next section
+const WALK_SPEED = 300 // px/s — walk towards the next section
 
 function getTargetX(idx) {
   return idx * SECTION_SPACING + CHARACTER_OFFSET
