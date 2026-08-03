@@ -410,14 +410,16 @@ onUnmounted(() => {
 }
 
 .speech-bubble {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
   background: var(--bg-darkest);
   color: var(--bg-lightest);
   padding: 6px 10px;
   font-size: 10px;
   border-radius: 4px;
-  margin-bottom: 6px;
   white-space: nowrap;
-  position: relative;
   border: 1px solid var(--bg-dark);
 }
 
