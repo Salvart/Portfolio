@@ -39,7 +39,6 @@
         :targetIndex="activeIndex"
         :sections="sections"
         :characterAction="characterAction"
-        @arrival="handleArrival"
       />
     </main>
 
@@ -143,10 +142,6 @@ const musicLabel = t('MÚSICA', 'MUSIC')
 
 function handleMenuSelect(idx) {
   activeIndex.value = idx
-}
-
-function handleArrival(idx) {
-  // Event handler
 }
 
 function navigateDpad(dir) {
