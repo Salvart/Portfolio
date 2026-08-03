@@ -61,6 +61,16 @@
             >
               {{ link.label }}
             </a>
+            <a
+              v-if="hasArtStationLink"
+              :href="artStationProfile"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="action-btn link-btn fallback-btn"
+              @click="triggerConfetti()"
+            >
+              {{ artStationProfileLabel }}
+            </a>
           </div>
         </div>
       </div>
@@ -74,6 +84,14 @@ import confetti from 'canvas-confetti'
 import { lang, t } from '../../utils/i18n.js'
 
 const activeProject = ref(null)
+
+// Fallback: ArtStation blocks direct artwork pages intermittently (Cloudflare
+// security check), so offer the profile as an alternative route.
+const artStationProfile = 'https://www.artstation.com/salv_art'
+const artStationProfileLabel = t('👤 VER PERFIL EN ARTSTATION', '👤 VIEW ARTSTATION PROFILE')
+const hasArtStationLink = computed(() =>
+  activeProject.value ? activeProject.value.links.some((l) => l.url.includes('artstation.com')) : false
+)
 
 const vaultLabel = t('PROYECTOS', 'PROJECTS')
 const noLinkLabel = t('NO HAY ENLACE DISPONIBLE', 'NO LINK AVAILABLE')
@@ -828,6 +846,17 @@ const projects = computed(() =>
 
 .action-btn:hover {
   transform: translateY(-2px);
+  box-shadow: 0 3px 0 var(--bg-dark);
+}
+
+/* Secondary/fallback button (ArtStation profile when direct link is blocked) */
+.fallback-btn {
+  background: transparent;
+  color: var(--bg-darkest);
+  border-style: dashed;
+}
+
+.fallback-btn:hover {
   box-shadow: 0 3px 0 var(--bg-dark);
 }
 </style>
