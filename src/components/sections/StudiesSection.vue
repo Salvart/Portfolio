@@ -48,25 +48,18 @@
 <script setup>
 const quests = [
   {
-    title: 'Grado Superior en Desarrollo de Aplicaciones Web (DAW)',
-    institution: 'Centro de Formación Técnica',
-    period: '2022 - 2024',
-    description: 'Especialización en desarrollo backend, frontend, arquitectura de software, bases de datos relacionales y despliegue de aplicaciones.',
-    rewards: ['JavaScript', 'Vue.js', 'Node.js / Express', 'SQL & Databases', 'Git & CI/CD']
+    title: 'Grado en Diseño y Desarrollo de Videojuegos',
+    institution: 'ESNE – Escuela Universitaria de Diseño, Innovación y Tecnología (Madrid)',
+    period: '2011 - 2017',
+    description: 'Formación integral en producción de videojuegos: programación en C, C# y Java, modelado y escultura de personajes, diseño y gamificación, animación 2D/3D, preproducción y producción, arte conceptual y middleware de desarrollo. Staff en eventos como Madrid Games Week y FICOD.',
+    rewards: ['C++ / C# Scripting', '3D Studio Max', 'ZBrush', 'Game Design', '3D Animation', 'Unreal Engine', 'Concept Art']
   },
   {
-    title: 'Especialización en Frontend Moderno & Vue.js 3 Ecosystem',
-    institution: 'Platzi / Udemy Academy',
-    period: '2023 - 2024',
-    description: 'Mastery en reactividad con Composition API, Pinia, Vue Router, TypeScript y optimización de rendimiento en clientes web.',
-    rewards: ['Composition API', 'Pinia', 'PWA', 'TypeScript', 'Web Performance']
-  },
-  {
-    title: 'Certificación en Diseño de Interfaces (UI/UX) & Responsive Web',
-    institution: 'FreeCodeCamp',
-    period: '2023',
-    description: 'Formación en accesibilidad web (a11y), HTML5 semántico, diseño adaptativo mobile-first y sistemas de diseño.',
-    rewards: ['Responsive Layouts', 'CSS Grid/Flexbox', 'Accessibility A11y', 'Figma Wireframing']
+    title: 'Grado Superior en Administración de Sistemas Informáticos en Red',
+    institution: 'IES Santa María del Castillo',
+    period: '2007 - 2009',
+    description: 'Especialización en administración de redes y sistemas: instalación y configuración de servidores, seguridad, redes locales y gestión de infraestructuras informáticas.',
+    rewards: ['Administración de Redes', 'Sistemas Operativos', 'Seguridad', 'Bases de Datos', 'Infraestructura IT']
   }
 ]
 </script>

@@ -154,8 +154,10 @@ const isJumping = ref(false)
 const isAttacking = ref(false)
 
 const currentSectionIndex = ref(0)
-// Character X in world coordinates: just left of the landmark sign (landmark is idx*550+120)
-const CHARACTER_OFFSET = 60  // pixels to the left of each landmark sign
+// Character X in world coordinates: to the RIGHT of the landmark sign.
+// Landmark left edge is at idx*550+120 and the sign board is ~144px wide
+// (spans +120..+264), so the character stands at +290 (right of the board).
+const CHARACTER_OFFSET = 290
 const characterWorldX = computed(() => currentSectionIndex.value * 550 + CHARACTER_OFFSET)
 
 const currentSection = computed(() => props.sections[currentSectionIndex.value] || props.sections[0])
@@ -406,7 +408,7 @@ onUnmounted(() => {
 .landmark-building {
   position: absolute;
   bottom: 0;
-  right: -100px;
+  right: -240px;
   font-size: 11px;
   background: var(--bg-dark);
   color: var(--bg-lightest);

@@ -120,69 +120,86 @@ function triggerConfetti() {
 const projects = [
   {
     id: 1,
-    title: 'Retro Arcade Portfolio',
-    genre: 'Web Application / Canvas',
-    icon: '👾',
-    date: '2024',
-    description: 'Portfolio interactivo en 8-bit inspirado en la clásica consola Game Boy con física de personaje, scroll parallax sincronizado y síntesis de sonido Web Audio.',
+    title: 'INSOMNIS (PS4 / PS5 / Steam)',
+    genre: 'Horror Game / Environment Art',
+    icon: '👻',
+    date: '2021',
+    description: 'Videojuego de terror publicado en PlayStation 4, PlayStation 5 y Steam (oct 2021 / ene 2022) en el que trabajé como Environment Artist creando los escenarios y props de la mansión encantada.',
     highlights: [
-      'Animación de caminata 60 FPS con Sprite / Canvas loop',
-      'Desplazamiento horizontal de fondo sincronizado con clics',
-      'Efectos de sonido 8-bit sintetizados dinámicamente',
-      'Diseño responsivo con carcasas retro intercambiables'
+      'Modelado High & Low Poly de escenarios y props de terror',
+      'Texturizado, rigging, shaders y animación de props',
+      'Pipeline completo en Unreal Engine 4',
+      'Publicado en PS4, PS5 y Steam'
     ],
-    tags: ['Vue 3', 'Vite', 'Web Audio API', 'Canvas', 'CSS Pixel'],
+    tags: ['Unreal Engine 4', '3ds Max', 'ZBrush', 'Substance', 'Rigging'],
     demoUrl: '#',
     repoUrl: 'https://github.com'
   },
   {
     id: 2,
-    title: 'Pixel Quest RPG Shop',
-    genre: 'E-Commerce / Interactive',
-    icon: '⚔️',
-    date: '2024',
-    description: 'Plataforma de comercio electrónico temática con inventario de pociones y equipamiento en tiempo real, carrito de compras reactivo y animaciones retro.',
+    title: 'WEWORK FACTORY',
+    genre: 'Quixel Demo Scenes / Environment',
+    icon: '🏢',
+    date: '2023',
+    description: 'Escenas demo de entorno con Quixel Megascans de la WeWork Factory: creación de escenarios modulares con iluminación y material setup para su visualización en tiempo real.',
     highlights: [
-      'Gestión de estado global reactiva',
-      'Pasarela de pago simulada con recibo pixel-art',
-      'Filtros por categoría y búsqueda instantánea',
-      'Soporte completo para dispositivos móviles'
+      'Montaje de escenas con Quixel Megascans',
+      'Entornos modulares para visualización en tiempo real',
+      'Iluminación y set-up de materiales',
+      'Optimización gráfica en Unreal Engine'
     ],
-    tags: ['Vue 3', 'Pinia', 'TailwindCSS', 'REST API'],
+    tags: ['Unreal Engine', 'Quixel', '3ds Max', 'Material Setup'],
     demoUrl: '#',
     repoUrl: 'https://github.com'
   },
   {
     id: 3,
-    title: 'Task Hero Manager',
-    genre: 'Productivity Tool',
-    icon: '🛡️',
+    title: 'Warzone Abandoned',
+    genre: 'Environment Art',
+    icon: '🎖️',
     date: '2023',
-    description: 'Aplicación de gestión de tareas gamificada donde cada tarea completada otorga puntos de experiencia y sube de nivel a tu héroe digital.',
+    description: 'Entorno bélico abandonado: modelado de escenario y props, composición de iluminación dramática y texturizado para conseguir una atmósfera de guerra post-apocalíptica.',
     highlights: [
-      'Persistencia de datos en almacenamiento local y backend',
-      'Sistema de logros y medallas desbloqueables',
-      'Estadísticas semanales presentadas en gráficos retro',
-      'Modo noche y temas personalizables'
+      'Escenario y props de zona de guerra',
+      'Iluminación dramática y atmósfera',
+      'Modelado + texturizado completo',
+      'Presentado en ArtStation'
     ],
-    tags: ['JavaScript', 'Node.js', 'Express', 'LocalStorage'],
+    tags: ['3ds Max', 'ZBrush', 'Substance', 'Unreal Engine'],
     demoUrl: '#',
     repoUrl: 'https://github.com'
   },
   {
     id: 4,
-    title: 'Cyber Weather 8-Bit',
-    genre: 'Weather Dashboard',
-    icon: '🌧️',
-    date: '2023',
-    description: 'Dashboard meteorológico interactivo que muestra el clima de cualquier ciudad del mundo con animaciones de lluvia pixelada, sol o nieve.',
+    title: 'Medical Horror Kit',
+    genre: 'Props / Horror Asset Pack',
+    icon: '🏥',
+    date: '2021',
+    description: 'Kit de props médicos con estética de terror, diseñados para el universo de INSOMNIS: instrumental quirúrgico envejecido y mobiliario hospitalario de alta poligonización.',
     highlights: [
-      'Integración con OpenWeather API',
-      'Geolocalización automática del usuario',
-      'Animaciones de partículas meteorológicas en Canvas',
-      'Pronóstico a 7 días en tarjetas retro'
+      'Instrumental médico horror y mobiliario',
+      'High poly con detalle de desgaste',
+      'Texturizado PBR en Substance Painter',
+      'Render de presentación en Marmoset'
     ],
-    tags: ['Vue 3', 'Fetch API', 'HTML5 Canvas'],
+    tags: ['3ds Max', 'ZBrush', 'Substance Painter', 'Marmoset'],
+    demoUrl: '#',
+    repoUrl: 'https://github.com'
+  },
+  {
+    id: 5,
+    title: 'Apartment Level VR',
+    genre: 'VR Environment',
+    icon: '🥽',
+    date: '2018',
+    description: 'Nivel de apartamento para realidad virtual desarrollado durante mi etapa en LEVEL-VR: modelado, texturizado con Substance y optimización gráfica para UE4.',
+    highlights: [
+      'Escenario VR de apartamento',
+      'Modelado 3D y texturizado Substance',
+      'Materiales de arquitectura en Unreal',
+      'Optimización gráfica para VR'
+    ],
+    tags: ['Unreal Engine 4', '3ds Max', 'Substance', 'VR'],
     demoUrl: '#',
     repoUrl: 'https://github.com'
   }

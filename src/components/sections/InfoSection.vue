@@ -3,7 +3,7 @@
     <!-- Header Badge -->
     <div class="section-badge">
       <span class="badge-title">PLAYER STATS</span>
-      <span class="badge-level">LVL. 99</span>
+      <span class="badge-level">LVL. {{ playerLevel }}</span>
     </div>
 
     <!-- Main Character Card -->
@@ -18,24 +18,24 @@
             <div class="shirt"></div>
           </div>
         </div>
-        <div class="class-title">FULL-STACK DEV</div>
+        <div class="class-title">GAME DEV</div>
       </div>
 
       <div class="stats-box">
-        <h3 class="player-name">DESARROLLADOR WEB</h3>
-        <p class="tagline">« Apasionado por crear experiencias interactivas y código limpio »</p>
+        <h3 class="player-name">GAME DEVELOPER</h3>
+        <p class="tagline">« Apasionado por los videojuegos, el arte 3D y el código limpio »</p>
 
         <!-- Dynamic Stat Bars -->
         <div class="stat-row">
-          <span class="stat-label">HP (PASSION)</span>
+          <span class="stat-label">HP (ALTURA)</span>
           <div class="stat-bar"><div class="stat-fill hp-fill" style="width: 100%;"></div></div>
-          <span class="stat-val">999/999</span>
+          <span class="stat-val">183/183</span>
         </div>
 
         <div class="stat-row">
-          <span class="stat-label">MP (LOGIC)</span>
-          <div class="stat-bar"><div class="stat-fill mp-fill" style="width: 95%;"></div></div>
-          <span class="stat-val">950/999</span>
+          <span class="stat-label">MP (IQ)</span>
+          <div class="stat-bar"><div class="stat-fill mp-fill" style="width: 100%;"></div></div>
+          <span class="stat-val">123/123</span>
         </div>
 
         <div class="stat-row">
@@ -50,10 +50,10 @@
     <div class="bio-box">
       <h4 class="bio-header">▶ SOBRE MÍ</h4>
       <p class="bio-text">
-        ¡Hola! Soy un Desarrollador Full-Stack especializado en convertir ideas audaces en soluciones digitales interactivas, rápidas y visualmente deslumbrantes.
+        ¡Hola! Soy un desarrollador de videojuegos que trabaja programando y haciendo 3D. Me adapto a cualquier pipeline de trabajo: C++, Blueprints, web y mucho más.
       </p>
       <p class="bio-text">
-        Me encanta combinar diseño pixel-perfect, arquitectura de software limpia y una experiencia de usuario memorable.
+        Me encanta combinar modelado y arte 3D con arquitectura de software limpia para crear experiencias interactivas memorables.
       </p>
     </div>
 
@@ -61,7 +61,7 @@
     <div class="quick-facts">
       <div class="fact-item">
         <span class="fact-icon">📍</span>
-        <span class="fact-text">Ubicación: Remoto / España</span>
+        <span class="fact-text">Ubicación: Madrid, España</span>
       </div>
       <div class="fact-item">
         <span class="fact-icon">💼</span>
@@ -69,11 +69,29 @@
       </div>
       <div class="fact-item">
         <span class="fact-icon">⚡</span>
-        <span class="fact-text">Especialidad: Web & Interactive Apps</span>
+        <span class="fact-text">Especialidad: Web / Game Dev</span>
       </div>
     </div>
   </div>
 </template>
+
+<script setup>
+import { computed } from 'vue'
+
+const BIRTH_YEAR = 1990
+const BIRTH_MONTH = 11 // diciembre (0-indexado)
+const BIRTH_DAY = 15
+
+const playerLevel = computed(() => {
+  const now = new Date()
+  let level = now.getFullYear() - BIRTH_YEAR
+  const hasHadBirthday =
+    now.getMonth() > BIRTH_MONTH ||
+    (now.getMonth() === BIRTH_MONTH && now.getDate() >= BIRTH_DAY)
+  if (!hasHadBirthday) level--
+  return level
+})
+</script>
 
 <style scoped>
 .info-section {

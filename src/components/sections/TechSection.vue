@@ -51,6 +51,13 @@
         <span class="equipped-tag">★ Node.js / Express</span>
         <span class="equipped-tag">★ Git & GitHub</span>
         <span class="equipped-tag">★ REST APIs</span>
+        <span class="equipped-tag">★ Unreal Engine</span>
+        <span class="equipped-tag">★ Unity 3D</span>
+        <span class="equipped-tag">★ 3ds Max</span>
+        <span class="equipped-tag">★ ZBrush</span>
+        <span class="equipped-tag">★ Adobe Suite</span>
+        <span class="equipped-tag">★ Substance Painter</span>
+        <span class="equipped-tag">★ C++ / C#</span>
       </div>
     </div>
   </div>
@@ -65,6 +72,7 @@ const categories = [
   { id: 'all', label: 'TODO' },
   { id: 'frontend', label: 'FRONTEND' },
   { id: 'backend', label: 'BACKEND' },
+  { id: '3d', label: '3D' },
   { id: 'tools', label: 'TOOLS' }
 ]
 
@@ -81,10 +89,22 @@ const skills = [
   { name: 'Express.js', category: 'backend', icon: '🚀', level: 86, percent: 86, experience: 'Advanced' },
   { name: 'REST APIs / JSON', category: 'backend', icon: '🔗', level: 92, percent: 92, experience: 'Expert' },
   { name: 'SQL / Databases', category: 'backend', icon: '🗄️', level: 80, percent: 80, experience: 'Proficient' },
-  
+  { name: 'C++ / C#', category: 'backend', icon: '⚙️', level: 85, percent: 85, experience: 'Advanced' },
+
+  // 3D
+  { name: 'Unreal Engine (Blueprints)', category: '3d', icon: '🎮', level: 90, percent: 90, experience: 'Expert' },
+  { name: 'Unity 3D', category: '3d', icon: '🧩', level: 85, percent: 85, experience: 'Advanced' },
+  { name: 'Autodesk 3ds Max', category: '3d', icon: '🧊', level: 92, percent: 92, experience: 'Expert' },
+  { name: 'ZBrush (Escultura Digital)', category: '3d', icon: '🗿', level: 86, percent: 86, experience: 'Advanced' },
+  { name: 'Photoshop / Illustrator / After Effects', category: '3d', icon: '🎨', level: 90, percent: 90, experience: 'Expert' },
+  { name: 'Substance Painter / Texturing', category: '3d', icon: '🖌️', level: 84, percent: 84, experience: 'Advanced' },
+  { name: 'Modelado High/Low Poly & UV', category: '3d', icon: '🧵', level: 92, percent: 92, experience: 'Expert' },
+  { name: 'Rigging & Shaders', category: '3d', icon: '⚡', level: 82, percent: 82, experience: 'Proficient' },
+
   // Tools
   { name: 'Git & GitHub', category: 'tools', icon: '🐙', level: 90, percent: 90, experience: 'Advanced' },
   { name: 'Vite / Webpack', category: 'tools', icon: '⚡', level: 88, percent: 88, experience: 'Advanced' },
+  { name: 'Marmoset / Rendering', category: 'tools', icon: '📷', level: 84, percent: 84, experience: 'Advanced' },
   { name: 'Figma / UI Design', category: 'tools', icon: '📐', level: 82, percent: 82, experience: 'Proficient' }
 ]
 

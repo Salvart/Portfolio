@@ -102,10 +102,10 @@ function onSelect(index) {
   font-size: 11px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: rgba(0, 0, 0, 0.04);
   border: 3px solid var(--bg-darkest);
-  padding: 10px 8px;
+  padding: 8px 6px;
   color: var(--bg-darkest);
   cursor: pointer;
   text-align: left;
@@ -146,8 +146,13 @@ function onSelect(index) {
 }
 
 .menu-label {
-  font-size: 10px;
-  white-space: nowrap;
+  font-size: 9px;
+  line-height: 1.4;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  flex: 1;
+  min-width: 0;
 }
 
 .sidebar-footer {
