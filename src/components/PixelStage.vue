@@ -143,6 +143,7 @@ const characterX = ref(props.targetIndex * SECTION_SPACING + CHARACTER_OFFSET)
 const cameraX = computed(() => characterX.value - CHARACTER_OFFSET)
 
 const currentSectionIndex = computed(() => {
+  if (isWalking.value) return arrivedIndex.value
   const raw = Math.round((characterX.value - CHARACTER_OFFSET) / SECTION_SPACING)
   const max = props.sections.length - 1
   return Math.max(0, Math.min(raw, max))
@@ -164,6 +165,10 @@ const isWalking = ref(false)
 const isJumping = ref(false)
 const legPhase = ref(0)
 const typewriterText = ref('')
+
+// The last section the character fully arrived at. While walking, the shown
+// section stays fixed (departure) and only switches once the character stops.
+const arrivedIndex = ref(props.targetIndex)
 
 let animFrameId = null
 let legIntervalId = null
@@ -215,6 +220,9 @@ function startTravel(targetIdx) {
 }
 
 function onArrived() {
+  const raw = Math.round((characterX.value - CHARACTER_OFFSET) / SECTION_SPACING)
+  const max = props.sections.length - 1
+  arrivedIndex.value = Math.max(0, Math.min(raw, max))
   isWalking.value = false
   if (legIntervalId) {
     clearInterval(legIntervalId)
