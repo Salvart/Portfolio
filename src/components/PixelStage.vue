@@ -39,7 +39,7 @@
       <!-- World Track: Landmarks + Character -->
       <div
         class="world-track"
-        :style="{ transform: `translateX(${-cameraX}px)` }"
+        :style="{ transform: `translateX(${-cameraX}px)`, width: `${trackWidth}px` }"
       >
         <!-- Ground Level Track -->
         <div class="ground-line"></div>
@@ -142,6 +142,10 @@ const SECTION_SPACING = 550
 const characterX = ref(props.targetIndex * SECTION_SPACING + CHARACTER_OFFSET)
 const cameraX = computed(() => characterX.value - CHARACTER_OFFSET)
 
+// Track width adapts to the number of sections so the character never walks
+// past the end of the world if sections are added later.
+const trackWidth = computed(() => props.sections.length * SECTION_SPACING + 900)
+
 const currentSectionIndex = computed(() => {
   if (isWalking.value) return arrivedIndex.value
   const raw = Math.round((characterX.value - CHARACTER_OFFSET) / SECTION_SPACING)
@@ -172,6 +176,7 @@ const arrivedIndex = ref(props.targetIndex)
 
 let animFrameId = null
 let legIntervalId = null
+let typewriterIntervalId = null
 let stepAudioCounter = 0
 
 const WALK_SPEED = 300 // px/s — walk towards the next section
@@ -238,15 +243,20 @@ function onArrived() {
 }
 
 function triggerTypewriter(text) {
+  if (typewriterIntervalId) {
+    clearInterval(typewriterIntervalId)
+    typewriterIntervalId = null
+  }
   typewriterText.value = ''
   let i = 0
-  const interval = setInterval(() => {
+  typewriterIntervalId = setInterval(() => {
     if (i < text.length) {
       typewriterText.value += text.charAt(i)
       if (i % 3 === 0) playTextBlipSFX()
       i++
     } else {
-      clearInterval(interval)
+      clearInterval(typewriterIntervalId)
+      typewriterIntervalId = null
     }
   }, 40)
 }
@@ -276,6 +286,7 @@ onMounted(() => {
 onUnmounted(() => {
   cancelAnimationFrame(animFrameId)
   if (legIntervalId) clearInterval(legIntervalId)
+  if (typewriterIntervalId) clearInterval(typewriterIntervalId)
 })
 </script>
 
@@ -358,7 +369,6 @@ onUnmounted(() => {
 .world-track {
   position: absolute;
   top: 0; bottom: 0; left: 0;
-  width: 3000px;
 }
 
 .ground-line {

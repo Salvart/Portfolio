@@ -1,7 +1,5 @@
 /* Game Boy Retro Stylesheet - Fullscreen 100vh Layout */
 
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&display=swap');
-
 :root {
   /* Default DMG Palette (Classic Green) */
   --bg-darkest: #0f380f;
