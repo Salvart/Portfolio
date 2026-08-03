@@ -2,7 +2,7 @@
   <div class="navigation-sidebar">
     <div class="sidebar-header">
       <span class="header-icon">🕹️</span>
-      <span class="header-text">MENÚ</span>
+      <span class="header-text">{{ menuLabel }}</span>
     </div>
 
     <nav class="vertical-box-menu">
@@ -20,13 +20,17 @@
     </nav>
 
     <div class="sidebar-footer">
-      <span class="footer-hint">SELECCIONA PARA VIAJAR</span>
+      <span class="footer-hint">{{ footerHint }}</span>
     </div>
   </div>
 </template>
 
 <script setup>
 import { playSelectSFX } from '../utils/retroAudio.js'
+import { t } from '../utils/i18n.js'
+
+const menuLabel = t('MENÚ', 'MENU')
+const footerHint = t('SELECCIONA PARA VER', 'SELECT TO VIEW')
 
 const props = defineProps({
   activeIndex: {
@@ -49,7 +53,7 @@ function onSelect(index) {
 
 <style scoped>
 .navigation-sidebar {
-  width: 170px;
+  width: 220px;
   background: rgba(0, 0, 0, 0.08);
   border-right: 3px solid var(--bg-darkest);
   display: flex;
@@ -146,7 +150,7 @@ function onSelect(index) {
 }
 
 .menu-label {
-  font-size: 9px;
+  font-size: 10px;
   line-height: 1.4;
   white-space: normal;
   word-break: break-word;

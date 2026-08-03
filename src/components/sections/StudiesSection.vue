@@ -32,7 +32,7 @@
           <p class="quest-desc">{{ quest.description }}</p>
 
           <div class="rewards-box">
-            <span class="reward-label">RECOMPENSAS:</span>
+            <span class="reward-label">{{ rewardsLabel }}:</span>
             <div class="reward-chips">
               <span v-for="skill in quest.rewards" :key="skill" class="reward-chip">
                 + {{ skill }}
@@ -46,22 +46,44 @@
 </template>
 
 <script setup>
-const quests = [
+import { computed } from 'vue'
+import { lang, t } from '../../utils/i18n.js'
+
+const rewardsLabel = t('RECOMPENSAS', 'REWARDS')
+
+const questsDef = [
   {
-    title: 'Grado en Diseño y Desarrollo de Videojuegos',
-    institution: 'ESNE – Escuela Universitaria de Diseño, Innovación y Tecnología (Madrid)',
+    id: 1,
+    title: { es: 'Grado en Diseño y Desarrollo de Videojuegos', en: 'Degree in Video Game Design and Development' },
+    institution: { es: 'ESNE – Escuela Universitaria de Diseño, Innovación y Tecnología (Madrid)', en: 'ESNE – University School of Design, Innovation and Technology (Madrid)' },
     period: '2011 - 2017',
-    description: 'Formación integral en producción de videojuegos: programación en C, C# y Java, modelado y escultura de personajes, diseño y gamificación, animación 2D/3D, preproducción y producción, arte conceptual y middleware de desarrollo. Staff en eventos como Madrid Games Week y FICOD.',
+    description: {
+      es: 'Formación integral en producción de videojuegos: programación en C, C# y Java, modelado y escultura de personajes, diseño y gamificación, animación 2D/3D, preproducción y producción, arte conceptual y middleware de desarrollo. Staff en eventos como Madrid Games Week y FICOD.',
+      en: 'Comprehensive training in video game production: programming in C, C# and Java, character modeling and sculpting, design and gamification, 2D/3D animation, pre-production and production, concept art and development middleware. Staff at events such as Madrid Games Week and FICOD.'
+    },
     rewards: ['C++ / C# Scripting', '3D Studio Max', 'ZBrush', 'Game Design', '3D Animation', 'Unreal Engine', 'Concept Art']
   },
   {
-    title: 'Grado Superior en Administración de Sistemas Informáticos en Red',
-    institution: 'IES Santa María del Castillo',
+    id: 2,
+    title: { es: 'Grado Superior en Administración de Sistemas Informáticos en Red', en: 'Higher Degree in Network Computer Systems Administration' },
+    institution: { es: 'IES Santa María del Castillo', en: 'IES Santa María del Castillo' },
     period: '2007 - 2009',
-    description: 'Especialización en administración de redes y sistemas: instalación y configuración de servidores, seguridad, redes locales y gestión de infraestructuras informáticas.',
+    description: {
+      es: 'Especialización en administración de redes y sistemas: instalación y configuración de servidores, seguridad, redes locales y gestión de infraestructuras informáticas.',
+      en: 'Specialization in network and systems administration: server installation and configuration, security, local networks and management of IT infrastructures.'
+    },
     rewards: ['Administración de Redes', 'Sistemas Operativos', 'Seguridad', 'Bases de Datos', 'Infraestructura IT']
   }
 ]
+
+const quests = computed(() =>
+  questsDef.map((q) => ({
+    ...q,
+    title: q.title[lang.value],
+    institution: q.institution[lang.value],
+    description: q.description[lang.value]
+  }))
+)
 </script>
 
 <style scoped>

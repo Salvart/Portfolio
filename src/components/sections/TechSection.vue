@@ -43,7 +43,7 @@
 
     <!-- Equipment / Mastered Stack -->
     <div class="equipment-box">
-      <h4 class="box-title">▶ EQUIPAMIENTO PRINCIPAL</h4>
+      <h4 class="box-title">▶ {{ equipmentLabel }}</h4>
       <div class="equipped-tags">
         <span class="equipped-tag">★ Vue.js 3</span>
         <span class="equipped-tag">★ JavaScript (ES6+)</span>
@@ -65,16 +65,26 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { t } from '../../utils/i18n.js'
 
 const activeTab = ref('all')
 
-const categories = [
-  { id: 'all', label: 'TODO' },
-  { id: 'frontend', label: 'FRONTEND' },
-  { id: 'backend', label: 'BACKEND' },
+const equipmentLabel = t('EQUIPAMIENTO PRINCIPAL', 'MAIN EQUIPMENT')
+
+const catLabels = {
+  all: t('TODO', 'ALL'),
+  frontend: t('FRONTEND', 'FRONTEND'),
+  backend: t('BACKEND', 'BACKEND'),
+  tools: t('TOOLS', 'TOOLS')
+}
+
+const categories = computed(() => [
+  { id: 'all', label: catLabels.all.value },
+  { id: 'frontend', label: catLabels.frontend.value },
+  { id: 'backend', label: catLabels.backend.value },
   { id: '3d', label: '3D' },
-  { id: 'tools', label: 'TOOLS' }
-]
+  { id: 'tools', label: catLabels.tools.value }
+])
 
 const skills = [
   // Frontend

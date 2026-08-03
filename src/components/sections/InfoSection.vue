@@ -23,7 +23,7 @@
 
       <div class="stats-box">
         <h3 class="player-name">GAME DEVELOPER</h3>
-        <p class="tagline">« Apasionado por los videojuegos, el arte 3D y el código limpio »</p>
+        <p class="tagline">{{ tagline }}</p>
 
         <!-- Dynamic Stat Bars -->
         <div class="stat-row">
@@ -48,28 +48,24 @@
 
     <!-- Description & Philosophy -->
     <div class="bio-box">
-      <h4 class="bio-header">▶ SOBRE MÍ</h4>
-      <p class="bio-text">
-        ¡Hola! Soy un desarrollador de videojuegos que trabaja programando y haciendo 3D. Me adapto a cualquier pipeline de trabajo: C++, Blueprints, web y mucho más.
-      </p>
-      <p class="bio-text">
-        Me encanta combinar modelado y arte 3D con arquitectura de software limpia para crear experiencias interactivas memorables.
-      </p>
+      <h4 class="bio-header">▶ {{ aboutLabel }}</h4>
+      <p class="bio-text">{{ bio1 }}</p>
+      <p class="bio-text">{{ bio2 }}</p>
     </div>
 
     <!-- Quick Info Grid -->
     <div class="quick-facts">
       <div class="fact-item">
         <span class="fact-icon">📍</span>
-        <span class="fact-text">Ubicación: Madrid, España</span>
+        <span class="fact-text">{{ locationFact }}</span>
       </div>
       <div class="fact-item">
         <span class="fact-icon">💼</span>
-        <span class="fact-text">Estado: Disponible para proyectos</span>
+        <span class="fact-text">{{ statusFact }}</span>
       </div>
       <div class="fact-item">
         <span class="fact-icon">⚡</span>
-        <span class="fact-text">Especialidad: Web / Game Dev</span>
+        <span class="fact-text">{{ specialtyFact }}</span>
       </div>
     </div>
   </div>
@@ -77,6 +73,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import { lang, t } from '../../utils/i18n.js'
 
 const BIRTH_YEAR = 1990
 const BIRTH_MONTH = 11 // diciembre (0-indexado)
@@ -91,6 +88,23 @@ const playerLevel = computed(() => {
   if (!hasHadBirthday) level--
   return level
 })
+
+const aboutLabel = t('SOBRE MÍ', 'ABOUT ME')
+const tagline = t(
+  '« Apasionado por los videojuegos, el arte 3D y el código limpio »',
+  '« Passionate about videogames, 3D art and clean code »'
+)
+const bio1 = t(
+  '¡Hola! Soy un desarrollador de videojuegos que trabaja programando y haciendo 3D. Me adapto a cualquier pipeline de trabajo: C++, Blueprints, web y mucho más.',
+  'Hi! I am a game developer who works programming and doing 3D. I adapt to any pipeline: C++, Blueprints, web and much more.'
+)
+const bio2 = t(
+  'Me encanta combinar modelado y arte 3D con arquitectura de software limpia para crear experiencias interactivas memorables.',
+  'I love combining 3D modeling and art with clean software architecture to create memorable interactive experiences.'
+)
+const locationFact = t('Ubicación: Madrid, España', 'Location: Madrid, Spain')
+const statusFact = t('Estado: Disponible para proyectos', 'Status: Available for projects')
+const specialtyFact = t('Especialidad: Web / Game Dev', 'Specialty: Web / Game Dev')
 </script>
 
 <style scoped>

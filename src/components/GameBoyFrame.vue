@@ -17,7 +17,7 @@
       <div class="header-right">
         <button 
           class="top-btn sound-toggle" 
-          :title="isMuted ? 'Activar sonido' : 'Silenciar'"
+          :title="soundTitle"
           @click="onToggleMute"
         >
           {{ isMuted ? '🔇 MUTE' : '🔊 SFX' }}
@@ -48,13 +48,13 @@
       <div class="bar-left">
         <!-- Directional D-Pad -->
         <div class="dpad">
-          <button class="dpad-btn dpad-up" @click="navigateDpad(-1)" title="Arriba">▲</button>
+          <button class="dpad-btn dpad-up" @click="navigateDpad(-1)" :title="dpadUp">▲</button>
           <div class="dpad-middle">
-            <button class="dpad-btn dpad-left" @click="navigateDpad(-1)" title="Izquierda">◀</button>
+            <button class="dpad-btn dpad-left" @click="navigateDpad(-1)" :title="dpadLeft">◀</button>
             <div class="dpad-center"></div>
-            <button class="dpad-btn dpad-right" @click="navigateDpad(1)" title="Derecha">▶</button>
+            <button class="dpad-btn dpad-right" @click="navigateDpad(1)" :title="dpadRight">▶</button>
           </div>
-          <button class="dpad-btn dpad-down" @click="navigateDpad(1)" title="Abajo">▼</button>
+          <button class="dpad-btn dpad-down" @click="navigateDpad(1)" :title="dpadDown">▼</button>
         </div>
       </div>
 
@@ -63,11 +63,11 @@
         <div class="pill-buttons">
           <div class="pill-wrapper">
             <button class="pill-btn" @click="cycleTheme">SELECT</button>
-            <span class="pill-text">THEME ({{ themes[currentThemeIdx].name }})</span>
+            <span class="pill-text">{{ themeLabel }} ({{ themes[currentThemeIdx].name }})</span>
           </div>
           <div class="pill-wrapper">
             <button class="pill-btn" @click="onToggleBGM">START</button>
-            <span class="pill-text">MUSIC ({{ isBgmOn ? 'ON' : 'OFF' }})</span>
+            <span class="pill-text">{{ musicLabel }} ({{ isBgmOn ? 'ON' : 'OFF' }})</span>
           </div>
         </div>
       </div>
@@ -79,13 +79,13 @@
             <button class="round-btn btn-b" @click="onPressB">
               <span class="btn-label">B</span>
             </button>
-            <span class="btn-text">CANCEL</span>
+            <span class="btn-text">LANG: {{ langLabel }}</span>
           </div>
           <div class="btn-cluster">
             <button class="round-btn btn-a" @click="onPressA">
               <span class="btn-label">A</span>
             </button>
-            <span class="btn-text">SELECT</span>
+            <span class="btn-text">JUMP</span>
           </div>
         </div>
 
@@ -99,10 +99,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import NavigationSidebar from './NavigationSidebar.vue'
 import PixelStage from './PixelStage.vue'
 import { playSelectSFX, toggleMute, toggleBGM } from '../utils/retroAudio.js'
+import { lang, toggleLang, t } from '../utils/i18n.js'
 
 const activeIndex = ref(0)
 const isPowered = ref(true)
@@ -120,12 +121,25 @@ const themes = [
 const currentThemeIdx = ref(0)
 const currentThemeClass = ref('')
 
-const sections = [
-  { id: 'info', name: 'Información', icon: '👤' },
-  { id: 'tech', name: 'Tecnologías', icon: '⚡' },
-  { id: 'studies', name: 'Estudios', icon: '🎓' },
-  { id: 'projects', name: 'Proyectos', icon: '💼' }
+const sectionDefs = [
+  { id: 'info', icon: '👤', name: { es: 'Información', en: 'Info' } },
+  { id: 'tech', icon: '⚡', name: { es: 'Tecnologías', en: 'Tech' } },
+  { id: 'studies', icon: '🎓', name: { es: 'Estudios', en: 'Studies' } },
+  { id: 'projects', icon: '💼', name: { es: 'Proyectos', en: 'Projects' } }
 ]
+
+const sections = computed(() =>
+  sectionDefs.map((s) => ({ id: s.id, icon: s.icon, name: s.name[lang.value] }))
+)
+
+const langLabel = computed(() => (lang.value === 'es' ? 'ES' : 'EN'))
+const soundTitle = computed(() => (lang.value === 'es' ? (isMuted.value ? 'Activar sonido' : 'Silenciar') : (isMuted.value ? 'Enable sound' : 'Mute')))
+const dpadUp = t('Arriba', 'Up')
+const dpadLeft = t('Izquierda', 'Left')
+const dpadRight = t('Derecha', 'Right')
+const dpadDown = t('Abajo', 'Down')
+const themeLabel = t('TEMA', 'THEME')
+const musicLabel = t('MÚSICA', 'MUSIC')
 
 function handleMenuSelect(idx) {
   activeIndex.value = idx
@@ -137,7 +151,7 @@ function handleArrival(idx) {
 
 function navigateDpad(dir) {
   playSelectSFX()
-  const next = (activeIndex.value + dir + sections.length) % sections.length
+  const next = (activeIndex.value + dir + sections.value.length) % sections.value.length
   activeIndex.value = next
 }
 
@@ -146,7 +160,7 @@ function onPressA() {
 }
 
 function onPressB() {
-  characterAction.value = { type: 'attack', id: Date.now() }
+  toggleLang()
 }
 
 function onToggleMute() {

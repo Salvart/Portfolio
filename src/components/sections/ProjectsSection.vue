@@ -2,7 +2,7 @@
   <div class="projects-section">
     <!-- Header -->
     <div class="section-badge">
-      <span class="badge-title">GAME VAULT (PROYECTOS)</span>
+      <span class="badge-title">GAME VAULT ({{ vaultLabel }})</span>
       <span class="badge-level">GAMES: {{ projects.length }}</span>
     </div>
 
@@ -59,7 +59,7 @@
           <p class="project-description">{{ activeProject.description }}</p>
 
           <div class="highlights-box">
-            <span class="box-label">CARACTERÍSTICAS CLAVE:</span>
+            <span class="box-label">{{ keyFeaturesLabel }}:</span>
             <ul class="highlights-list">
               <li v-for="h in activeProject.highlights" :key="h">✔ {{ h }}</li>
             </ul>
@@ -82,7 +82,7 @@
             :class="{ disabled: activeProject.demoUrl === '#' }"
             @click="activeProject.demoUrl !== '#' ? triggerConfetti() : null"
           >
-            🚀 PROBAR DEMO
+            🚀 {{ demoLabel }}
           </a>
           <a 
             :href="activeProject.repoUrl !== 'https://github.com' ? activeProject.repoUrl : null"
@@ -91,7 +91,7 @@
             class="action-btn repo-btn"
             :class="{ disabled: activeProject.repoUrl === 'https://github.com' }"
           >
-            👾 CÓDIGO SOURCE
+            👾 {{ sourceCodeLabel }}
           </a>
         </div>
       </div>
@@ -100,10 +100,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import confetti from 'canvas-confetti'
+import { lang, t } from '../../utils/i18n.js'
 
 const activeProject = ref(null)
+
+const vaultLabel = t('PROYECTOS', 'PROJECTS')
+const keyFeaturesLabel = t('CARACTERÍSTICAS CLAVE', 'KEY FEATURES')
+const demoLabel = t('PROBAR DEMO', 'TRY DEMO')
+const sourceCodeLabel = t('CÓDIGO FUENTE', 'SOURCE CODE')
 
 function selectProject(proj) {
   activeProject.value = proj
@@ -117,20 +123,31 @@ function triggerConfetti() {
   })
 }
 
-const projects = [
+const projectsDef = [
   {
     id: 1,
     title: 'INSOMNIS (PS4 / PS5 / Steam)',
-    genre: 'Horror Game / Environment Art',
     icon: '👻',
     date: '2021',
-    description: 'Videojuego de terror publicado en PlayStation 4, PlayStation 5 y Steam (oct 2021 / ene 2022) en el que trabajé como Environment Artist creando los escenarios y props de la mansión encantada.',
-    highlights: [
-      'Modelado High & Low Poly de escenarios y props de terror',
-      'Texturizado, rigging, shaders y animación de props',
-      'Pipeline completo en Unreal Engine 4',
-      'Publicado en PS4, PS5 y Steam'
-    ],
+    genre: { es: 'Juego de Terror / Environment Art', en: 'Horror Game / Environment Art' },
+    description: {
+      es: 'Videojuego de terror publicado en PlayStation 4, PlayStation 5 y Steam (oct 2021 / ene 2022) en el que trabajé como Environment Artist creando los escenarios y props de la mansión encantada.',
+      en: 'Horror game published on PlayStation 4, PlayStation 5 and Steam (Oct 2021 / Jan 2022) where I worked as an Environment Artist creating the sets and props of the haunted mansion.'
+    },
+    highlights: {
+      es: [
+        'Modelado High & Low Poly de escenarios y props de terror',
+        'Texturizado, rigging, shaders y animación de props',
+        'Pipeline completo en Unreal Engine 4',
+        'Publicado en PS4, PS5 y Steam'
+      ],
+      en: [
+        'High & Low Poly modeling of horror sets and props',
+        'Texturing, rigging, shaders and prop animation',
+        'Full pipeline in Unreal Engine 4',
+        'Published on PS4, PS5 and Steam'
+      ]
+    },
     tags: ['Unreal Engine 4', '3ds Max', 'ZBrush', 'Substance', 'Rigging'],
     demoUrl: '#',
     repoUrl: 'https://github.com'
@@ -138,16 +155,27 @@ const projects = [
   {
     id: 2,
     title: 'WEWORK FACTORY',
-    genre: 'Quixel Demo Scenes / Environment',
     icon: '🏢',
     date: '2023',
-    description: 'Escenas demo de entorno con Quixel Megascans de la WeWork Factory: creación de escenarios modulares con iluminación y material setup para su visualización en tiempo real.',
-    highlights: [
-      'Montaje de escenas con Quixel Megascans',
-      'Entornos modulares para visualización en tiempo real',
-      'Iluminación y set-up de materiales',
-      'Optimización gráfica en Unreal Engine'
-    ],
+    genre: { es: 'Escenas Demo Quixel / Entorno', en: 'Quixel Demo Scenes / Environment' },
+    description: {
+      es: 'Escenas demo de entorno con Quixel Megascans de la WeWork Factory: creación de escenarios modulares con iluminación y material setup para su visualización en tiempo real.',
+      en: 'Environment demo scenes with Quixel Megascans of the WeWork Factory: creation of modular sets with lighting and material setup for real-time visualization.'
+    },
+    highlights: {
+      es: [
+        'Montaje de escenas con Quixel Megascans',
+        'Entornos modulares para visualización en tiempo real',
+        'Iluminación y set-up de materiales',
+        'Optimización gráfica en Unreal Engine'
+      ],
+      en: [
+        'Scene assembly with Quixel Megascans',
+        'Modular environments for real-time visualization',
+        'Lighting and material setup',
+        'Graphical optimization in Unreal Engine'
+      ]
+    },
     tags: ['Unreal Engine', 'Quixel', '3ds Max', 'Material Setup'],
     demoUrl: '#',
     repoUrl: 'https://github.com'
@@ -155,16 +183,27 @@ const projects = [
   {
     id: 3,
     title: 'Warzone Abandoned',
-    genre: 'Environment Art',
     icon: '🎖️',
     date: '2023',
-    description: 'Entorno bélico abandonado: modelado de escenario y props, composición de iluminación dramática y texturizado para conseguir una atmósfera de guerra post-apocalíptica.',
-    highlights: [
-      'Escenario y props de zona de guerra',
-      'Iluminación dramática y atmósfera',
-      'Modelado + texturizado completo',
-      'Presentado en ArtStation'
-    ],
+    genre: { es: 'Environment Art', en: 'Environment Art' },
+    description: {
+      es: 'Entorno bélico abandonado: modelado de escenario y props, composición de iluminación dramática y texturizado para conseguir una atmósfera de guerra post-apocalíptica.',
+      en: 'Abandoned war environment: set and props modeling, dramatic lighting composition and texturing to achieve a post-apocalyptic war atmosphere.'
+    },
+    highlights: {
+      es: [
+        'Escenario y props de zona de guerra',
+        'Iluminación dramática y atmósfera',
+        'Modelado + texturizado completo',
+        'Presentado en ArtStation'
+      ],
+      en: [
+        'War zone set and props',
+        'Dramatic lighting and atmosphere',
+        'Full modeling + texturing',
+        'Featured on ArtStation'
+      ]
+    },
     tags: ['3ds Max', 'ZBrush', 'Substance', 'Unreal Engine'],
     demoUrl: '#',
     repoUrl: 'https://github.com'
@@ -172,16 +211,27 @@ const projects = [
   {
     id: 4,
     title: 'Medical Horror Kit',
-    genre: 'Props / Horror Asset Pack',
     icon: '🏥',
     date: '2021',
-    description: 'Kit de props médicos con estética de terror, diseñados para el universo de INSOMNIS: instrumental quirúrgico envejecido y mobiliario hospitalario de alta poligonización.',
-    highlights: [
-      'Instrumental médico horror y mobiliario',
-      'High poly con detalle de desgaste',
-      'Texturizado PBR en Substance Painter',
-      'Render de presentación en Marmoset'
-    ],
+    genre: { es: 'Props / Pack de Activos de Terror', en: 'Props / Horror Asset Pack' },
+    description: {
+      es: 'Kit de props médicos con estética de terror, diseñados para el universo de INSOMNIS: instrumental quirúrgico envejecido y mobiliario hospitalario de alta poligonización.',
+      en: 'Medical props kit with a horror aesthetic, designed for the INSOMNIS universe: aged surgical instruments and high-poly hospital furniture.'
+    },
+    highlights: {
+      es: [
+        'Instrumental médico horror y mobiliario',
+        'High poly con detalle de desgaste',
+        'Texturizado PBR en Substance Painter',
+        'Render de presentación en Marmoset'
+      ],
+      en: [
+        'Horror medical instruments and furniture',
+        'High poly with wear detail',
+        'PBR texturing in Substance Painter',
+        'Presentation render in Marmoset'
+      ]
+    },
     tags: ['3ds Max', 'ZBrush', 'Substance Painter', 'Marmoset'],
     demoUrl: '#',
     repoUrl: 'https://github.com'
@@ -189,21 +239,41 @@ const projects = [
   {
     id: 5,
     title: 'Apartment Level VR',
-    genre: 'VR Environment',
     icon: '🥽',
     date: '2018',
-    description: 'Nivel de apartamento para realidad virtual desarrollado durante mi etapa en LEVEL-VR: modelado, texturizado con Substance y optimización gráfica para UE4.',
-    highlights: [
-      'Escenario VR de apartamento',
-      'Modelado 3D y texturizado Substance',
-      'Materiales de arquitectura en Unreal',
-      'Optimización gráfica para VR'
-    ],
+    genre: { es: 'Entorno VR', en: 'VR Environment' },
+    description: {
+      es: 'Nivel de apartamento para realidad virtual desarrollado durante mi etapa en LEVEL-VR: modelado, texturizado con Substance y optimización gráfica para UE4.',
+      en: 'Apartment level for virtual reality developed during my time at LEVEL-VR: modeling, Substance texturing and graphical optimization for UE4.'
+    },
+    highlights: {
+      es: [
+        'Escenario VR de apartamento',
+        'Modelado 3D y texturizado Substance',
+        'Materiales de arquitectura en Unreal',
+        'Optimización gráfica para VR'
+      ],
+      en: [
+        'VR apartment environment',
+        '3D modeling and Substance texturing',
+        'Architecture materials in Unreal',
+        'Graphical optimization for VR'
+      ]
+    },
     tags: ['Unreal Engine 4', '3ds Max', 'Substance', 'VR'],
     demoUrl: '#',
     repoUrl: 'https://github.com'
   }
 ]
+
+const projects = computed(() =>
+  projectsDef.map((p) => ({
+    ...p,
+    genre: p.genre[lang.value],
+    description: p.description[lang.value],
+    highlights: p.highlights[lang.value]
+  }))
+)
 </script>
 
 <style scoped>
