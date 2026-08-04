@@ -73,6 +73,17 @@ const questsDef = [
       en: 'Specialization in network and systems administration: server installation and configuration, security, local networks and management of IT infrastructures.'
     },
     rewards: ['Administración de Redes', 'Sistemas Operativos', 'Seguridad', 'Bases de Datos', 'Infraestructura IT']
+  },
+  {
+    id: 3,
+    title: { es: 'Grado Medio en Equipos Electrónicos de Consumo', en: 'Intermediate Degree in Consumer Electronic Equipment' },
+    institution: { es: 'I.E.S. Santa María del Castillo (Buitrago del Lozoya)', en: 'I.E.S. Santa María del Castillo (Buitrago del Lozoya)' },
+    period: '2008 - 2010',
+    description: {
+      es: 'Grado Medio en Electricidad y Electrónica de Consumo en el centro I.E.S. Santa María del Castillo (Buitrago del Lozoya).',
+      en: 'Intermediate Degree in Electricity and Consumer Electronics at I.E.S. Santa María del Castillo (Buitrago del Lozoya).'
+    },
+    rewards: ['Electricidad', 'Electrónica de Consumo', 'Hardware', 'Sistemas Electrotécnicos']
   }
 ]
 
