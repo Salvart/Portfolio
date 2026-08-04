@@ -274,7 +274,7 @@ const projectsDef = [
       ]
     },
     tags: ['Unreal Engine 5', '3ds Max', 'SQL Server', 'C++', 'Python', 'React'],
-    links: []
+    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/Rq36kA' }]
   },
   {
     id: 7,
