@@ -22,7 +22,7 @@
       </div>
 
       <div class="stats-box">
-        <h3 class="player-name">GAME DEVELOPER</h3>
+        <h3 class="player-name">TECHNICAL ARTIST & PROGRAMMER</h3>
         <p class="tagline">{{ tagline }}</p>
 
         <!-- Dynamic Stat Bars -->
@@ -95,8 +95,8 @@ const tagline = t(
   '« Passionate about videogames, 3D art and clean code »'
 )
 const bio1 = t(
-  '¡Hola! Soy un desarrollador de videojuegos que trabaja programando y haciendo 3D. Me adapto a cualquier pipeline de trabajo: C++, Blueprints, web y mucho más.',
-  'Hi! I am a game developer who works programming and doing 3D. I adapt to any pipeline: C++, Blueprints, web and much more.'
+  '¡Hola! Soy un desarrollador que trabaja programando y haciendo 3D. Me adapto a cualquier pipeline de trabajo: C++, Blueprints, web y mucho más.',
+  'Hi! I am a developer who works programming and doing 3D. I adapt to any pipeline: C++, Blueprints, web and much more.'
 )
 const bio2 = t(
   'Me encanta combinar modelado y arte 3D con arquitectura de software limpia para crear experiencias interactivas memorables.',
