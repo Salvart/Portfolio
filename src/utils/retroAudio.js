@@ -3,6 +3,23 @@ let audioCtx = null;
 let isMuted = false;
 let isBgmPlaying = false;
 let bgmInterval = null;
+let userInteracted = false;
+
+// Los navegadores solo permiten iniciar el AudioContext tras un gesto del
+// usuario; antes de eso permanece 'suspended' y llamar a resume() genera
+// errores en consola. Esperamos al primer gesto para desbloquearlo.
+function unlockAudio() {
+  userInteracted = true;
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume().catch(() => {});
+  }
+}
+
+if (typeof window !== 'undefined') {
+  ['pointerdown', 'keydown', 'touchstart', 'click'].forEach((evt) =>
+    window.addEventListener(evt, unlockAudio, { passive: true })
+  );
+}
 
 function getAudioContext() {
   if (!audioCtx) {
@@ -11,7 +28,7 @@ function getAudioContext() {
       audioCtx = new AudioContext();
     }
   }
-  if (audioCtx && audioCtx.state === 'suspended') {
+  if (audioCtx && audioCtx.state === 'suspended' && userInteracted) {
     audioCtx.resume().catch(() => {});
   }
   return audioCtx;
