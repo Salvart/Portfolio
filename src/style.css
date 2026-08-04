@@ -141,7 +141,7 @@ html, body, #app {
   animation: blink 0.8s infinite;
 }
 
-/* Global Retro Icon & Emoji Styling - Monochrome 8-Bit Pixel Effect */
+/* Global Retro Icon & Emoji Styling - Minimalist White Effect */
 .header-icon,
 .menu-icon,
 .fact-icon,
@@ -154,8 +154,11 @@ html, body, #app {
 .location-tag,
 .walk-status,
 .retro-icon {
-  display: inline-block;
-  filter: grayscale(100%) contrast(200%) brightness(0.5);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff !important;
+  filter: brightness(0) invert(1);
   font-style: normal;
 }
 
