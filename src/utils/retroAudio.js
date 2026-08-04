@@ -167,6 +167,33 @@ export function playJumpSFX() {
   }
 }
 
+// Soft 8-bit Landing Thud (after a jump)
+export function playLandingSFX() {
+  if (isMuted) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(170, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(45, ctx.currentTime + 0.1);
+
+    gain.gain.setValueAtTime(0.18, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.1);
+  } catch (e) {
+    console.warn('Audio error:', e);
+  }
+}
+
 // Chiptune Retro Loop Synthesizer (BGM)
 export function toggleBGM() {
   if (isBgmPlaying) {

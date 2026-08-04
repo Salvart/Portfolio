@@ -70,7 +70,7 @@
             {{ typewriterText }}
           </div>
 
-          <div class="pixel-hero">
+          <div class="pixel-hero" :style="{ transform: heroTransform }">
             <!-- Hat / Cap -->
             <div class="hero-cap"></div>
             <!-- Head / Face -->
@@ -86,6 +86,13 @@
               <div class="leg leg-right"></div>
             </div>
           </div>
+
+          <!-- Ground shadow shrinks as the character rises -->
+          <div
+            class="hero-shadow"
+            :style="{ transform: `scaleX(${shadowScale})`, opacity: shadowOpacity }"
+          ></div>
+          <div v-if="landingDust" class="landing-dust"></div>
         </div>
       </div>
     </div>
@@ -105,7 +112,8 @@ import {
   playStepSFX,
   playArrivalSFX,
   playTextBlipSFX,
-  playJumpSFX
+  playJumpSFX,
+  playLandingSFX
 } from '../utils/retroAudio.js'
 import { lang, t } from '../utils/i18n.js'
 import InfoSection from './sections/InfoSection.vue'
@@ -261,13 +269,119 @@ function triggerTypewriter(text) {
   }, 40)
 }
 
-// Jump with A — a hop in place (vertical only)
+// Jump with A — physics-based hop in place with squash & stretch
+const JUMP_VELOCITY = 430 // px/s launch speed
+const GRAVITY = 2000 // px/s² — gravity makes the arc feel natural
+const jumpHeight = ref(0)
+const heroScaleY = ref(1)
+const heroScaleX = ref(1)
+const shadowScale = ref(1)
+const shadowOpacity = ref(1)
+const landingDust = ref(false)
+
+let jumpAnimId = null
+
+const heroTransform = computed(() =>
+  `translateY(${-jumpHeight.value}px) scaleX(${heroScaleX.value}) scaleY(${heroScaleY.value})`
+)
+
+function clampScale(v) {
+  return Math.max(0.7, Math.min(1.35, v))
+}
+
+function easeOutBack(x) {
+  const c1 = 1.70158
+  const c3 = c1 + 1
+  return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2)
+}
+
+function startJump() {
+  if (isJumping.value || isWalking.value) return
+  isJumping.value = true
+  playJumpSFX()
+  cancelAnimationFrame(jumpAnimId)
+
+  // Phase 1 — anticipation: quick crouch before springing up
+  const PREP_MS = 90
+  const prepStart = performance.now()
+
+  function prep(now) {
+    const t = Math.min((now - prepStart) / PREP_MS, 1)
+    const dip = Math.sin(t * Math.PI)
+    heroScaleY.value = clampScale(1 - 0.16 * dip)
+    heroScaleX.value = clampScale(1 + 0.16 * dip)
+    if (t < 1) {
+      jumpAnimId = requestAnimationFrame(prep)
+    } else {
+      launch()
+    }
+  }
+  jumpAnimId = requestAnimationFrame(prep)
+
+  // Phase 2 — ballistic flight: gravity + stretch proportional to speed
+  function launch() {
+    let y = 0
+    let vy = JUMP_VELOCITY
+    let last = performance.now()
+
+    function air(now) {
+      let dt = (now - last) / 1000
+      last = now
+      dt = Math.min(dt, 1 / 30)
+
+      vy -= GRAVITY * dt
+      y += vy * dt
+
+      if (y <= 0) {
+        y = 0
+        land()
+        return
+      }
+
+      const stretch = 1 + Math.min(Math.abs(vy) / 1300, 1) * 0.16
+      heroScaleY.value = clampScale(stretch)
+      heroScaleX.value = clampScale(2 - stretch)
+      jumpHeight.value = y
+      const t = Math.min(y / 46, 1)
+      shadowScale.value = 1 - t * 0.45
+      shadowOpacity.value = 1 - t * 0.35
+      jumpAnimId = requestAnimationFrame(air)
+    }
+    jumpAnimId = requestAnimationFrame(air)
+  }
+
+  // Phase 3 — landing: squash + dust puff, then recover
+  function land() {
+    jumpHeight.value = 0
+    landingDust.value = true
+    playLandingSFX()
+    const SQUASH_MS = 130
+    const l0 = performance.now()
+
+    function squash(now) {
+      const t = Math.min((now - l0) / SQUASH_MS, 1)
+      if (t >= 1) {
+        heroScaleY.value = 1
+        heroScaleX.value = 1
+        shadowScale.value = 1
+        shadowOpacity.value = 1
+        landingDust.value = false
+        isJumping.value = false
+        return
+      }
+      const s = clampScale(0.82 + 0.18 * easeOutBack(t))
+      heroScaleY.value = s
+      heroScaleX.value = clampScale(2 - s)
+      jumpAnimId = requestAnimationFrame(squash)
+    }
+    jumpAnimId = requestAnimationFrame(squash)
+  }
+}
+
 watch(() => props.characterAction, (action) => {
   if (!action || !action.type) return
   if (action.type === 'jump' && !isJumping.value && !isWalking.value) {
-    isJumping.value = true
-    playJumpSFX()
-    setTimeout(() => { isJumping.value = false }, 500)
+    startJump()
   }
 })
 
@@ -285,6 +399,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   cancelAnimationFrame(animFrameId)
+  cancelAnimationFrame(jumpAnimId)
   if (legIntervalId) clearInterval(legIntervalId)
   if (typewriterIntervalId) clearInterval(typewriterIntervalId)
 })
@@ -451,18 +566,41 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  transform-origin: 50% 100%;
 }
 
-/* Hop with A — vertical only */
-.character-wrapper.jumping .pixel-hero {
-  animation: jump 0.5s ease-out;
+/* Ground shadow — shrinks/fades as the character rises */
+.hero-shadow {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  margin-left: -10px;
+  width: 20px;
+  height: 5px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  pointer-events: none;
 }
 
-@keyframes jump {
-  0%   { transform: translateY(0); }
-  35%  { transform: translateY(-36px); }
-  70%  { transform: translateY(-18px); }
-  100% { transform: translateY(0); }
+/* Dust puff kicked up on landing */
+.landing-dust {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  width: 26px;
+  height: 10px;
+  margin-left: -13px;
+  background:
+    radial-gradient(circle at 20% 60%, rgba(0, 0, 0, 0.28) 0 3px, transparent 4px),
+    radial-gradient(circle at 50% 80%, rgba(0, 0, 0, 0.28) 0 3px, transparent 4px),
+    radial-gradient(circle at 80% 55%, rgba(0, 0, 0, 0.22) 0 3px, transparent 4px);
+  animation: dustPuff 0.35s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes dustPuff {
+  from { opacity: 1; transform: scale(0.6); }
+  to { opacity: 0; transform: scale(1.5); }
 }
 
 .hero-cap {
