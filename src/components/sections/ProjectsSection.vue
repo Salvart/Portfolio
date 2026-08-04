@@ -112,7 +112,7 @@ const projectsDef = [
   {
     id: 1,
     title: 'INSOMNIS (PS4 / PS5 / Steam)',
-    icon: '👻',
+    icon: '✦',
     date: '2021',
     genre: { es: 'Juego de Terror / Environment Art', en: 'Horror Game / Environment Art' },
     description: {
@@ -136,15 +136,15 @@ const projectsDef = [
     tags: ['Unreal Engine 4', '3ds Max', 'ZBrush', 'Substance', 'Rigging'],
     links: [
       { label: '▶ PLAY STATION STORE', url: 'https://store.playstation.com/es-es/product/EP0811-CUSA25829_00-6756474835074646' },
-      { label: '🎮 NINTENDO SWITCH', url: 'https://www.nintendo.com/es-es/Juegos/Programas-descargables-Nintendo-Switch/Insomnis-2281154.html?srsltid=AfmBOoqsdivojGRs0CYNu4T8-pkKgbf9J1dJqWRYVnTtNj9HADPuuLJP' },
-      { label: '🖥️ STEAM', url: 'https://store.steampowered.com/app/1000700/Insomnis/?l=spanish' },
-      { label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/Oygnvy' }
+      { label: '▶ NINTENDO SWITCH', url: 'https://www.nintendo.com/es-es/Juegos/Programas-descargables-Nintendo-Switch/Insomnis-2281154.html?srsltid=AfmBOoqsdivojGRs0CYNu4T8-pkKgbf9J1dJqWRYVnTtNj9HADPuuLJP' },
+      { label: '▶ STEAM', url: 'https://store.steampowered.com/app/1000700/Insomnis/?l=spanish' },
+      { label: '▶ ARTSTATION', url: 'https://www.artstation.com/artwork/Oygnvy' }
     ]
   },
   {
     id: 2,
     title: 'WEWORK FACTORY',
-    icon: '🏢',
+    icon: '◈',
     date: '2023',
     genre: { es: 'Escenas Demo Quixel / Entorno', en: 'Quixel Demo Scenes / Environment' },
     description: {
@@ -166,12 +166,12 @@ const projectsDef = [
       ]
     },
     tags: ['Unreal Engine', 'Quixel', '3ds Max', 'Material Setup'],
-    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/w8zvNV' }]
+    links: [{ label: '▶ ARTSTATION', url: 'https://www.artstation.com/artwork/w8zvNV' }]
   },
   {
     id: 3,
     title: 'Warzone Abandoned',
-    icon: '🎖️',
+    icon: '★',
     date: '2023',
     genre: { es: 'Environment Art', en: 'Environment Art' },
     description: {
@@ -193,12 +193,12 @@ const projectsDef = [
       ]
     },
     tags: ['3ds Max', 'ZBrush', 'Substance', 'Unreal Engine'],
-    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/1xL1wZ' }]
+    links: [{ label: '▶ ARTSTATION', url: 'https://www.artstation.com/artwork/1xL1wZ' }]
   },
   {
     id: 4,
     title: 'Medical Horror Kit',
-    icon: '🏥',
+    icon: '❖',
     date: '2021',
     genre: { es: 'Props / Pack de Activos de Terror', en: 'Props / Horror Asset Pack' },
     description: {
@@ -220,12 +220,12 @@ const projectsDef = [
       ]
     },
     tags: ['3ds Max', 'ZBrush', 'Substance Painter', 'Marmoset'],
-    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/klZ0bd' }]
+    links: [{ label: '▶ ARTSTATION', url: 'https://www.artstation.com/artwork/klZ0bd' }]
   },
   {
     id: 5,
     title: 'Apartment Level VR',
-    icon: '🥽',
+    icon: '◈',
     date: '2018',
     genre: { es: 'Entorno VR', en: 'VR Environment' },
     description: {
@@ -247,12 +247,12 @@ const projectsDef = [
       ]
     },
     tags: ['Unreal Engine 4', '3ds Max', 'Substance', 'VR'],
-    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/Yk2yb' }]
+    links: [{ label: '▶ ARTSTATION', url: 'https://www.artstation.com/artwork/Yk2yb' }]
   },
   {
     id: 6,
     title: 'Valdecarros Digital Twin (PPG Studios)',
-    icon: '🏗️',
+    icon: '⚙',
     date: '2023 - Actualidad',
     genre: { es: 'Gemelo Digital / Arquitectura en Tiempo Real', en: 'Digital Twin / Real-Time Architecture' },
     description: {
@@ -274,12 +274,12 @@ const projectsDef = [
       ]
     },
     tags: ['Unreal Engine 5', '3ds Max', 'SQL Server', 'C++', 'Python', 'React'],
-    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/Rq36kA' }]
+    links: [{ label: '▶ ARTSTATION', url: 'https://www.artstation.com/artwork/Rq36kA' }]
   },
   {
     id: 7,
     title: 'M4A1',
-    icon: '🔫',
+    icon: '✦',
     date: '2023',
     genre: { es: 'Modelo de Arma / Hard Surface', en: 'Weapon Model / Hard Surface' },
     description: {
@@ -299,12 +299,12 @@ const projectsDef = [
       ]
     },
     tags: ['3ds Max', 'ZBrush', 'Substance Painter', 'Hard Surface'],
-    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/4JzRW' }]
+    links: [{ label: '▶ ARTSTATION', url: 'https://www.artstation.com/artwork/4JzRW' }]
   },
   {
     id: 8,
     title: 'Gun Low Poly Model',
-    icon: '🔫',
+    icon: '✦',
     date: '2023',
     genre: { es: 'Modelo Low Poly / Arma', en: 'Low Poly Model / Weapon' },
     description: {
@@ -324,12 +324,12 @@ const projectsDef = [
       ]
     },
     tags: ['3ds Max', 'Low Poly', 'UV Mapping'],
-    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/X0Xxl' }]
+    links: [{ label: '▶ ARTSTATION', url: 'https://www.artstation.com/artwork/X0Xxl' }]
   },
   {
     id: 9,
     title: '"FAKE ME" – Anuncio Navidad Campofrío 2019',
-    icon: '🎄',
+    icon: '★',
     date: '2019',
     genre: { es: 'Comercial / Animación Navideña', en: 'Commercial / Christmas Animation' },
     description: {
@@ -349,12 +349,12 @@ const projectsDef = [
       ]
     },
     tags: ['3ds Max', 'Substance', 'Set Design', 'Navidad'],
-    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/RY4ane' }]
+    links: [{ label: '▶ ARTSTATION', url: 'https://www.artstation.com/artwork/RY4ane' }]
   },
   {
     id: 10,
     title: 'Let It Snow on WEWORK!',
-    icon: '❄️',
+    icon: '◈',
     date: '2019',
     genre: { es: 'Escena Navideña / Entorno', en: 'Christmas Scene / Environment' },
     description: {
@@ -374,12 +374,12 @@ const projectsDef = [
       ]
     },
     tags: ['Unreal Engine', 'Quixel', '3ds Max', 'Iluminación'],
-    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/A9bgvo' }]
+    links: [{ label: '▶ ARTSTATION', url: 'https://www.artstation.com/artwork/A9bgvo' }]
   },
   {
     id: 11,
     title: 'Insomnis – Halloween Edition Props',
-    icon: '🎃',
+    icon: '✦',
     date: '2018',
     genre: { es: 'Props / Terror', en: 'Props / Horror' },
     description: {
@@ -399,12 +399,12 @@ const projectsDef = [
       ]
     },
     tags: ['3ds Max', 'Substance', 'Insomnis', 'Props'],
-    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/3ooRzY' }]
+    links: [{ label: '▶ ARTSTATION', url: 'https://www.artstation.com/artwork/3ooRzY' }]
   },
   {
     id: 12,
     title: 'Old Projector – Insomnis',
-    icon: '🎞️',
+    icon: '▶',
     date: '2018',
     genre: { es: 'Prop / Insomnis', en: 'Prop / Insomnis' },
     description: {
@@ -424,12 +424,12 @@ const projectsDef = [
       ]
     },
     tags: ['3ds Max', 'ZBrush', 'Substance', 'Insomnis'],
-    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/dOONNe' }]
+    links: [{ label: '▶ ARTSTATION', url: 'https://www.artstation.com/artwork/dOONNe' }]
   },
   {
     id: 13,
     title: 'Old Doors – Insomnis',
-    icon: '🚪',
+    icon: '◈',
     date: '2018',
     genre: { es: 'Props / Insomnis', en: 'Props / Insomnis' },
     description: {
@@ -449,12 +449,12 @@ const projectsDef = [
       ]
     },
     tags: ['3ds Max', 'Substance', 'Insomnis', 'Props'],
-    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/Qzz4Nx' }]
+    links: [{ label: '▶ ARTSTATION', url: 'https://www.artstation.com/artwork/Qzz4Nx' }]
   },
   {
     id: 14,
     title: 'Old Lamps – Insomnis',
-    icon: '💡',
+    icon: '✦',
     date: '2018',
     genre: { es: 'Props / Insomnis', en: 'Props / Insomnis' },
     description: {
@@ -474,12 +474,12 @@ const projectsDef = [
       ]
     },
     tags: ['3ds Max', 'Substance', 'Insomnis', 'Props'],
-    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/rRR3v2' }]
+    links: [{ label: '▶ ARTSTATION', url: 'https://www.artstation.com/artwork/rRR3v2' }]
   },
   {
     id: 15,
     title: 'Modular Environment – UE4',
-    icon: '🧱',
+    icon: '⬢',
     date: '2023',
     genre: { es: 'Entorno Modular / UE4', en: 'Modular Environment / UE4' },
     description: {
@@ -499,12 +499,12 @@ const projectsDef = [
       ]
     },
     tags: ['Unreal Engine 4', '3ds Max', 'Modular', 'Environment'],
-    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/8nmnw' }]
+    links: [{ label: '▶ ARTSTATION', url: 'https://www.artstation.com/artwork/8nmnw' }]
   },
   {
     id: 16,
     title: 'Old Frames – Insomnis',
-    icon: '🖼️',
+    icon: '◈',
     date: '2018',
     genre: { es: 'Props / Insomnis', en: 'Props / Insomnis' },
     description: {
@@ -524,12 +524,12 @@ const projectsDef = [
       ]
     },
     tags: ['3ds Max', 'Substance', 'Insomnis', 'Props'],
-    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/0XXWLV' }]
+    links: [{ label: '▶ ARTSTATION', url: 'https://www.artstation.com/artwork/0XXWLV' }]
   },
   {
     id: 17,
     title: 'Low Poly Cardboard Boxes & Paper Cards',
-    icon: '📦',
+    icon: '❖',
     date: '2018',
     genre: { es: 'Props Low Poly / Insomnis', en: 'Low Poly Props / Insomnis' },
     description: {
@@ -549,12 +549,12 @@ const projectsDef = [
       ]
     },
     tags: ['3ds Max', 'Low Poly', 'Insomnis', 'Props'],
-    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/588GPJ' }]
+    links: [{ label: '▶ ARTSTATION', url: 'https://www.artstation.com/artwork/588GPJ' }]
   },
   {
     id: 18,
     title: 'Laptop',
-    icon: '💻',
+    icon: '⚙',
     date: '2018',
     genre: { es: 'Prop / Hard Surface', en: 'Prop / Hard Surface' },
     description: {
@@ -574,12 +574,12 @@ const projectsDef = [
       ]
     },
     tags: ['3ds Max', 'Substance', 'Hard Surface'],
-    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/zoAZ4' }]
+    links: [{ label: '▶ ARTSTATION', url: 'https://www.artstation.com/artwork/zoAZ4' }]
   },
   {
     id: 19,
     title: 'Old Cage',
-    icon: '🐦',
+    icon: '✦',
     date: '2017',
     genre: { es: 'Prop / Insomnis', en: 'Prop / Insomnis' },
     description: {
@@ -599,12 +599,12 @@ const projectsDef = [
       ]
     },
     tags: ['3ds Max', 'Substance', 'Insomnis', 'Props'],
-    links: [{ label: '🎨 ARTSTATION', url: 'https://www.artstation.com/artwork/qR5wR' }]
+    links: [{ label: '▶ ARTSTATION', url: 'https://www.artstation.com/artwork/qR5wR' }]
   },
   {
     id: 20,
     title: 'Temple Scene',
-    icon: '🏛️',
+    icon: '🏛',
     date: '2017',
     genre: { es: 'Escena / Entorno', en: 'Scene / Environment' },
     description: {

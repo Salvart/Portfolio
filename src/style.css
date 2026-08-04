@@ -141,7 +141,7 @@ html, body, #app {
   animation: blink 0.8s infinite;
 }
 
-/* Global Retro Icon & Emoji Styling - Minimalist White Effect */
+/* Global Retro Icon & Minimalist Symbol Styling - Inherits Theme Colors */
 .header-icon,
 .menu-icon,
 .fact-icon,
@@ -157,8 +157,8 @@ html, body, #app {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff !important;
-  filter: brightness(0) invert(1);
+  color: inherit;
+  filter: none;
   font-style: normal;
 }
 
