@@ -123,8 +123,8 @@ const currentThemeClass = ref('')
 const sectionDefs = [
   { id: 'info', icon: '✦', name: { es: 'Información', en: 'Info' } },
   { id: 'tech', icon: '⚙', name: { es: 'Tecnologías', en: 'Tech' } },
-  { id: 'studies', icon: '📜', name: { es: 'Estudios', en: 'Studies' } },
-  { id: 'projects', icon: '🎮', name: { es: 'Proyectos', en: 'Projects' } }
+  { id: 'studies', icon: '◈', name: { es: 'Estudios', en: 'Studies' } },
+  { id: 'projects', icon: '❖', name: { es: 'Proyectos', en: 'Projects' } }
 ]
 
 const sections = computed(() =>
