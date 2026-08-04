@@ -5,12 +5,22 @@ let isBgmPlaying = false;
 let bgmInterval = null;
 let userInteracted = false;
 
-// Los navegadores solo permiten iniciar el AudioContext tras un gesto del
-// usuario; antes de eso permanece 'suspended' y llamar a resume() genera
-// errores en consola. Esperamos al primer gesto para desbloquearlo.
+// Chrome emite el warning "AudioContext was not allowed to start" incluso al
+// CREAR el contexto o al llamar a start() en un contexto suspendido antes de
+// un gesto de usuario. Por eso no creamos el contexto hasta el primer gesto:
+// antes de eso getAudioContext() devuelve null y los sonidos se descartan.
 function unlockAudio() {
   userInteracted = true;
-  if (audioCtx && audioCtx.state === 'suspended') {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContext) return;
+  if (!audioCtx) {
+    try {
+      audioCtx = new AudioContext();
+    } catch (e) {
+      return;
+    }
+  }
+  if (audioCtx.state === 'suspended') {
     audioCtx.resume().catch(() => {});
   }
 }
@@ -22,13 +32,18 @@ if (typeof window !== 'undefined') {
 }
 
 function getAudioContext() {
+  if (!userInteracted) return null;
   if (!audioCtx) {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (AudioContext) {
-      audioCtx = new AudioContext();
+      try {
+        audioCtx = new AudioContext();
+      } catch (e) {
+        return null;
+      }
     }
   }
-  if (audioCtx && audioCtx.state === 'suspended' && userInteracted) {
+  if (audioCtx && audioCtx.state === 'suspended') {
     audioCtx.resume().catch(() => {});
   }
   return audioCtx;
