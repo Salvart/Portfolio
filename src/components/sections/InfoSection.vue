@@ -56,15 +56,15 @@
     <!-- Quick Info Grid -->
     <div class="quick-facts">
       <div class="fact-item">
-        <span class="fact-icon">📍</span>
+        <span class="fact-icon">◈</span>
         <span class="fact-text">{{ locationFact }}</span>
       </div>
       <div class="fact-item">
-        <span class="fact-icon">💼</span>
+        <span class="fact-icon">❖</span>
         <span class="fact-text">{{ statusFact }}</span>
       </div>
       <div class="fact-item">
-        <span class="fact-icon">⚡</span>
+        <span class="fact-icon">⚙</span>
         <span class="fact-text">{{ specialtyFact }}</span>
       </div>
     </div>

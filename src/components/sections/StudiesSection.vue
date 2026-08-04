@@ -14,7 +14,7 @@
         class="quest-card"
       >
         <div class="quest-status">
-          <span class="quest-icon">🏆</span>
+          <span class="quest-icon">★</span>
           <span class="quest-step">QUEST #0{{ idx + 1 }}</span>
         </div>
 
@@ -25,7 +25,7 @@
           </div>
 
           <div class="quest-institution">
-            <span class="institution-icon">🏛️</span>
+            <span class="institution-icon">◈</span>
             <span>{{ quest.institution }}</span>
           </div>
 

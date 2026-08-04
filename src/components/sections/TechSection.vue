@@ -88,31 +88,31 @@ const categories = computed(() => [
 
 const skills = [
   // Frontend
-  { name: 'Vue.js', category: 'frontend', icon: '💚', level: 95, percent: 95, experience: 'Expert' },
+  { name: 'Vue.js', category: 'frontend', icon: '✦', level: 95, percent: 95, experience: 'Expert' },
   { name: 'JavaScript (ES6+)', category: 'frontend', icon: '⚡', level: 92, percent: 92, experience: 'Advanced' },
-  { name: 'HTML5 / CSS3', category: 'frontend', icon: '🎨', level: 96, percent: 96, experience: 'Expert' },
-  { name: 'TypeScript', category: 'frontend', icon: '📘', level: 85, percent: 85, experience: 'Proficient' },
-  { name: 'Tailwind / Vanilla CSS', category: 'frontend', icon: '✨', level: 90, percent: 90, experience: 'Advanced' },
+  { name: 'HTML5 / CSS3', category: 'frontend', icon: '◈', level: 96, percent: 96, experience: 'Expert' },
+  { name: 'TypeScript', category: 'frontend', icon: '◆', level: 85, percent: 85, experience: 'Proficient' },
+  { name: 'Tailwind / Vanilla CSS', category: 'frontend', icon: '✦', level: 90, percent: 90, experience: 'Advanced' },
   
   // Backend
-  { name: 'Node.js', category: 'backend', icon: '🟢', level: 88, percent: 88, experience: 'Advanced' },
-  { name: 'Express.js', category: 'backend', icon: '🚀', level: 86, percent: 86, experience: 'Advanced' },
-  { name: 'REST APIs / JSON', category: 'backend', icon: '🔗', level: 92, percent: 92, experience: 'Expert' },
-  { name: 'SQL / Databases', category: 'backend', icon: '🗄️', level: 80, percent: 80, experience: 'Proficient' },
-  { name: 'C++ / C#', category: 'backend', icon: '⚙️', level: 85, percent: 85, experience: 'Advanced' },
+  { name: 'Node.js', category: 'backend', icon: '⬢', level: 88, percent: 88, experience: 'Advanced' },
+  { name: 'Express.js', category: 'backend', icon: '▲', level: 86, percent: 86, experience: 'Advanced' },
+  { name: 'REST APIs / JSON', category: 'backend', icon: '❖', level: 92, percent: 92, experience: 'Expert' },
+  { name: 'SQL / Databases', category: 'backend', icon: '🗄', level: 80, percent: 80, experience: 'Proficient' },
+  { name: 'C++ / C#', category: 'backend', icon: '⚙', level: 85, percent: 85, experience: 'Advanced' },
 
   // 3D
   { name: 'Unreal Engine (Blueprints)', category: '3d', icon: '🎮', level: 90, percent: 90, experience: 'Expert' },
   { name: 'Unity 3D', category: '3d', icon: '🧩', level: 85, percent: 85, experience: 'Advanced' },
   { name: 'Autodesk 3ds Max', category: '3d', icon: '🧊', level: 92, percent: 92, experience: 'Expert' },
   { name: 'ZBrush (Escultura Digital)', category: '3d', icon: '🗿', level: 86, percent: 86, experience: 'Advanced' },
-  { name: 'Photoshop / Illustrator / After Effects', category: '3d', icon: '🎨', level: 90, percent: 90, experience: 'Expert' },
-  { name: 'Substance Painter / Texturing', category: '3d', icon: '🖌️', level: 84, percent: 84, experience: 'Advanced' },
+  { name: 'Photoshop / Illustrator / After Effects', category: '3d', icon: '◈', level: 90, percent: 90, experience: 'Expert' },
+  { name: 'Substance Painter / Texturing', category: '3d', icon: '🖌', level: 84, percent: 84, experience: 'Advanced' },
   { name: 'Modelado High/Low Poly & UV', category: '3d', icon: '🧵', level: 92, percent: 92, experience: 'Expert' },
   { name: 'Rigging & Shaders', category: '3d', icon: '⚡', level: 82, percent: 82, experience: 'Proficient' },
 
   // Tools
-  { name: 'Git & GitHub', category: 'tools', icon: '🐙', level: 90, percent: 90, experience: 'Advanced' },
+  { name: 'Git & GitHub', category: 'tools', icon: '❖', level: 90, percent: 90, experience: 'Advanced' },
   { name: 'Vite / Webpack', category: 'tools', icon: '⚡', level: 88, percent: 88, experience: 'Advanced' },
   { name: 'Marmoset / Rendering', category: 'tools', icon: '📷', level: 84, percent: 84, experience: 'Advanced' },
   { name: 'Figma / UI Design', category: 'tools', icon: '📐', level: 82, percent: 82, experience: 'Proficient' }

@@ -137,9 +137,9 @@ const props = defineProps({
 })
 
 // i18n labels
-const locationLabel = t('📍 LOCALIZACIÓN:', '📍 LOCATION:')
-const walkingStatus = t('🚶 CAMINANDO...', '🚶 WALKING...')
-const stationStatus = t('🛑 EN ESTACIÓN', '🛑 AT STATION')
+const locationLabel = t('◈ LOCALIZACIÓN:', '◈ LOCATION:')
+const walkingStatus = t('► CAMINANDO...', '► WALKING...')
+const stationStatus = t('■ EN ESTACIÓN', '■ AT STATION')
 
 // ===== The character drives everything =====
 // characterX is the character's own world position. The camera keeps the

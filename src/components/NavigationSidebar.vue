@@ -1,7 +1,7 @@
 <template>
   <div class="navigation-sidebar">
     <div class="sidebar-header">
-      <span class="header-icon">🕹️</span>
+      <span class="header-icon">❖</span>
       <span class="header-text">{{ menuLabel }}</span>
     </div>
 

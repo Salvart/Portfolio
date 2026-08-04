@@ -140,3 +140,22 @@ html, body, #app {
 .animate-blink {
   animation: blink 0.8s infinite;
 }
+
+/* Global Retro Icon & Emoji Styling - Monochrome 8-Bit Pixel Effect */
+.header-icon,
+.menu-icon,
+.fact-icon,
+.skill-symbol,
+.quest-icon,
+.institution-icon,
+.art-emoji,
+.sign-icon,
+.cloud,
+.location-tag,
+.walk-status,
+.retro-icon {
+  display: inline-block;
+  filter: grayscale(100%) contrast(200%) brightness(0.5);
+  font-style: normal;
+}
+
