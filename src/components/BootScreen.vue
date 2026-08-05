@@ -159,21 +159,22 @@ onUnmounted(() => {
   z-index: 5;
 }
 
-/* Cartridge (image) slides into the top slot, behind the console */
+/* Cartridge (image) slides straight down behind the console, simulating
+   insertion into the top slot */
 .cartridge-img {
   position: absolute;
-  top: -100px;
+  top: 0;
   left: 50%;
   z-index: 3;
   width: 165px;
   height: auto;
-  transform: translate(-50%, -280px) rotate(-8deg);
-  transition: transform 0.55s cubic-bezier(0.35, 0.8, 0.4, 1);
+  transform: translate(-50%, -100%);
+  transition: transform 0.6s cubic-bezier(0.5, 0, 0.6, 1);
   filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.5));
 }
 
 .cartridge-img.inserting {
-  transform: translate(-50%, 0) rotate(0deg);
+  transform: translate(-50%, 0);
 }
 
 /* Screen overlay aligned to the LCD in the photo */
@@ -182,8 +183,8 @@ onUnmounted(() => {
   left: 50%;
   top: 16.13%;
   transform: translateX(-50%);
-  width: 168px;
-  height: 162px;
+  width: 175px;
+  height: 160px;
   background: #0a1a0a;
   border-radius: 2px;
   overflow: hidden;
