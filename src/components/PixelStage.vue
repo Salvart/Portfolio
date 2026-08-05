@@ -187,7 +187,7 @@ let legIntervalId = null
 let typewriterIntervalId = null
 let stepAudioCounter = 0
 
-const WALK_SPEED = 300 // px/s — walk towards the next section
+const WALK_SPEED = 300 // px/s per section — speed scales with distance so travel time stays constant
 
 function getTargetX(idx) {
   return idx * SECTION_SPACING + CHARACTER_OFFSET
@@ -219,7 +219,10 @@ function startTravel(targetIdx) {
   function step() {
     const remaining = targetX - characterX.value
     const dist = Math.abs(remaining)
-    const stepSize = WALK_SPEED * (1 / 60)
+    // Proportional speed: N sections away → Nx speed, so any trip takes the same time
+    const baseStep = WALK_SPEED * (1 / 60)
+    const distanceStep = WALK_SPEED * (dist / SECTION_SPACING) * (1 / 60)
+    const stepSize = Math.max(baseStep, distanceStep)
 
     if (dist <= stepSize) {
       characterX.value = targetX

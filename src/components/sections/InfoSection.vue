@@ -18,7 +18,7 @@
             <div class="shirt"></div>
           </div>
         </div>
-        <div class="class-title">GAME DEV</div>
+        <div class="class-title">DEVELOPER</div>
       </div>
 
       <div class="stats-box">
@@ -27,19 +27,19 @@
 
         <!-- Dynamic Stat Bars -->
         <div class="stat-row">
-          <span class="stat-label">HP (ALTURA)</span>
+          <span class="stat-label">HP</span>
           <div class="stat-bar"><div class="stat-fill hp-fill" style="width: 100%;"></div></div>
           <span class="stat-val">183/183</span>
         </div>
 
         <div class="stat-row">
-          <span class="stat-label">MP (IQ)</span>
+          <span class="stat-label">MP</span>
           <div class="stat-bar"><div class="stat-fill mp-fill" style="width: 100%;"></div></div>
           <span class="stat-val">123/123</span>
         </div>
 
         <div class="stat-row">
-          <span class="stat-label">EXP (CREATIVITY)</span>
+          <span class="stat-label">EXP</span>
           <div class="stat-bar"><div class="stat-fill exp-fill" style="width: 90%;"></div></div>
           <span class="stat-val">MAX</span>
         </div>
