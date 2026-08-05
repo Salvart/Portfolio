@@ -4,11 +4,6 @@
 
 [![Deploy Portfolio](https://img.shields.io/badge/Live_Demo-🚀_Ver_Portfolio-brightgreen?style=for-the-badge)](https://www.artstation.com/salv_art)
 
-[![Vue.js](https://img.shields.io/badge/Vue.js-3.x-4FC08D?style=for-the-badge&logo=vuedotjs&logoColor=white)](https://vuejs.org/)
-
-[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
-
-
 
 > *Uniendo lógica de programación y arte 3D para crear experiencias e interacciones inmersivas.*
 
@@ -36,17 +31,15 @@ Este repositorio contiene el código fuente de mi **portfolio profesional**. Ha 
 
 ## Arte 3D & Diseño
 
-* **Software:** Blender, Maya, ZBrush, Substance Painter
+* **Software:** Blender, 3DsMAx, ZBrush, Substance Painter
 
 * **Especialidades:** Modelado Low/High Poly, Texturizado PBR, Rigging, Propes & Environment Art.
 
 ## Proyectos Destacados
 
-|<img src="https://via.placeholder.com/300x180" width="300"><br>**[Nombre del Juego 1]** | <img src="https://via.placeholder.com/300x180" width="300"><br>**[Nombre Proyecto 3D 2]** |
+<img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1000700/ss_5e074cee25ad9064a62490568dc9a9c28279f290.1920x1080.jpg?t=1742568226" width="300"><br>**Insomnis Steam/PS4/PS5/Switch** <br> https://store.steampowered.com/app/1000700/Insomnis/?l=spanish <br><br><img src="https://cdnb.artstation.com/p/assets/images/images/101/318/487/large/salvador-ruiz-martinez-captura-de-pantalla-2026-07-20-145301.jpg?1785822247" width="300"><br>**Metrovacesa Kala Digital Twin** <br>https://www.artstation.com/artwork/Rq36kA<br>
 
-| :--- | :--- |
-
-| **Rol:** Game Programmer<br>**Tech:** Unity, C#<br> [Jugar en Itch.io](https://itch.io) / [Ver Repo](https://github.com) | **Rol:** 3D Artist<br>**Tech:** Blender, Substance<br> [Ver en ArtStation](https://artstation.com) |
+**Rol:** Programmer, 3D Artist<br>**Tech:** Unity, Unreal, C#, C++, 3DsMax, Blender, Substance<br><br>
 
 ## Desarrollo Local
 
@@ -73,7 +66,8 @@ Si deseas clonar y ejecutar este portfolio localmente para revisar el código:
     ```bash
     npm run build
 
-Contacto & Redes
+
+## Contacto & Redes
 
 Sigue mi trabajo o ponte en contacto conmigo:
 
