@@ -88,6 +88,33 @@ export function playSelectSFX() {
   }
 }
 
+// 8-bit Menu Hover Blip (lighter than select)
+export function playHoverSFX() {
+  if (isMuted) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(660, ctx.currentTime); // E5
+    osc.frequency.exponentialRampToValueAtTime(495, ctx.currentTime + 0.05); // B4
+
+    gain.gain.setValueAtTime(0.08, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.005, ctx.currentTime + 0.05);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.05);
+  } catch (e) {
+    console.warn('Audio error:', e);
+  }
+}
+
 // Footstep 8-Bit Step Sound
 export function playStepSFX() {
   if (isMuted) return;

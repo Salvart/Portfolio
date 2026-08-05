@@ -11,7 +11,7 @@
         :key="item.id"
         :class="['menu-item-btn', { active: activeIndex === index }]"
         @click="onSelect(index)"
-        @mouseenter="playSelectSFX"
+        @mouseenter="playHoverSFX"
       >
         <span class="cursor-indicator" :class="{ visible: activeIndex === index }">▶</span>
         <span class="menu-icon">{{ item.icon }}</span>
@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { playSelectSFX } from '../utils/retroAudio.js'
+import { playSelectSFX, playHoverSFX } from '../utils/retroAudio.js'
 import { t } from '../utils/i18n.js'
 
 const menuLabel = t('MENÚ', 'MENU')
