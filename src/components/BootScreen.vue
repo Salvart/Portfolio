@@ -9,48 +9,30 @@
 
       <div class="gameboy">
         <!-- Cartridge slides into the top slot -->
-        <div class="cartridge" :class="{ inserting: phase === 'insert' }">
-          <div class="cartridge-body">
-            <span class="cartridge-label">CV</span>
-          </div>
-          <div class="cartridge-grip"></div>
-        </div>
+        <img
+          class="cartridge-img"
+          :src="cartridgeImg"
+          alt="Cartucho CV"
+          :class="{ inserting: phase === 'insert' }"
+        />
 
-        <!-- Top cartridge slot cover (in front of the cartridge) -->
-        <div class="gb-top-slot"></div>
+        <!-- Real Game Boy photo -->
+        <img class="gameboy-img" :src="gameboyImg" alt="Game Boy" />
 
-        <div class="gb-shell">
-          <!-- Screen -->
-          <div class="gb-bezel">
-            <div class="gb-screen" :class="{ 'screen-on': phase === 'boot' || phase === 'zoom' }">
-              <div v-if="phase !== 'idle' && phase !== 'insert'" class="boot-logo-window">
-                <div class="boot-logo-text">SALVADOR RUIZ</div>
-              </div>
-              <div v-if="phase === 'boot' || phase === 'zoom'" class="boot-brand-box">
-                <span class="boot-brand-name">GAME BOY</span><span class="boot-brand-tm">TM</span>
-              </div>
-              <div v-if="phase === 'boot'" class="screen-flash"></div>
-            </div>
-            <div class="bezel-text">DOT MATRIX WITH STEREO SOUND</div>
-          </div>
-
-          <!-- Controls -->
-          <div class="gb-controls">
-            <div class="gb-dpad">
-              <div class="dpad-cross"></div>
-            </div>
-            <div class="gb-buttons">
-              <div class="gb-btn btn-b">B</div>
-              <div class="gb-btn btn-a">A</div>
+        <!-- Screen overlay: boot logo + brand + flash on the photo LCD -->
+        <div
+          class="screen-overlay"
+          :class="{ 'screen-on': phase === 'boot' || phase === 'zoom' }"
+        >
+          <div v-if="phase !== 'idle' && phase !== 'insert'" class="boot-logo-window">
+            <div class="boot-logo-track">
+              <img class="boot-logo-img" :src="logoImg" alt="SALVADOR RUIZ" />
             </div>
           </div>
-
-          <div class="gb-brand-footer">Nintendo GAME BOY™</div>
-
-          <!-- Speaker grill -->
-          <div class="gb-speaker">
-            <div v-for="n in 6" :key="n" class="speaker-bar"></div>
+          <div v-if="phase === 'boot' || phase === 'zoom'" class="boot-brand-box">
+            <span class="boot-brand-name">GAME BOY</span><span class="boot-brand-tm">TM</span>
           </div>
+          <div v-if="phase === 'boot'" class="screen-flash"></div>
         </div>
       </div>
     </div>
@@ -67,6 +49,9 @@
 
 <script setup>
 import { ref, onUnmounted } from 'vue'
+import gameboyImg from '../assets/gameboy/gameboy.png'
+import cartridgeImg from '../assets/gameboy/cartidage.png'
+import logoImg from '../assets/gameboy/logo.png'
 import { playSelectSFX, playLandingSFX, playBootChimeSFX } from '../utils/retroAudio.js'
 import { t } from '../utils/i18n.js'
 
@@ -164,150 +149,76 @@ onUnmounted(() => {
   opacity: 0.8;
 }
 
-/* ---- Game Boy Console ---- */
+/* ---- Game Boy console ---- */
 .gameboy {
   position: relative;
-  width: 360px;
-  height: 560px;
+  width: 380px;
+  filter: drop-shadow(0 26px 45px rgba(0, 0, 0, 0.55));
 }
 
-/* Cartridge */
-.cartridge {
+.gameboy-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Cartridge (image) slides into the top slot */
+.cartridge-img {
   position: absolute;
-  top: 6px;
+  top: -58px;
   left: 50%;
   z-index: 12;
+  width: 110px;
+  height: auto;
   transform: translate(-50%, -280px) rotate(-8deg);
   transition: transform 0.55s cubic-bezier(0.35, 0.8, 0.4, 1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.5));
 }
 
-.cartridge.inserting {
-  transform: translate(-50%, 6px) rotate(0deg);
+.cartridge-img.inserting {
+  transform: translate(-50%, 0) rotate(0deg);
 }
 
-.cartridge-grip {
-  width: 74px;
-  height: 8px;
-  background: #161616;
-  border: 2px solid #000;
-  border-top: none;
-  border-radius: 0 0 4px 4px;
-}
-
-.cartridge-body {
-  width: 120px;
-  height: 58px;
-  background: #2b2b2b;
-  border: 2px solid #0d0d0d;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: inset 0 2px 0 #4a4a4a;
-}
-
-.cartridge-label {
-  font-family: var(--font-pixel);
-  font-size: 13px;
-  color: #d7d3d1;
-  letter-spacing: 2px;
-  background: #1c1c1c;
-  padding: 6px 12px;
-  border-radius: 2px;
-  border: 1px solid #000;
-}
-
-/* Slot cover sits in front of the inserted cartridge */
-.gb-top-slot {
+/* Screen overlay aligned to the LCD in the photo:
+   x 95..629 (13.3%..88.3%), y 181..486 (16.1%..43.3%) */
+.screen-overlay {
   position: absolute;
-  top: -4px;
-  left: 72px;
-  right: 72px;
-  height: 30px;
-  background: linear-gradient(#b0aaa7, #857f7c);
-  border: 2px solid var(--shell-border);
-  border-radius: 8px;
-  z-index: 14;
-  box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.4), 0 2px 3px rgba(0, 0, 0, 0.3);
-}
-
-/* Shell */
-.gb-shell {
-  position: absolute;
-  top: 20px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(160deg, var(--shell-color) 0%, var(--shell-dark) 100%);
-  border-radius: 14px 14px 20px 20px;
-  border: 2px solid var(--shell-border);
-  box-shadow:
-    inset 0 -8px 14px rgba(0, 0, 0, 0.25),
-    inset 0 4px 6px rgba(255, 255, 255, 0.35),
-    0 24px 60px rgba(0, 0, 0, 0.55);
-}
-
-/* Screen bezel */
-.gb-bezel {
-  position: absolute;
-  top: 26px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 290px;
-  padding: 14px 12px 10px;
-  background: var(--screen-bezel);
-  border-radius: 8px;
-  border: 2px solid #3c3f55;
-  box-shadow:
-    inset 0 2px 6px rgba(0, 0, 0, 0.5),
-    inset 0 -2px 2px rgba(255, 255, 255, 0.12);
-}
-
-.gb-screen {
-  position: relative;
-  height: 150px;
+  left: 13.34%;
+  top: 16.13%;
+  width: 75%;
+  height: 27.2%;
   background: #0a1a0a;
-  border-radius: 3px;
-  border: 3px solid #2c2f44;
+  border-radius: 2px;
   overflow: hidden;
+  z-index: 10;
 }
 
-.gb-screen.screen-on {
+.screen-overlay.screen-on {
   background: linear-gradient(var(--bg-light), var(--bg-lightest));
-}
-
-.bezel-text {
-  margin-top: 8px;
-  font-size: 7px;
-  letter-spacing: 1px;
-  color: #9aa0c8;
-  text-align: center;
-  font-family: var(--font-vt);
 }
 
 /* Boot logo window (Nintendo-style logo bar) */
 .boot-logo-window {
   position: absolute;
-  top: 26px;
-  left: 18px;
-  right: 18px;
-  height: 30px;
+  top: 8%;
+  left: 6%;
+  right: 6%;
+  height: 66%;
   border: 2px solid var(--bg-darkest);
   overflow: hidden;
   background: rgba(0, 0, 0, 0.05);
 }
 
-.boot-logo-text {
-  font-family: var(--font-pixel);
-  font-size: 12px;
-  color: var(--bg-darkest);
-  white-space: nowrap;
-  line-height: 26px;
-  padding-left: 6px;
+.boot-logo-track {
+  width: 100%;
+  height: 100%;
   animation: logoSlide 1.15s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+.boot-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 @keyframes logoSlide {
@@ -318,24 +229,24 @@ onUnmounted(() => {
 /* GAME BOY brand box */
 .boot-brand-box {
   position: absolute;
-  top: 66px;
+  bottom: 6%;
   left: 50%;
   transform: translateX(-50%);
   border: 2px solid var(--bg-darkest);
-  padding: 4px 14px 6px;
+  padding: 2px 12px 4px;
   background: rgba(0, 0, 0, 0.05);
   animation: brandPop 0.4s ease 1.15s both;
 }
 
 .boot-brand-name {
   font-family: var(--font-pixel);
-  font-size: 13px;
+  font-size: 12px;
   color: var(--bg-darkest);
 }
 
 .boot-brand-tm {
   font-family: var(--font-vt);
-  font-size: 9px;
+  font-size: 8px;
   color: var(--bg-darkest);
   vertical-align: super;
   margin-left: 2px;
@@ -358,110 +269,6 @@ onUnmounted(() => {
   0%   { opacity: 0; }
   30%  { opacity: 0.85; }
   100% { opacity: 0; }
-}
-
-/* Controls */
-.gb-controls {
-  position: absolute;
-  top: 250px;
-  left: 24px;
-  right: 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.gb-dpad {
-  width: 96px;
-  height: 96px;
-  background: #1d1d1d;
-  border-radius: 10px;
-  border: 2px solid #0a0a0a;
-  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.08), 0 2px 0 rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.dpad-cross {
-  width: 34px;
-  height: 34px;
-  background: #2b2b2b;
-  border: 2px solid #111;
-  position: relative;
-}
-
-.dpad-cross::before,
-.dpad-cross::after {
-  content: '';
-  position: absolute;
-  background: #2b2b2b;
-  border: 2px solid #111;
-}
-
-.dpad-cross::before {
-  width: 34px;
-  height: 60px;
-  left: -13px;
-  top: -15px;
-}
-
-.dpad-cross::after {
-  width: 60px;
-  height: 34px;
-  top: -13px;
-  left: -15px;
-}
-
-.gb-buttons {
-  display: flex;
-  gap: 18px;
-}
-
-.gb-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-pixel);
-  font-size: 12px;
-  color: #ff94b4;
-  background: #8b1d42;
-  border: 3px solid #4a0c20;
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.35);
-}
-
-.gb-brand-footer {
-  position: absolute;
-  top: 382px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-family: var(--font-pixel);
-  font-size: 9px;
-  color: var(--shell-border);
-  letter-spacing: 1px;
-}
-
-/* Speaker grill */
-.gb-speaker {
-  position: absolute;
-  bottom: 22px;
-  right: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  transform: rotate(-25deg);
-}
-
-.speaker-bar {
-  width: 6px;
-  height: 34px;
-  background: var(--shell-dark);
-  border-radius: 3px;
-  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 /* ---- Foreground button ---- */
