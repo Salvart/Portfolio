@@ -12,8 +12,10 @@
         v-for="project in projects" 
         :key="project.id"
         class="cartridge-card"
+        :class="{ featured: project.featured }"
         @click="selectProject(project)"
       >
+        <span v-if="project.featured" class="featured-badge">★ {{ featuredLabel }}</span>
         <!-- Game Boy Cartridge Shape -->
         <div class="cartridge-top">
           <span class="notch"></span>
@@ -94,6 +96,7 @@ const hasArtStationLink = computed(() =>
 )
 
 const vaultLabel = t('PROYECTOS', 'PROJECTS')
+const featuredLabel = t('DESTACADO', 'FEATURED')
 const noLinkLabel = t('NO HAY ENLACE DISPONIBLE', 'NO LINK AVAILABLE')
 
 function selectProject(proj) {
@@ -113,6 +116,7 @@ const projectsDef = [
     id: 1,
     title: 'INSOMNIS (PS4 / PS5 / Steam)',
     icon: '✦',
+    featured: true,
     date: '2021',
     genre: { es: 'Juego de Terror / Environment Art', en: 'Horror Game / Environment Art' },
     description: {
@@ -145,6 +149,7 @@ const projectsDef = [
     id: 2,
     title: 'WEWORK FACTORY',
     icon: '◈',
+    featured: true,
     date: '2023',
     genre: { es: 'Escenas Demo Quixel / Entorno', en: 'Quixel Demo Scenes / Environment' },
     description: {
@@ -172,6 +177,7 @@ const projectsDef = [
     id: 3,
     title: 'Warzone Abandoned',
     icon: '★',
+    featured: true,
     date: '2023',
     genre: { es: 'Environment Art', en: 'Environment Art' },
     description: {
@@ -253,6 +259,7 @@ const projectsDef = [
     id: 6,
     title: 'Valdecarros Digital Twin (PPG Studios)',
     icon: '⚙',
+    featured: true,
     date: '2023 - Actualidad',
     genre: { es: 'Gemelo Digital / Arquitectura en Tiempo Real', en: 'Digital Twin / Real-Time Architecture' },
     description: {
@@ -629,13 +636,15 @@ const projectsDef = [
 ]
 
 const projects = computed(() =>
-  projectsDef.map((p) => ({
-    ...p,
-    genre: p.genre[lang.value],
-    description: p.description[lang.value],
-    highlights: p.highlights[lang.value],
-    links: p.links || []
-  }))
+  projectsDef
+    .map((p) => ({
+      ...p,
+      genre: p.genre[lang.value],
+      description: p.description[lang.value],
+      highlights: p.highlights[lang.value],
+      links: p.links || []
+    }))
+    .sort((a, b) => Number(b.featured) - Number(a.featured))
 )
 </script>
 
@@ -669,6 +678,7 @@ const projects = computed(() =>
 }
 
 .cartridge-card {
+  position: relative;
   background: rgba(0, 0, 0, 0.06);
   border: 3px solid var(--bg-darkest);
   border-radius: 6px 6px 4px 4px;
@@ -682,6 +692,33 @@ const projects = computed(() =>
 .cartridge-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 0 var(--bg-darkest);
+}
+
+.cartridge-card.featured {
+  border-color: var(--bg-dark);
+  box-shadow: 0 0 0 3px var(--bg-lightest), 4px 4px 0 var(--bg-dark);
+}
+
+.cartridge-card.featured:hover {
+  box-shadow: 0 0 0 3px var(--bg-lightest), 0 4px 0 var(--bg-dark);
+}
+
+.cartridge-card.featured .cartridge-top {
+  background: var(--bg-dark);
+}
+
+.featured-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: var(--bg-lightest);
+  color: var(--bg-darkest);
+  border: 2px solid var(--bg-darkest);
+  font-size: 8px;
+  font-weight: bold;
+  padding: 3px 6px;
+  box-shadow: 2px 2px 0 var(--bg-dark);
+  z-index: 2;
 }
 
 .cartridge-top {
