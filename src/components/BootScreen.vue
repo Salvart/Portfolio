@@ -160,15 +160,17 @@ onUnmounted(() => {
   display: block;
   width: 100%;
   height: auto;
+  position: relative;
+  z-index: 5;
 }
 
-/* Cartridge (image) slides into the top slot */
+/* Cartridge (image) slides into the top slot, behind the console */
 .cartridge-img {
   position: absolute;
-  top: -58px;
+  top: -100px;
   left: 50%;
-  z-index: 12;
-  width: 110px;
+  z-index: 3;
+  width: 165px;
   height: auto;
   transform: translate(-50%, -280px) rotate(-8deg);
   transition: transform 0.55s cubic-bezier(0.35, 0.8, 0.4, 1);
@@ -200,10 +202,11 @@ onUnmounted(() => {
 /* Boot logo window (Nintendo-style logo bar) */
 .boot-logo-window {
   position: absolute;
-  top: 8%;
-  left: 6%;
-  right: 6%;
-  height: 66%;
+  top: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 62%;
+  aspect-ratio: 4 / 3;
   border: 2px solid var(--bg-darkest);
   overflow: hidden;
   background: rgba(0, 0, 0, 0.05);
@@ -229,7 +232,7 @@ onUnmounted(() => {
 /* GAME BOY brand box */
 .boot-brand-box {
   position: absolute;
-  bottom: 6%;
+  bottom: 2%;
   left: 50%;
   transform: translateX(-50%);
   border: 2px solid var(--bg-darkest);
