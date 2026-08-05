@@ -23,15 +23,23 @@
         </div>
 
         <div class="cartridge-body">
-          <div class="cart-sticker">
-            <div class="sticker-art">
-              <span class="art-emoji">{{ project.icon }}</span>
+            <div class="cart-sticker">
+              <div class="sticker-art">
+                <img
+                  v-if="project.preview"
+                  class="preview-img"
+                  :src="project.preview"
+                  :alt="project.title"
+                  loading="lazy"
+                  draggable="false"
+                >
+                <span v-else class="art-emoji">{{ project.icon }}</span>
+              </div>
+              <div class="sticker-meta">
+                <h4 class="project-title">{{ project.title }}</h4>
+                <span class="project-genre">{{ project.genre }}</span>
+              </div>
             </div>
-            <div class="sticker-meta">
-              <h4 class="project-title">{{ project.title }}</h4>
-              <span class="project-genre">{{ project.genre }}</span>
-            </div>
-          </div>
 
           <div class="cart-footer">
             <span class="tech-tag" v-for="t in project.tags.slice(0, 2)" :key="t">{{ t }}</span>
@@ -116,6 +124,7 @@ const projectsDef = [
     id: 1,
     title: 'INSOMNIS (PS4 / PS5 / Steam)',
     icon: '✦',
+    preview: 'https://cdna.artstation.com/p/assets/covers/images/066/258/448/medium/salvador-ruiz-martinez-salvador-ruiz-martinez-title3.jpg?1692460603',
     featured: true,
     date: '2021',
     genre: { es: 'Juego de Terror / Environment Art', en: 'Horror Game / Environment Art' },
@@ -149,6 +158,7 @@ const projectsDef = [
     id: 2,
     title: 'WEWORK FACTORY',
     icon: '◈',
+    preview: 'https://cdna.artstation.com/p/assets/covers/images/066/258/366/medium/salvador-ruiz-martinez-salvador-ruiz-martinez-title-2.jpg?1692460313',
     featured: true,
     date: '2023',
     genre: { es: 'Escenas Demo Quixel / Entorno', en: 'Quixel Demo Scenes / Environment' },
@@ -177,6 +187,7 @@ const projectsDef = [
     id: 3,
     title: 'Warzone Abandoned',
     icon: '★',
+    preview: 'https://cdnb.artstation.com/p/assets/covers/images/066/257/775/medium/salvador-ruiz-martinez-salvador-ruiz-martinez-title.jpg?1692458991',
     featured: true,
     date: '2023',
     genre: { es: 'Environment Art', en: 'Environment Art' },
@@ -205,6 +216,7 @@ const projectsDef = [
     id: 4,
     title: 'Medical Horror Kit',
     icon: '❖',
+    preview: 'https://cdna.artstation.com/p/assets/covers/images/066/259/262/medium/salvador-ruiz-martinez-salvador-ruiz-martinez-title6.jpg?1692462304',
     date: '2021',
     genre: { es: 'Props / Pack de Activos de Terror', en: 'Props / Horror Asset Pack' },
     description: {
@@ -232,6 +244,7 @@ const projectsDef = [
     id: 5,
     title: 'Apartment Level VR',
     icon: '◈',
+    preview: 'https://cdnb.artstation.com/p/assets/covers/images/066/263/377/medium/salvador-ruiz-martinez-salvador-ruiz-martinez-fdsfdsgfdg.jpg?1692472694',
     date: '2018',
     genre: { es: 'Entorno VR', en: 'VR Environment' },
     description: {
@@ -259,6 +272,7 @@ const projectsDef = [
     id: 6,
     title: 'Valdecarros Digital Twin (PPG Studios)',
     icon: '⚙',
+    preview: 'https://cdnb.artstation.com/p/assets/images/images/101/318/487/medium/salvador-ruiz-martinez-captura-de-pantalla-2026-07-20-145301.jpg?1785822247',
     featured: true,
     date: '2023 - Actualidad',
     genre: { es: 'Gemelo Digital / Arquitectura en Tiempo Real', en: 'Digital Twin / Real-Time Architecture' },
@@ -287,6 +301,7 @@ const projectsDef = [
     id: 7,
     title: 'M4A1',
     icon: '✦',
+    preview: 'https://cdna.artstation.com/p/assets/covers/images/066/258/940/medium/salvador-ruiz-martinez-salvador-ruiz-martinez-title5.jpg?1692461683',
     date: '2023',
     genre: { es: 'Modelo de Arma / Hard Surface', en: 'Weapon Model / Hard Surface' },
     description: {
@@ -312,6 +327,7 @@ const projectsDef = [
     id: 8,
     title: 'Gun Low Poly Model',
     icon: '✦',
+    preview: 'https://cdna.artstation.com/p/assets/covers/images/066/263/284/medium/salvador-ruiz-martinez-salvador-ruiz-martinez-name.jpg?1692472351',
     date: '2023',
     genre: { es: 'Modelo Low Poly / Arma', en: 'Low Poly Model / Weapon' },
     description: {
@@ -337,6 +353,7 @@ const projectsDef = [
     id: 9,
     title: '"FAKE ME" – Anuncio Navidad Campofrío 2019',
     icon: '★',
+    preview: 'https://cdnb.artstation.com/p/assets/covers/images/066/258/555/medium/salvador-ruiz-martinez-salvador-ruiz-martinez-title3.jpg?1692460852',
     date: '2019',
     genre: { es: 'Comercial / Animación Navideña', en: 'Commercial / Christmas Animation' },
     description: {
@@ -362,6 +379,7 @@ const projectsDef = [
     id: 10,
     title: 'Let It Snow on WEWORK!',
     icon: '◈',
+    preview: 'https://cdna.artstation.com/p/assets/images/images/023/213/632/medium/salvador-ruiz-martinez-snow.jpg?1578483514',
     date: '2019',
     genre: { es: 'Escena Navideña / Entorno', en: 'Christmas Scene / Environment' },
     description: {
@@ -387,6 +405,7 @@ const projectsDef = [
     id: 11,
     title: 'Insomnis – Halloween Edition Props',
     icon: '✦',
+    preview: 'https://cdnb.artstation.com/p/assets/images/images/013/782/653/medium/salvador-ruiz-martinez-ren31.jpg?1541075264',
     date: '2018',
     genre: { es: 'Props / Terror', en: 'Props / Horror' },
     description: {
@@ -412,6 +431,7 @@ const projectsDef = [
     id: 12,
     title: 'Old Projector – Insomnis',
     icon: '▶',
+    preview: 'https://cdnb.artstation.com/p/assets/covers/images/013/711/315/medium/salvador-ruiz-martinez-dsgsdfgdfgbdfnhdgnh.jpg?1540815097',
     date: '2018',
     genre: { es: 'Prop / Insomnis', en: 'Prop / Insomnis' },
     description: {
@@ -437,6 +457,7 @@ const projectsDef = [
     id: 13,
     title: 'Old Doors – Insomnis',
     icon: '◈',
+    preview: 'https://cdna.artstation.com/p/assets/images/images/013/708/266/medium/salvador-ruiz-martinez-ren16.jpg?1540803871',
     date: '2018',
     genre: { es: 'Props / Insomnis', en: 'Props / Insomnis' },
     description: {
@@ -462,6 +483,7 @@ const projectsDef = [
     id: 14,
     title: 'Old Lamps – Insomnis',
     icon: '✦',
+    preview: 'https://cdna.artstation.com/p/assets/covers/images/066/270/132/medium/salvador-ruiz-martinez-salvador-ruiz-martinez-thunmlamp.jpg?1692499174',
     date: '2018',
     genre: { es: 'Props / Insomnis', en: 'Props / Insomnis' },
     description: {
@@ -487,6 +509,7 @@ const projectsDef = [
     id: 15,
     title: 'Modular Environment – UE4',
     icon: '⬢',
+    preview: 'https://cdna.artstation.com/p/assets/covers/images/066/263/530/medium/salvador-ruiz-martinez-salvador-ruiz-martinez-render1.jpg?1692473126',
     date: '2023',
     genre: { es: 'Entorno Modular / UE4', en: 'Modular Environment / UE4' },
     description: {
@@ -512,6 +535,7 @@ const projectsDef = [
     id: 16,
     title: 'Old Frames – Insomnis',
     icon: '◈',
+    preview: 'https://cdna.artstation.com/p/assets/images/images/013/655/826/medium/salvador-ruiz-martinez-ren2.jpg?1540577334',
     date: '2018',
     genre: { es: 'Props / Insomnis', en: 'Props / Insomnis' },
     description: {
@@ -537,6 +561,7 @@ const projectsDef = [
     id: 17,
     title: 'Low Poly Cardboard Boxes & Paper Cards',
     icon: '❖',
+    preview: 'https://cdnb.artstation.com/p/assets/images/images/013/655/383/medium/salvador-ruiz-martinez-ren1.jpg?1540576892',
     date: '2018',
     genre: { es: 'Props Low Poly / Insomnis', en: 'Low Poly Props / Insomnis' },
     description: {
@@ -562,6 +587,7 @@ const projectsDef = [
     id: 18,
     title: 'Laptop',
     icon: '⚙',
+    preview: 'https://cdnb.artstation.com/p/assets/covers/images/010/905/681/medium/salvador-ruiz-martinez-screenshot003.jpg?1526874929',
     date: '2018',
     genre: { es: 'Prop / Hard Surface', en: 'Prop / Hard Surface' },
     description: {
@@ -587,6 +613,7 @@ const projectsDef = [
     id: 19,
     title: 'Old Cage',
     icon: '✦',
+    preview: 'https://cdnb.artstation.com/p/assets/covers/images/006/604/401/medium/salvador-ruiz-martinez-screenshot018.jpg?1499866575',
     date: '2017',
     genre: { es: 'Prop / Insomnis', en: 'Prop / Insomnis' },
     description: {
@@ -612,6 +639,7 @@ const projectsDef = [
     id: 20,
     title: 'Temple Scene',
     icon: '🏛',
+    preview: 'https://cdna.artstation.com/p/assets/covers/images/005/787/138/medium/salvador-ruiz-martinez-render-final.jpg?1493765514',
     date: '2017',
     genre: { es: 'Escena / Entorno', en: 'Scene / Environment' },
     description: {
@@ -644,7 +672,7 @@ const projects = computed(() =>
       highlights: p.highlights[lang.value],
       links: p.links || []
     }))
-    .sort((a, b) => Number(b.featured) - Number(a.featured))
+    .sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
 )
 </script>
 
@@ -747,25 +775,34 @@ const projects = computed(() =>
 
 .cart-sticker {
   display: flex;
-  gap: 10px;
-  align-items: center;
+  flex-direction: column;
+  gap: 8px;
   background: rgba(0, 0, 0, 0.05);
   border: 1px dashed var(--bg-darkest);
   padding: 8px;
 }
 
 .sticker-art {
-  width: 40px;
-  height: 40px;
+  width: 100%;
+  height: 80px;
   background: var(--bg-darkest);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 2px solid var(--bg-darkest);
+}
+
+.preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .art-emoji {
-  font-size: 20px;
+  font-size: 24px;
 }
 
 .sticker-meta {
