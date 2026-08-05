@@ -19,18 +19,13 @@
         <!-- Real Game Boy photo -->
         <img class="gameboy-img" :src="gameboyImg" alt="Game Boy" />
 
-        <!-- Screen overlay: boot logo + brand + flash on the photo LCD -->
+        <!-- Screen overlay: boot logo centered on the photo LCD -->
         <div
           class="screen-overlay"
           :class="{ 'screen-on': phase === 'boot' || phase === 'zoom' }"
         >
-          <div v-if="phase !== 'idle' && phase !== 'insert'" class="boot-logo-window">
-            <div class="boot-logo-track">
-              <img class="boot-logo-img" :src="logoImg" alt="SALVADOR RUIZ" />
-            </div>
-          </div>
-          <div v-if="phase === 'boot' || phase === 'zoom'" class="boot-brand-box">
-            <span class="boot-brand-name">GAME BOY</span><span class="boot-brand-tm">TM</span>
+          <div v-if="phase !== 'idle' && phase !== 'insert'" class="boot-logo-track">
+            <img class="boot-logo-img" :src="logoImg" alt="SALVADOR RUIZ" />
           </div>
           <div v-if="phase === 'boot'" class="screen-flash"></div>
         </div>
@@ -187,7 +182,7 @@ onUnmounted(() => {
   left: 50%;
   top: 16.13%;
   transform: translateX(-50%);
-  width: 162px;
+  width: 168px;
   height: 162px;
   background: #0a1a0a;
   border-radius: 2px;
@@ -199,19 +194,7 @@ onUnmounted(() => {
   background: linear-gradient(var(--bg-light), var(--bg-lightest));
 }
 
-/* Boot logo window (Nintendo-style logo bar) */
-.boot-logo-window {
-  position: absolute;
-  top: 2%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 62%;
-  aspect-ratio: 4 / 3;
-  border: 2px solid var(--bg-darkest);
-  overflow: hidden;
-  background: rgba(0, 0, 0, 0.05);
-}
-
+/* Boot logo slides into the center of the screen */
 .boot-logo-track {
   width: 100%;
   height: 100%;
@@ -227,37 +210,6 @@ onUnmounted(() => {
 @keyframes logoSlide {
   from { transform: translateX(100%); }
   to   { transform: translateX(0); }
-}
-
-/* GAME BOY brand box */
-.boot-brand-box {
-  position: absolute;
-  bottom: 2%;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 2px solid var(--bg-darkest);
-  padding: 2px 12px 4px;
-  background: rgba(0, 0, 0, 0.05);
-  animation: brandPop 0.4s ease 1.15s both;
-}
-
-.boot-brand-name {
-  font-family: var(--font-pixel);
-  font-size: 12px;
-  color: var(--bg-darkest);
-}
-
-.boot-brand-tm {
-  font-family: var(--font-vt);
-  font-size: 8px;
-  color: var(--bg-darkest);
-  vertical-align: super;
-  margin-left: 2px;
-}
-
-@keyframes brandPop {
-  from { opacity: 0; transform: translateX(-50%) scale(0.7); }
-  to   { opacity: 1; transform: translateX(-50%) scale(1); }
 }
 
 /* Brief white flash like the real boot */
