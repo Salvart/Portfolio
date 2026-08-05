@@ -181,14 +181,14 @@ onUnmounted(() => {
   transform: translate(-50%, 0) rotate(0deg);
 }
 
-/* Screen overlay aligned to the LCD in the photo:
-   x 95..629 (13.3%..88.3%), y 181..486 (16.1%..43.3%) */
+/* Screen overlay aligned to the LCD in the photo */
 .screen-overlay {
   position: absolute;
-  left: 13.34%;
+  left: 50%;
   top: 16.13%;
-  width: 75%;
-  height: 27.2%;
+  transform: translateX(-50%);
+  width: 162px;
+  height: 162px;
   background: #0a1a0a;
   border-radius: 2px;
   overflow: hidden;
