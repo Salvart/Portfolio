@@ -13,7 +13,7 @@
           class="cartridge-img"
           :src="cartridgeImg"
           alt="Cartucho CV"
-          :class="{ inserting: phase === 'insert' }"
+          :class="{ inserting: phase !== 'idle' }"
         />
 
         <!-- Real Game Boy photo -->
@@ -159,8 +159,8 @@ onUnmounted(() => {
   z-index: 5;
 }
 
-/* Cartridge (image) slides straight down behind the console, simulating
-   insertion into the top slot */
+/* Cartridge (image): starts fully off-screen above, slides straight down
+   behind the console and stays there (simulates insertion into the slot) */
 .cartridge-img {
   position: absolute;
   top: 0;
@@ -168,7 +168,7 @@ onUnmounted(() => {
   z-index: 3;
   width: 165px;
   height: auto;
-  transform: translate(-50%, -100%);
+  transform: translate(-50%, calc(-100vh - 100%));
   transition: transform 0.6s cubic-bezier(0.5, 0, 0.6, 1);
   filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.5));
 }
