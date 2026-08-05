@@ -1,12 +1,34 @@
 <template>
-  <!-- Fullscreen Game Boy Application Component -->
-  <GameBoyFrame />
+  <!-- Boot sequence first, then the fullscreen Game Boy application -->
+  <Transition name="boot-swap" mode="out-in">
+    <BootScreen v-if="!booted" @complete="onBootComplete" />
+    <GameBoyFrame v-else :startWithMusic="true" />
+  </Transition>
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import BootScreen from './components/BootScreen.vue'
 import GameBoyFrame from './components/GameBoyFrame.vue'
+
+const booted = ref(false)
+
+function onBootComplete() {
+  booted.value = true
+}
 </script>
 
 <style scoped>
-/* App Root is now handled directly by full-screen 100vh GameBoyFrame component */
+.boot-swap-enter-active {
+  transition: opacity 0.45s ease;
+}
+
+.boot-swap-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.boot-swap-enter-from,
+.boot-swap-leave-to {
+  opacity: 0;
+}
 </style>

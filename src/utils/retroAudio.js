@@ -169,6 +169,36 @@ export function playTextBlipSFX() {
   }
 }
 
+// 8-bit Game Boy Boot Chime (logo arpeggio)
+export function playBootChimeSFX() {
+  if (isMuted) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    const notes = [329.63, 392.00, 493.88, 659.25]; // E4, G4, B4, E5
+    notes.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.09);
+
+      gain.gain.setValueAtTime(0, ctx.currentTime + idx * 0.09);
+      gain.gain.setValueAtTime(0.13, ctx.currentTime + idx * 0.09 + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.09 + 0.3);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(ctx.currentTime + idx * 0.09);
+      osc.stop(ctx.currentTime + idx * 0.09 + 0.32);
+    });
+  } catch (e) {
+    console.warn('Audio error:', e);
+  }
+}
+
 // 8-bit Arpeggio Level Up / Section Arrival Fanfare
 export function playArrivalSFX() {
   if (isMuted) return;

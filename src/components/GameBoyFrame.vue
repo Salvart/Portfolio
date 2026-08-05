@@ -98,11 +98,18 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import NavigationSidebar from './NavigationSidebar.vue'
 import PixelStage from './PixelStage.vue'
-import { playSelectSFX, toggleMute, toggleBGM } from '../utils/retroAudio.js'
+import { playSelectSFX, toggleMute, toggleBGM, startBGM } from '../utils/retroAudio.js'
 import { lang, toggleLang, t } from '../utils/i18n.js'
+
+const props = defineProps({
+  startWithMusic: {
+    type: Boolean,
+    default: false
+  }
+})
 
 const activeIndex = ref(0)
 const isPowered = ref(true)
@@ -165,6 +172,13 @@ function onToggleMute() {
 function onToggleBGM() {
   isBgmOn.value = toggleBGM()
 }
+
+onMounted(() => {
+  if (props.startWithMusic && !isMuted.value) {
+    startBGM()
+    isBgmOn.value = true
+  }
+})
 
 function cycleTheme() {
   playSelectSFX()
