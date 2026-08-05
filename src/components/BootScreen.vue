@@ -174,7 +174,7 @@ onUnmounted(() => {
 }
 
 .cartridge-img.inserting {
-  transform: translate(-50%, 0);
+  transform: translate(-50%, 48px);
 }
 
 /* Screen overlay aligned to the LCD in the photo */
