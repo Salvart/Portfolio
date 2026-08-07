@@ -2,9 +2,7 @@
   <div class="pixel-stage">
     <!-- Top Stage Header Bar -->
     <div class="stage-top-bar">
-      <span class="location-tag">
-        {{ locationLabel }} {{ currentSection.name }}
-      </span>
+      <span class="location-tag"> {{ locationLabel }} {{ currentSection.name }} </span>
       <span class="walk-status" :class="{ walking: isWalking }">
         {{ isWalking ? walkingStatus : stationStatus }}
       </span>
@@ -14,10 +12,7 @@
     <div class="viewport-canvas">
       <!-- Sky & Clouds Layer -->
       <div class="sky-layer">
-        <div
-          class="clouds-track"
-          :style="{ transform: `translateX(${-cameraX * 0.2}px)` }"
-        >
+        <div class="clouds-track" :style="{ transform: `translateX(${-cameraX * 0.2}px)` }">
           <div class="cloud cloud-1">☁️</div>
           <div class="cloud cloud-2">☁️</div>
           <div class="cloud cloud-3">☁️</div>
@@ -27,10 +22,7 @@
       </div>
 
       <!-- Distant Hills & Pixel Skyline -->
-      <div
-        class="mountains-layer"
-        :style="{ transform: `translateX(${-cameraX * 0.4}px)` }"
-      >
+      <div class="mountains-layer" :style="{ transform: `translateX(${-cameraX * 0.4}px)` }">
         <div class="mountain-range">
           <div v-for="n in 12" :key="n" class="pixel-peak"></div>
         </div>
@@ -101,35 +93,33 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import {
   playStepSFX,
   playArrivalSFX,
   playTextBlipSFX,
   playJumpSFX,
-  playLandingSFX
+  playLandingSFX,
 } from '../utils/retroAudio.js'
 import { lang, t } from '../utils/i18n.js'
 import InfoSection from './sections/InfoSection.vue'
 import TechSection from './sections/TechSection.vue'
 import StudiesSection from './sections/StudiesSection.vue'
 import ProjectsSection from './sections/ProjectsSection.vue'
+import type { Section, CharacterAction } from '../types'
 
-const props = defineProps({
-  targetIndex: {
-    type: Number,
-    default: 0
-  },
-  sections: {
-    type: Array,
-    required: true
-  },
-  characterAction: {
-    type: Object,
-    default: () => ({ type: '', id: 0 })
+const props = withDefaults(
+  defineProps<{
+    targetIndex?: number
+    sections: Section[]
+    characterAction?: CharacterAction
+  }>(),
+  {
+    targetIndex: 0,
+    characterAction: () => ({ type: '', id: 0 }),
   }
-})
+)
 
 // i18n labels
 const locationLabel = t('◈ LOCALIZACIÓN:', '◈ LOCATION:')
@@ -155,15 +145,22 @@ const currentSectionIndex = computed(() => {
   const max = props.sections.length - 1
   return Math.max(0, Math.min(raw, max))
 })
-const currentSection = computed(() => props.sections[currentSectionIndex.value] || props.sections[0])
+const currentSection = computed(
+  () => props.sections[currentSectionIndex.value] || props.sections[0]
+)
 
 const activeComponent = computed(() => {
   switch (currentSectionIndex.value) {
-    case 0: return InfoSection
-    case 1: return TechSection
-    case 2: return StudiesSection
-    case 3: return ProjectsSection
-    default: return InfoSection
+    case 0:
+      return InfoSection
+    case 1:
+      return TechSection
+    case 2:
+      return StudiesSection
+    case 3:
+      return ProjectsSection
+    default:
+      return InfoSection
   }
 })
 
@@ -177,18 +174,18 @@ const typewriterText = ref('')
 // section stays fixed (departure) and only switches once the character stops.
 const arrivedIndex = ref(props.targetIndex)
 
-let animFrameId = null
-let legIntervalId = null
-let typewriterIntervalId = null
+let animFrameId = 0
+let legIntervalId: ReturnType<typeof setInterval> | null = null
+let typewriterIntervalId: ReturnType<typeof setInterval> | null = null
 let stepAudioCounter = 0
 
 const WALK_SPEED = 300 // px/s per section — speed scales with distance so travel time stays constant
 
-function getTargetX(idx) {
+function getTargetX(idx: number) {
   return idx * SECTION_SPACING + CHARACTER_OFFSET
 }
 
-function startTravel(targetIdx) {
+function startTravel(targetIdx: number) {
   const targetX = getTargetX(targetIdx)
   const diff = targetX - characterX.value
 
@@ -248,23 +245,24 @@ function onArrived() {
   )
 }
 
-function triggerTypewriter(text) {
+function triggerTypewriter(text: string) {
   if (typewriterIntervalId) {
     clearInterval(typewriterIntervalId)
     typewriterIntervalId = null
   }
   typewriterText.value = ''
   let i = 0
-  typewriterIntervalId = setInterval(() => {
+  const id = setInterval(() => {
     if (i < text.length) {
       typewriterText.value += text.charAt(i)
       if (i % 3 === 0) playTextBlipSFX()
       i++
     } else {
-      clearInterval(typewriterIntervalId)
+      clearInterval(id)
       typewriterIntervalId = null
     }
   }, 40)
+  typewriterIntervalId = id
 }
 
 // Jump with A — physics-based hop in place with squash & stretch
@@ -275,17 +273,17 @@ const heroScaleY = ref(1)
 const heroScaleX = ref(1)
 const landingDust = ref(false)
 
-let jumpAnimId = null
+let jumpAnimId = 0
 
-const heroTransform = computed(() =>
-  `translateY(${-jumpHeight.value}px) scaleX(${heroScaleX.value}) scaleY(${heroScaleY.value})`
+const heroTransform = computed(
+  () => `translateY(${-jumpHeight.value}px) scaleX(${heroScaleX.value}) scaleY(${heroScaleY.value})`
 )
 
-function clampScale(v) {
+function clampScale(v: number) {
   return Math.max(0.7, Math.min(1.35, v))
 }
 
-function easeOutBack(x) {
+function easeOutBack(x: number) {
   const c1 = 1.70158
   const c3 = c1 + 1
   return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2)
@@ -301,7 +299,7 @@ function startJump() {
   const PREP_MS = 90
   const prepStart = performance.now()
 
-  function prep(now) {
+  function prep(now: number) {
     const t = Math.min((now - prepStart) / PREP_MS, 1)
     const dip = Math.sin(t * Math.PI)
     heroScaleY.value = clampScale(1 - 0.16 * dip)
@@ -320,7 +318,7 @@ function startJump() {
     let vy = JUMP_VELOCITY
     let last = performance.now()
 
-    function air(now) {
+    function air(now: number) {
       let dt = (now - last) / 1000
       last = now
       dt = Math.min(dt, 1 / 30)
@@ -351,7 +349,7 @@ function startJump() {
     const SQUASH_MS = 130
     const l0 = performance.now()
 
-    function squash(now) {
+    function squash(now: number) {
       const t = Math.min((now - l0) / SQUASH_MS, 1)
       if (t >= 1) {
         heroScaleY.value = 1
@@ -369,23 +367,29 @@ function startJump() {
   }
 }
 
-watch(() => props.characterAction, (action) => {
-  if (!action || !action.type) return
-  if (action.type === 'jump' && !isJumping.value && !isWalking.value) {
-    startJump()
+watch(
+  () => props.characterAction,
+  (action) => {
+    if (!action || !action.type) return
+    if (action.type === 'jump' && !isJumping.value && !isWalking.value) {
+      startJump()
+    }
   }
-})
+)
 
 // Section change: walk slowly towards it (no teleport)
-watch(() => props.targetIndex, (newVal) => {
-  startTravel(newVal)
-})
+watch(
+  () => props.targetIndex,
+  (newVal) => {
+    startTravel(newVal)
+  }
+)
 
 onMounted(() => {
   characterX.value = getTargetX(props.targetIndex)
-  triggerTypewriter(lang.value === 'es'
-    ? '¡Bienvenido! Explora las secciones'
-    : 'Welcome! Explore the sections')
+  triggerTypewriter(
+    lang.value === 'es' ? '¡Bienvenido! Explora las secciones' : 'Welcome! Explore the sections'
+  )
 })
 
 onUnmounted(() => {
@@ -436,7 +440,8 @@ onUnmounted(() => {
 .sky-layer {
   position: absolute;
   top: 10px;
-  left: 0; right: 0;
+  left: 0;
+  right: 0;
   height: 40px;
 }
 
@@ -474,13 +479,16 @@ onUnmounted(() => {
 
 .world-track {
   position: absolute;
-  top: 0; bottom: 0; left: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
 }
 
 .ground-line {
   position: absolute;
   bottom: 20px;
-  left: 0; right: 0;
+  left: 0;
+  right: 0;
   height: 6px;
   background: var(--bg-darkest);
 }
@@ -504,7 +512,7 @@ onUnmounted(() => {
   align-items: center;
   gap: 6px;
   border-radius: 3px;
-  box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
 }
 
 .sign-post {
@@ -577,8 +585,14 @@ onUnmounted(() => {
 }
 
 @keyframes dustPuff {
-  from { opacity: 1; transform: scale(0.6); }
-  to { opacity: 0; transform: scale(1.5); }
+  from {
+    opacity: 1;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.5);
+  }
 }
 
 .hero-cap {
@@ -626,9 +640,15 @@ onUnmounted(() => {
 }
 
 /* Leg Walking Cycle */
-.hero-legs.step-1 .leg-left { transform: translateY(-3px); }
-.hero-legs.step-2 .leg-right { transform: translateY(-3px); }
-.hero-legs.step-3 .leg-left { transform: translateY(-4px); }
+.hero-legs.step-1 .leg-left {
+  transform: translateY(-3px);
+}
+.hero-legs.step-2 .leg-right {
+  transform: translateY(-3px);
+}
+.hero-legs.step-3 .leg-left {
+  transform: translateY(-4px);
+}
 
 /* Main Section Content Area */
 .content-display-area {
@@ -645,12 +665,22 @@ onUnmounted(() => {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes blink {
-  from { opacity: 1; }
-  to { opacity: 0.2; }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.2;
+  }
 }
 </style>

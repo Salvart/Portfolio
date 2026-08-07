@@ -2,11 +2,11 @@
   <!-- Boot sequence first, then the fullscreen Game Boy application -->
   <Transition name="boot-swap" mode="out-in">
     <BootScreen v-if="!booted" @complete="onBootComplete" />
-    <GameBoyFrame v-else :startWithMusic="true" />
+    <GameBoyFrame v-else :start-with-music="true" />
   </Transition>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import BootScreen from './components/BootScreen.vue'
 import GameBoyFrame from './components/GameBoyFrame.vue'

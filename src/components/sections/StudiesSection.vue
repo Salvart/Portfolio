@@ -8,11 +8,7 @@
 
     <!-- Timeline Quest List -->
     <div class="quest-list">
-      <div 
-        v-for="(quest, idx) in quests" 
-        :key="quest.title"
-        class="quest-card"
-      >
+      <div v-for="(quest, idx) in quests" :key="quest.title" class="quest-card">
         <div class="quest-status">
           <span class="quest-icon">★</span>
           <span class="quest-step">QUEST #0{{ idx + 1 }}</span>
@@ -45,54 +41,103 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 import { lang, t } from '../../utils/i18n.js'
 
+interface Localized {
+  es: string
+  en: string
+}
+
+interface QuestDef {
+  id: number
+  title: Localized
+  institution: Localized
+  period: string
+  description: Localized
+  rewards: string[]
+}
+
+interface Quest extends Omit<QuestDef, 'title' | 'institution' | 'description'> {
+  title: string
+  institution: string
+  description: string
+}
+
 const rewardsLabel = t('RECOMPENSAS', 'REWARDS')
 
-const questsDef = [
+const questsDef: QuestDef[] = [
   {
     id: 1,
-    title: { es: 'Grado en Diseño y Desarrollo de Videojuegos', en: 'Degree in Video Game Design and Development' },
-    institution: { es: 'ESNE – Escuela Universitaria de Diseño, Innovación y Tecnología (Madrid)', en: 'ESNE – University School of Design, Innovation and Technology (Madrid)' },
+    title: {
+      es: 'Grado en Diseño y Desarrollo de Videojuegos',
+      en: 'Degree in Video Game Design and Development',
+    },
+    institution: {
+      es: 'ESNE – Escuela Universitaria de Diseño, Innovación y Tecnología (Madrid)',
+      en: 'ESNE – University School of Design, Innovation and Technology (Madrid)',
+    },
     period: '2011 - 2017',
     description: {
       es: 'Formación integral en producción de videojuegos: programación en C, C# y Java, modelado y escultura de personajes, diseño y gamificación, animación 2D/3D, preproducción y producción, arte conceptual y middleware de desarrollo. Staff en eventos como Madrid Games Week y FICOD.',
-      en: 'Comprehensive training in video game production: programming in C, C# and Java, character modeling and sculpting, design and gamification, 2D/3D animation, pre-production and production, concept art and development middleware. Staff at events such as Madrid Games Week and FICOD.'
+      en: 'Comprehensive training in video game production: programming in C, C# and Java, character modeling and sculpting, design and gamification, 2D/3D animation, pre-production and production, concept art and development middleware. Staff at events such as Madrid Games Week and FICOD.',
     },
-    rewards: ['C++ / C# Scripting', '3D Studio Max', 'ZBrush', 'Game Design', '3D Animation', 'Unreal Engine', 'Concept Art']
+    rewards: [
+      'C++ / C# Scripting',
+      '3D Studio Max',
+      'ZBrush',
+      'Game Design',
+      '3D Animation',
+      'Unreal Engine',
+      'Concept Art',
+    ],
   },
   {
     id: 2,
-    title: { es: 'Grado Superior en Administración de Sistemas Informáticos en Red', en: 'Higher Degree in Network Computer Systems Administration' },
+    title: {
+      es: 'Grado Superior en Administración de Sistemas Informáticos en Red',
+      en: 'Higher Degree in Network Computer Systems Administration',
+    },
     institution: { es: 'IES Santa María del Castillo', en: 'IES Santa María del Castillo' },
     period: '2007 - 2009',
     description: {
       es: 'Especialización en administración de redes y sistemas: instalación y configuración de servidores, seguridad, redes locales y gestión de infraestructuras informáticas.',
-      en: 'Specialization in network and systems administration: server installation and configuration, security, local networks and management of IT infrastructures.'
+      en: 'Specialization in network and systems administration: server installation and configuration, security, local networks and management of IT infrastructures.',
     },
-    rewards: ['Administración de Redes', 'Sistemas Operativos', 'Seguridad', 'Bases de Datos', 'Infraestructura IT']
+    rewards: [
+      'Administración de Redes',
+      'Sistemas Operativos',
+      'Seguridad',
+      'Bases de Datos',
+      'Infraestructura IT',
+    ],
   },
   {
     id: 3,
-    title: { es: 'Grado Medio en Equipos Electrónicos de Consumo', en: 'Intermediate Degree in Consumer Electronic Equipment' },
-    institution: { es: 'I.E.S. Santa María del Castillo (Buitrago del Lozoya)', en: 'I.E.S. Santa María del Castillo (Buitrago del Lozoya)' },
+    title: {
+      es: 'Grado Medio en Equipos Electrónicos de Consumo',
+      en: 'Intermediate Degree in Consumer Electronic Equipment',
+    },
+    institution: {
+      es: 'I.E.S. Santa María del Castillo (Buitrago del Lozoya)',
+      en: 'I.E.S. Santa María del Castillo (Buitrago del Lozoya)',
+    },
     period: '2008 - 2010',
     description: {
       es: 'Grado Medio en Electricidad y Electrónica de Consumo en el centro I.E.S. Santa María del Castillo (Buitrago del Lozoya).',
-      en: 'Intermediate Degree in Electricity and Consumer Electronics at I.E.S. Santa María del Castillo (Buitrago del Lozoya).'
+      en: 'Intermediate Degree in Electricity and Consumer Electronics at I.E.S. Santa María del Castillo (Buitrago del Lozoya).',
     },
-    rewards: ['Electricidad', 'Electrónica de Consumo', 'Hardware', 'Sistemas Electrotécnicos']
-  }
+    rewards: ['Electricidad', 'Electrónica de Consumo', 'Hardware', 'Sistemas Electrotécnicos'],
+  },
 ]
 
-const quests = computed(() =>
+const quests = computed<Quest[]>(() =>
   questsDef.map((q) => ({
     ...q,
     title: q.title[lang.value],
     institution: q.institution[lang.value],
-    description: q.description[lang.value]
+    description: q.description[lang.value],
   }))
 )
 </script>

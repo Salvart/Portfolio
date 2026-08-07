@@ -15,11 +15,7 @@
       </div>
 
       <div class="header-right">
-        <button 
-          class="top-btn sound-toggle" 
-          :title="soundTitle"
-          @click="onToggleMute"
-        >
+        <button class="top-btn sound-toggle" :title="soundTitle" @click="onToggleMute">
           {{ isMuted ? '[x] MUTE' : '[+] SFX' }}
         </button>
       </div>
@@ -28,17 +24,17 @@
     <!-- 2. MAIN FULLSCREEN LCD DISPLAY AREA (MIDDLE) -->
     <main class="main-lcd-viewport scanlines pixel-grid">
       <!-- Left Vertical Menu Box -->
-      <NavigationSidebar 
-        :activeIndex="activeIndex"
-        :menuItems="sections"
+      <NavigationSidebar
+        :active-index="activeIndex"
+        :menu-items="sections"
         @select="handleMenuSelect"
       />
 
       <!-- Right Interactive Stage Canvas & Content -->
-      <PixelStage 
-        :targetIndex="activeIndex"
+      <PixelStage
+        :target-index="activeIndex"
         :sections="sections"
-        :characterAction="characterAction"
+        :character-action="characterAction"
       />
     </main>
 
@@ -47,13 +43,17 @@
       <div class="bar-left">
         <!-- Directional D-Pad -->
         <div class="dpad">
-          <button class="dpad-btn dpad-up" @click="navigateDpad(-1)" :title="dpadUp">▲</button>
+          <button class="dpad-btn dpad-up" :title="dpadUp" @click="navigateDpad(-1)">▲</button>
           <div class="dpad-middle">
-            <button class="dpad-btn dpad-left" @click="navigateDpad(-1)" :title="dpadLeft">◀</button>
+            <button class="dpad-btn dpad-left" :title="dpadLeft" @click="navigateDpad(-1)">
+              ◀
+            </button>
             <div class="dpad-center"></div>
-            <button class="dpad-btn dpad-right" @click="navigateDpad(1)" :title="dpadRight">▶</button>
+            <button class="dpad-btn dpad-right" :title="dpadRight" @click="navigateDpad(1)">
+              ▶
+            </button>
           </div>
-          <button class="dpad-btn dpad-down" @click="navigateDpad(1)" :title="dpadDown">▼</button>
+          <button class="dpad-btn dpad-down" :title="dpadDown" @click="navigateDpad(1)">▼</button>
         </div>
       </div>
 
@@ -97,49 +97,65 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import NavigationSidebar from './NavigationSidebar.vue'
 import PixelStage from './PixelStage.vue'
 import { playSelectSFX, toggleMute, toggleBGM, startBGM } from '../utils/retroAudio.js'
 import { lang, toggleLang, t } from '../utils/i18n.js'
+import type { Section, CharacterAction } from '../types'
 
-const props = defineProps({
-  startWithMusic: {
-    type: Boolean,
-    default: false
-  }
-})
+const props = defineProps<{ startWithMusic?: boolean }>()
 
 const activeIndex = ref(0)
 const isPowered = ref(true)
 const isMuted = ref(false)
 const isBgmOn = ref(false)
-const characterAction = ref({ type: '', id: 0 })
+const characterAction = ref<CharacterAction>({ type: '', id: 0 })
 
-const themes = [
+interface Theme {
+  id: string
+  name: string
+  class: string
+}
+
+const themes: Theme[] = [
   { id: 'dmg', name: 'DMG Green', class: '' },
   { id: 'pocket', name: 'GBP Grey', class: 'theme-pocket' },
   { id: 'gbc', name: 'GBC Purple', class: 'theme-gbc' },
-  { id: 'cyber', name: 'Cyberpunk', class: 'theme-cyber' }
+  { id: 'cyber', name: 'Cyberpunk', class: 'theme-cyber' },
 ]
 
 const currentThemeIdx = ref(0)
 const currentThemeClass = ref('')
 
-const sectionDefs = [
+interface SectionDef {
+  id: string
+  icon: string
+  name: { es: string; en: string }
+}
+
+const sectionDefs: SectionDef[] = [
   { id: 'info', icon: '✦', name: { es: 'Información', en: 'Info' } },
   { id: 'tech', icon: '⚙', name: { es: 'Tecnologías', en: 'Tech' } },
   { id: 'studies', icon: '◈', name: { es: 'Estudios', en: 'Studies' } },
-  { id: 'projects', icon: '❖', name: { es: 'Proyectos', en: 'Projects' } }
+  { id: 'projects', icon: '❖', name: { es: 'Proyectos', en: 'Projects' } },
 ]
 
-const sections = computed(() =>
+const sections = computed<Section[]>(() =>
   sectionDefs.map((s) => ({ id: s.id, icon: s.icon, name: s.name[lang.value] }))
 )
 
 const langLabel = computed(() => (lang.value === 'es' ? 'ES' : 'EN'))
-const soundTitle = computed(() => (lang.value === 'es' ? (isMuted.value ? 'Activar sonido' : 'Silenciar') : (isMuted.value ? 'Enable sound' : 'Mute')))
+const soundTitle = computed(() =>
+  lang.value === 'es'
+    ? isMuted.value
+      ? 'Activar sonido'
+      : 'Silenciar'
+    : isMuted.value
+      ? 'Enable sound'
+      : 'Mute'
+)
 const dpadUp = t('Arriba', 'Up')
 const dpadLeft = t('Izquierda', 'Left')
 const dpadRight = t('Derecha', 'Right')
@@ -147,11 +163,11 @@ const dpadDown = t('Abajo', 'Down')
 const themeLabel = t('TEMA', 'THEME')
 const musicLabel = t('MÚSICA', 'MUSIC')
 
-function handleMenuSelect(idx) {
+function handleMenuSelect(idx: number) {
   activeIndex.value = idx
 }
 
-function navigateDpad(dir) {
+function navigateDpad(dir: number) {
   playSelectSFX()
   const next = (activeIndex.value + dir + sections.value.length) % sections.value.length
   activeIndex.value = next
@@ -209,7 +225,7 @@ function cycleTheme() {
   padding: 0 24px;
   flex-shrink: 0;
   z-index: 60;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
 }
 
 .header-left {
@@ -309,7 +325,7 @@ function cycleTheme() {
   padding: 16px 36px;
   flex-shrink: 0;
   z-index: 60;
-  box-shadow: 0 -4px 10px rgba(0,0,0,0.35);
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.35);
 }
 
 @media (max-width: 650px) {
@@ -355,10 +371,18 @@ function cycleTheme() {
   background: #111;
 }
 
-.dpad-up { border-radius: 5px 5px 0 0; }
-.dpad-down { border-radius: 0 0 5px 5px; }
-.dpad-left { border-radius: 5px 0 0 5px; }
-.dpad-right { border-radius: 0 5px 5px 0; }
+.dpad-up {
+  border-radius: 5px 5px 0 0;
+}
+.dpad-down {
+  border-radius: 0 0 5px 5px;
+}
+.dpad-left {
+  border-radius: 5px 0 0 5px;
+}
+.dpad-right {
+  border-radius: 0 5px 5px 0;
+}
 
 .dpad-center {
   width: 36px;
@@ -432,12 +456,12 @@ function cycleTheme() {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 2px 3px 0 rgba(0,0,0,0.4);
+  box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.4);
 }
 
 .round-btn:active {
   transform: translateY(2px);
-  box-shadow: 0 1px 0 rgba(0,0,0,0.4);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
 }
 
 .btn-label {
@@ -470,6 +494,6 @@ function cycleTheme() {
   height: 40px;
   background: var(--shell-dark);
   border-radius: 3px;
-  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.4);
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.4);
 }
 </style>

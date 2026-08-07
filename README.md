@@ -1,11 +1,8 @@
 # Salvart — Game Developer & 3D Artist Portfolio
 
-
-
 [![Deploy Portfolio](https://img.shields.io/badge/Live_Demo-🚀_View_Portfolio-brightgreen?style=for-the-badge)](https://www.artstation.com/salv_art)
 
-
-> *Bridging programming logic and 3D art to create immersive experiences and interactions.*
+> _Bridging programming logic and 3D art to create immersive experiences and interactions._
 
 ## About This Project
 
@@ -13,29 +10,37 @@ This repository contains the source code of my **professional portfolio**. It ha
 
 ## Website Tech Stack
 
-* **Framework:** [Vue 3](https://vuejs.org/) (Composition API)
+- **Framework:** [Vue 3](https://vuejs.org/) (Composition API, `<script setup>`)
 
-* **Build Tool:** [Vite](https://vitejs.dev/)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
 
-* **Styles & UI:** CSS / SCSS / Tailwind CSS *(adapt according to what you use)*
+- **Build Tool:** [Vite](https://vitejs.dev/) (`vite.config.ts`)
 
-* **Package manager:** [pnpm](https://pnpm.io/) (pinned in `packageManager` and managed with Corepack)
+- **Styles & UI:** Plain CSS with custom properties (Game Boy / retro pixel themes)
 
-* **Deployment:** GitHub Pages (GitHub Actions)
+- **Package manager:** [pnpm](https://pnpm.io/) (pinned in `packageManager` and managed with Corepack)
+
+- **Tooling:** [ESLint](https://eslint.org/) (TypeScript + Vue + `eslint-plugin-vuejs-accessibility`), [Prettier](https://prettier.io/), [vitest](https://vitest.dev/) + [Vue Test Utils](https://test-utils.vuejs.org/), [vue-tsc](https://github.com/vuejs/language-tools) for type checking
+
+- **Continuous Integration:** GitHub Actions (`.github/workflows/lint.yml`) — runs lint, formatting check and tests on every push/PR
+
+- **Accessibility:** WCAG-minded markup (semantic `<button>`/`<nav>`, descriptive `alt`, keyboard-accessible menu and project modal with focus management), enforced automatically by `eslint-plugin-vuejs-accessibility`
+
+- **Deployment:** GitHub Pages
 
 ## Game Development & Programming
 
-* **Engines:** Unity / Unreal Engine / Godot *(add/remove yours)*
+- **Engines:** Unity / Unreal Engine / Godot _(add/remove yours)_
 
-* **Languages:** C#, C++, JavaScript / TypeScript, Python
+- **Languages:** C#, C++, JavaScript / TypeScript, Python
 
-* **Systems:** Gameplay architecture, game AI, physics, user interface (UI/UX).
+- **Systems:** Gameplay architecture, game AI, physics, user interface (UI/UX).
 
 ## 3D Art & Design
 
-* **Software:** Blender, 3DsMAx, ZBrush, Substance Painter
+- **Software:** Blender, 3DsMAx, ZBrush, Substance Painter
 
-* **Specialties:** Low/High Poly modeling, PBR texturing, Rigging, Propes & Environment Art.
+- **Specialties:** Low/High Poly modeling, PBR texturing, Rigging, Propes & Environment Art.
 
 ## Featured Projects
 
@@ -78,6 +83,17 @@ The project uses **pnpm** as package manager (version pinned in the `packageMana
    pnpm preview
    ```
 
+## Quality Checks
+
+Run the full validation suite before pushing:
+
+```bash
+pnpm lint        # ESLint (TS + Vue + accessibility rules)
+pnpm type-check  # vue-tsc type checking (app + node configs)
+pnpm test        # Vitest unit tests
+pnpm build       # Production build
+pnpm exec prettier --check .   # Formatting check
+```
 
 ## Contact & Links
 

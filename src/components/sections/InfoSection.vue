@@ -28,19 +28,19 @@
         <!-- Dynamic Stat Bars -->
         <div class="stat-row">
           <span class="stat-label">HP</span>
-          <div class="stat-bar"><div class="stat-fill hp-fill" style="width: 100%;"></div></div>
+          <div class="stat-bar"><div class="stat-fill hp-fill" style="width: 100%"></div></div>
           <span class="stat-val">183/183</span>
         </div>
 
         <div class="stat-row">
           <span class="stat-label">MP</span>
-          <div class="stat-bar"><div class="stat-fill mp-fill" style="width: 100%;"></div></div>
+          <div class="stat-bar"><div class="stat-fill mp-fill" style="width: 100%"></div></div>
           <span class="stat-val">123/123</span>
         </div>
 
         <div class="stat-row">
           <span class="stat-label">EXP</span>
-          <div class="stat-bar"><div class="stat-fill exp-fill" style="width: 90%;"></div></div>
+          <div class="stat-bar"><div class="stat-fill exp-fill" style="width: 90%"></div></div>
           <span class="stat-val">MAX</span>
         </div>
       </div>
@@ -71,9 +71,9 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
-import { lang, t } from '../../utils/i18n.js'
+import { t } from '../../utils/i18n.js'
 
 const BIRTH_YEAR = 1990
 const BIRTH_MONTH = 11 // diciembre (0-indexado)
@@ -83,8 +83,7 @@ const playerLevel = computed(() => {
   const now = new Date()
   let level = now.getFullYear() - BIRTH_YEAR
   const hasHadBirthday =
-    now.getMonth() > BIRTH_MONTH ||
-    (now.getMonth() === BIRTH_MONTH && now.getDate() >= BIRTH_DAY)
+    now.getMonth() > BIRTH_MONTH || (now.getMonth() === BIRTH_MONTH && now.getDate() >= BIRTH_DAY)
   if (!hasHadBirthday) level--
   return level
 })
@@ -171,26 +170,38 @@ const specialtyFact = t('Especialidad: Web / Game Dev', 'Specialty: Web / Game D
 
 .avatar-face .hair {
   position: absolute;
-  top: 0; left: 0; right: 0; height: 16px;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 16px;
   background: var(--bg-darkest);
 }
 
 .avatar-face .eyes {
   position: absolute;
-  top: 20px; left: 8px; width: 8px; height: 8px;
+  top: 20px;
+  left: 8px;
+  width: 8px;
+  height: 8px;
   background: var(--bg-darkest);
   box-shadow: 24px 0 0 var(--bg-darkest);
 }
 
 .avatar-face .smile {
   position: absolute;
-  bottom: 12px; left: 16px; width: 16px; height: 4px;
+  bottom: 12px;
+  left: 16px;
+  width: 16px;
+  height: 4px;
   background: var(--bg-darkest);
 }
 
 .avatar-face .shirt {
   position: absolute;
-  bottom: 0; left: 0; right: 0; height: 10px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
   background: var(--bg-dark);
 }
 
@@ -245,9 +256,15 @@ const specialtyFact = t('Especialidad: Web / Game Dev', 'Specialty: Web / Game D
   transition: width 1s ease-in-out;
 }
 
-.hp-fill { background: var(--bg-lightest); }
-.mp-fill { background: var(--bg-light); }
-.exp-fill { background: #ffd700; }
+.hp-fill {
+  background: var(--bg-lightest);
+}
+.mp-fill {
+  background: var(--bg-light);
+}
+.exp-fill {
+  background: #ffd700;
+}
 
 .stat-val {
   font-size: 10px;

@@ -20,10 +20,7 @@
         <img class="gameboy-img" :src="gameboyImg" alt="Game Boy" />
 
         <!-- Screen overlay: boot logo centered on the photo LCD -->
-        <div
-          class="screen-overlay"
-          :class="{ 'screen-on': phase === 'boot' || phase === 'zoom' }"
-        >
+        <div class="screen-overlay" :class="{ 'screen-on': phase === 'boot' || phase === 'zoom' }">
           <div v-if="phase !== 'idle' && phase !== 'insert'" class="boot-logo-track">
             <img class="boot-logo-img" :src="logoImg" alt="SALVADOR RUIZ" />
           </div>
@@ -42,7 +39,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onUnmounted } from 'vue'
 import gameboyImg from '../assets/gameboy/gameboy.png'
 import cartridgeImg from '../assets/gameboy/cartidage.png'
@@ -50,16 +47,17 @@ import logoImg from '../assets/gameboy/logo.png'
 import { playSelectSFX, playLandingSFX, playBootChimeSFX } from '../utils/retroAudio.js'
 import { t } from '../utils/i18n.js'
 
-const emit = defineEmits(['complete'])
+const emit = defineEmits<{ complete: [] }>()
 
 const insertHint = t('INSERTA CARTUCHO', 'INSERT CARTUCHO')
 const viewCvLabel = t('VER CV', 'VIEW CV')
 
-const phase = ref('idle')
+type BootPhase = 'idle' | 'insert' | 'boot' | 'zoom'
+const phase = ref<BootPhase>('idle')
 
-let timers = []
+let timers: number[] = []
 
-function later(fn, ms) {
+function later(fn: () => void, ms: number) {
   timers.push(setTimeout(fn, ms))
 }
 
@@ -72,13 +70,17 @@ function startBoot() {
   later(() => playLandingSFX(), 450)
 
   // Power on: boot logo slides in
-  later(() => { phase.value = 'boot' }, 800)
+  later(() => {
+    phase.value = 'boot'
+  }, 800)
 
   // Boot chime + GAME BOY box + screen flash
   later(() => playBootChimeSFX(), 1950)
 
   // Screen rushes towards the camera
-  later(() => { phase.value = 'zoom' }, 2750)
+  later(() => {
+    phase.value = 'zoom'
+  }, 2750)
 
   // Swap to the CV experience
   later(() => emit('complete'), 4150)
@@ -97,8 +99,7 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background:
-    radial-gradient(ellipse at 50% 35%, #232a3d 0%, #12141a 55%, #0b0d14 100%);
+  background: radial-gradient(ellipse at 50% 35%, #232a3d 0%, #12141a 55%, #0b0d14 100%);
   overflow: hidden;
   z-index: 100;
 }
@@ -116,9 +117,17 @@ onUnmounted(() => {
 }
 
 @keyframes zoomIntoCamera {
-  0%   { transform: scale(1); opacity: 1; }
-  55%  { opacity: 1; }
-  100% { transform: scale(16); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  55% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(16);
+    opacity: 0;
+  }
 }
 
 /* ---- Title ---- */
@@ -209,8 +218,12 @@ onUnmounted(() => {
 }
 
 @keyframes logoSlide {
-  from { transform: translateX(100%); }
-  to   { transform: translateX(0); }
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 /* Brief white flash like the real boot */
@@ -222,9 +235,15 @@ onUnmounted(() => {
 }
 
 @keyframes screenFlash {
-  0%   { opacity: 0; }
-  30%  { opacity: 0.85; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 /* ---- Foreground button ---- */
@@ -257,7 +276,10 @@ onUnmounted(() => {
   gap: 6px;
   border-radius: 6px;
   box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.4);
-  transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease;
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease,
+    background 0.15s ease;
 }
 
 .ver-cv-btn:hover {

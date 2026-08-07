@@ -12,6 +12,7 @@
         :class="['menu-item-btn', { active: activeIndex === index }]"
         @click="onSelect(index)"
         @mouseenter="playHoverSFX"
+        @focusin="playHoverSFX"
       >
         <span class="cursor-indicator" :class="{ visible: activeIndex === index }">▶</span>
         <span class="menu-icon">{{ item.icon }}</span>
@@ -25,27 +26,22 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { playSelectSFX, playHoverSFX } from '../utils/retroAudio.js'
 import { t } from '../utils/i18n.js'
+import type { MenuItem } from '../types'
 
 const menuLabel = t('MENÚ', 'MENU')
 const footerHint = t('SELECCIONA PARA VER', 'SELECT TO VIEW')
 
-const props = defineProps({
-  activeIndex: {
-    type: Number,
-    default: 0
-  },
-  menuItems: {
-    type: Array,
-    required: true
-  }
-})
+defineProps<{
+  activeIndex?: number
+  menuItems: MenuItem[]
+}>()
 
-const emit = defineEmits(['select'])
+const emit = defineEmits<{ select: [index: number] }>()
 
-function onSelect(index) {
+function onSelect(index: number) {
   playSelectSFX()
   emit('select', index)
 }
@@ -141,8 +137,12 @@ function onSelect(index) {
 }
 
 @keyframes pulse-cursor {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(4px); }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(4px);
+  }
 }
 
 .menu-icon {

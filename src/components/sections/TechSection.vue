@@ -8,8 +8,8 @@
 
     <!-- Category Tabs -->
     <div class="category-tabs">
-      <button 
-        v-for="cat in categories" 
+      <button
+        v-for="cat in categories"
         :key="cat.id"
         :class="['tab-btn', { active: activeTab === cat.id }]"
         @click="activeTab = cat.id"
@@ -20,11 +20,7 @@
 
     <!-- Inventory Skill Grid -->
     <div class="skills-grid">
-      <div 
-        v-for="skill in filteredSkills" 
-        :key="skill.name"
-        class="skill-card"
-      >
+      <div v-for="skill in filteredSkills" :key="skill.name" class="skill-card">
         <div class="skill-icon-box">
           <img
             v-for="ic in skill.icons"
@@ -33,7 +29,7 @@
             :src="icon(ic)"
             :alt="skill.name"
             draggable="false"
-          >
+          />
         </div>
         <div class="skill-info">
           <div class="skill-header">
@@ -70,23 +66,29 @@
   </div>
 </template>
 
-<script setup>
-import { ref, computed } from 'vue'
+<script setup lang="ts">
+import { ref, computed, type ComputedRef } from 'vue'
 import { t } from '../../utils/i18n.js'
 
-const iconPaths = import.meta.glob('../../assets/icons/*.svg', { eager: true, query: '?url', import: 'default' })
-const iconMap = Object.fromEntries(Object.entries(iconPaths).map(([path, url]) => [path.split('/').pop(), url]))
-const icon = (name) => iconMap[name] ?? ''
+const iconPaths = import.meta.glob('../../assets/icons/*.svg', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+}) as Record<string, string>
+const iconMap: Record<string, string> = Object.fromEntries(
+  Object.entries(iconPaths).map(([path, url]) => [path.split('/').pop(), url])
+)
+const icon = (name: string): string => iconMap[name] ?? ''
 
-const activeTab = ref('all')
+const activeTab = ref<string>('all')
 
 const equipmentLabel = t('EQUIPAMIENTO PRINCIPAL', 'MAIN EQUIPMENT')
 
-const catLabels = {
+const catLabels: Record<string, ComputedRef<string>> = {
   all: t('TODO', 'ALL'),
   frontend: t('FRONTEND', 'FRONTEND'),
   backend: t('BACKEND', 'BACKEND'),
-  tools: t('TOOLS', 'TOOLS')
+  tools: t('TOOLS', 'TOOLS'),
 }
 
 const categories = computed(() => [
@@ -94,46 +96,209 @@ const categories = computed(() => [
   { id: 'frontend', label: catLabels.frontend.value },
   { id: 'backend', label: catLabels.backend.value },
   { id: '3d', label: '3D' },
-  { id: 'tools', label: catLabels.tools.value }
+  { id: 'tools', label: catLabels.tools.value },
 ])
 
-const skills = [
+interface Skill {
+  name: string
+  category: string
+  icons: string[]
+  level: number
+  percent: number
+  experience: string
+}
+
+const skills: Skill[] = [
   // Frontend
-  { name: 'Vue.js', category: 'frontend', icons: ['vuejs.svg'], level: 95, percent: 95, experience: 'Expert' },
-  { name: 'JavaScript (ES6+)', category: 'frontend', icons: ['javascript.svg'], level: 92, percent: 92, experience: 'Advanced' },
-  { name: 'HTML5 / CSS3', category: 'frontend', icons: ['html5.svg'], level: 96, percent: 96, experience: 'Expert' },
-  { name: 'TypeScript', category: 'frontend', icons: ['typescript.svg'], level: 85, percent: 85, experience: 'Proficient' },
-  { name: 'Tailwind / Vanilla CSS', category: 'frontend', icons: ['tailwindcss.svg'], level: 90, percent: 90, experience: 'Advanced' },
+  {
+    name: 'Vue.js',
+    category: 'frontend',
+    icons: ['vuejs.svg'],
+    level: 95,
+    percent: 95,
+    experience: 'Expert',
+  },
+  {
+    name: 'JavaScript (ES6+)',
+    category: 'frontend',
+    icons: ['javascript.svg'],
+    level: 92,
+    percent: 92,
+    experience: 'Advanced',
+  },
+  {
+    name: 'HTML5 / CSS3',
+    category: 'frontend',
+    icons: ['html5.svg'],
+    level: 96,
+    percent: 96,
+    experience: 'Expert',
+  },
+  {
+    name: 'TypeScript',
+    category: 'frontend',
+    icons: ['typescript.svg'],
+    level: 85,
+    percent: 85,
+    experience: 'Proficient',
+  },
+  {
+    name: 'Tailwind / Vanilla CSS',
+    category: 'frontend',
+    icons: ['tailwindcss.svg'],
+    level: 90,
+    percent: 90,
+    experience: 'Advanced',
+  },
 
   // Backend
-  { name: 'Node.js', category: 'backend', icons: ['nodejs.svg'], level: 88, percent: 88, experience: 'Advanced' },
-  { name: 'Express.js', category: 'backend', icons: ['express.svg'], level: 86, percent: 86, experience: 'Advanced' },
-  { name: 'REST APIs / JSON', category: 'backend', icons: ['postman.svg'], level: 92, percent: 92, experience: 'Expert' },
-  { name: 'SQL / Databases', category: 'backend', icons: ['mysql.svg'], level: 80, percent: 80, experience: 'Proficient' },
-  { name: 'C++ / C#', category: 'backend', icons: ['cplusplus.svg'], level: 85, percent: 85, experience: 'Advanced' },
+  {
+    name: 'Node.js',
+    category: 'backend',
+    icons: ['nodejs.svg'],
+    level: 88,
+    percent: 88,
+    experience: 'Advanced',
+  },
+  {
+    name: 'Express.js',
+    category: 'backend',
+    icons: ['express.svg'],
+    level: 86,
+    percent: 86,
+    experience: 'Advanced',
+  },
+  {
+    name: 'REST APIs / JSON',
+    category: 'backend',
+    icons: ['postman.svg'],
+    level: 92,
+    percent: 92,
+    experience: 'Expert',
+  },
+  {
+    name: 'SQL / Databases',
+    category: 'backend',
+    icons: ['mysql.svg'],
+    level: 80,
+    percent: 80,
+    experience: 'Proficient',
+  },
+  {
+    name: 'C++ / C#',
+    category: 'backend',
+    icons: ['cplusplus.svg'],
+    level: 85,
+    percent: 85,
+    experience: 'Advanced',
+  },
 
   // 3D
-  { name: 'Unreal Engine (Blueprints)', category: '3d', icons: ['unrealengine.svg'], level: 90, percent: 90, experience: 'Expert' },
-  { name: 'Unity 3D', category: '3d', icons: ['unity.svg'], level: 85, percent: 85, experience: 'Advanced' },
-  { name: 'Autodesk 3ds Max', category: '3d', icons: ['autodesk.svg'], level: 92, percent: 92, experience: 'Expert' },
-  { name: 'ZBrush (Escultura Digital)', category: '3d', icons: ['zbrush.svg'], level: 86, percent: 86, experience: 'Advanced' },
-  { name: 'Photoshop / Illustrator / After Effects', category: '3d', icons: ['photoshop.svg', 'illustrator.svg', 'aftereffects.svg'], level: 90, percent: 90, experience: 'Expert' },
-  { name: 'Substance Painter / Texturing', category: '3d', icons: ['substance.svg'], level: 84, percent: 84, experience: 'Advanced' },
-  { name: 'Modelado High/Low Poly & UV', category: '3d', icons: ['modelado.svg'], level: 92, percent: 92, experience: 'Expert' },
-  { name: 'Rigging & Shaders', category: '3d', icons: ['rigging.svg'], level: 82, percent: 82, experience: 'Proficient' },
+  {
+    name: 'Unreal Engine (Blueprints)',
+    category: '3d',
+    icons: ['unrealengine.svg'],
+    level: 90,
+    percent: 90,
+    experience: 'Expert',
+  },
+  {
+    name: 'Unity 3D',
+    category: '3d',
+    icons: ['unity.svg'],
+    level: 85,
+    percent: 85,
+    experience: 'Advanced',
+  },
+  {
+    name: 'Autodesk 3ds Max',
+    category: '3d',
+    icons: ['autodesk.svg'],
+    level: 92,
+    percent: 92,
+    experience: 'Expert',
+  },
+  {
+    name: 'ZBrush (Escultura Digital)',
+    category: '3d',
+    icons: ['zbrush.svg'],
+    level: 86,
+    percent: 86,
+    experience: 'Advanced',
+  },
+  {
+    name: 'Photoshop / Illustrator / After Effects',
+    category: '3d',
+    icons: ['photoshop.svg', 'illustrator.svg', 'aftereffects.svg'],
+    level: 90,
+    percent: 90,
+    experience: 'Expert',
+  },
+  {
+    name: 'Substance Painter / Texturing',
+    category: '3d',
+    icons: ['substance.svg'],
+    level: 84,
+    percent: 84,
+    experience: 'Advanced',
+  },
+  {
+    name: 'Modelado High/Low Poly & UV',
+    category: '3d',
+    icons: ['modelado.svg'],
+    level: 92,
+    percent: 92,
+    experience: 'Expert',
+  },
+  {
+    name: 'Rigging & Shaders',
+    category: '3d',
+    icons: ['rigging.svg'],
+    level: 82,
+    percent: 82,
+    experience: 'Proficient',
+  },
 
   // Tools
-  { name: 'Git & GitHub', category: 'tools', icons: ['git.svg', 'github.svg'], level: 90, percent: 90, experience: 'Advanced' },
-  { name: 'Vite / Webpack', category: 'tools', icons: ['vite.svg', 'webpack.svg'], level: 88, percent: 88, experience: 'Advanced' },
-  { name: 'Marmoset / Rendering', category: 'tools', icons: ['marmoset.svg'], level: 84, percent: 84, experience: 'Advanced' },
-  { name: 'Figma / UI Design', category: 'tools', icons: ['figma.svg'], level: 82, percent: 82, experience: 'Proficient' }
+  {
+    name: 'Git & GitHub',
+    category: 'tools',
+    icons: ['git.svg', 'github.svg'],
+    level: 90,
+    percent: 90,
+    experience: 'Advanced',
+  },
+  {
+    name: 'Vite / Webpack',
+    category: 'tools',
+    icons: ['vite.svg', 'webpack.svg'],
+    level: 88,
+    percent: 88,
+    experience: 'Advanced',
+  },
+  {
+    name: 'Marmoset / Rendering',
+    category: 'tools',
+    icons: ['marmoset.svg'],
+    level: 84,
+    percent: 84,
+    experience: 'Advanced',
+  },
+  {
+    name: 'Figma / UI Design',
+    category: 'tools',
+    icons: ['figma.svg'],
+    level: 82,
+    percent: 82,
+    experience: 'Proficient',
+  },
 ]
 
 const totalSkills = skills.length
 
 const filteredSkills = computed(() => {
   if (activeTab.value === 'all') return skills
-  return skills.filter(s => s.category === activeTab.value)
+  return skills.filter((s) => s.category === activeTab.value)
 })
 </script>
 
@@ -175,7 +340,8 @@ const filteredSkills = computed(() => {
   transition: all 0.15s ease;
 }
 
-.tab-btn:hover, .tab-btn.active {
+.tab-btn:hover,
+.tab-btn.active {
   background: var(--bg-darkest);
   color: var(--bg-lightest);
 }
