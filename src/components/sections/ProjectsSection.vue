@@ -689,6 +689,7 @@ const projects = computed(() =>
   display: flex;
   flex-direction: column;
   gap: 12px;
+  height: 100%;
   color: var(--bg-darkest);
 }
 
@@ -708,7 +709,8 @@ const projects = computed(() =>
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 12px;
-  max-height: 320px;
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding-right: 4px;
 }

@@ -102,6 +102,7 @@ const quests = computed(() =>
   display: flex;
   flex-direction: column;
   gap: 12px;
+  height: 100%;
   color: var(--bg-darkest);
 }
 
@@ -121,7 +122,8 @@ const quests = computed(() =>
   display: flex;
   flex-direction: column;
   gap: 12px;
-  max-height: 320px;
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding-right: 4px;
 }

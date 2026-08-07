@@ -666,6 +666,7 @@ onUnmounted(() => {
 
 .section-content-wrapper {
   animation: fadeIn 0.3s ease;
+  height: 100%;
 }
 
 @keyframes fadeIn {
