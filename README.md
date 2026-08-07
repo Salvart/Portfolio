@@ -19,7 +19,9 @@ Este repositorio contiene el código fuente de mi **portfolio profesional**. Ha 
 
 * **Estilos & UI:** CSS / SCSS / Tailwind CSS *(adapta según lo que uses)*
 
-* **Despliegue:** Vercel / Netlify / GitHub Pages
+* **Gestor de paquetes:** [pnpm](https://pnpm.io/) (fijado en `packageManager` y gestionado con Corepack)
+
+* **Despliegue:** GitHub Pages (GitHub Actions)
 
 ## Game Development & Programación
 
@@ -43,28 +45,38 @@ Este repositorio contiene el código fuente de mi **portfolio profesional**. Ha 
 
 ## Desarrollo Local
 
-Si deseas clonar y ejecutar este portfolio localmente para revisar el código:
+El proyecto usa **pnpm** como gestor de paquetes (versión fijada en el campo `packageManager` de `package.json`; Corepack la instala automáticamente). Para clonar y ejecutar el portfolio localmente:
 
 1. **Clona el repositorio:**
 
    ```bash
-   git clone [https://github.com/Salvart/Portfolio.git](https://github.com/Salvart/Portfolio.git)
+   git clone https://github.com/Salvart/Portfolio.git
    cd Portfolio
-   
-2. Instala las dependencias:
+   ```
 
-    ```bash
-    npm install
+2. **Instala las dependencias:**
 
-3. Inicia el servidor de desarrollo:
+   ```bash
+   pnpm install
+   ```
 
-    ```bash
-    npm run dev
+3. **Inicia el servidor de desarrollo:**
 
-4. Compila para producción:
+   ```bash
+   pnpm dev
+   ```
 
-    ```bash
-    npm run build
+4. **Compila para producción:**
+
+   ```bash
+   pnpm build
+   ```
+
+5. **Sirve la build de producción localmente:**
+
+   ```bash
+   pnpm preview
+   ```
 
 
 ## Contacto & Redes
