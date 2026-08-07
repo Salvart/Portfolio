@@ -703,7 +703,6 @@ const projects = computed(() =>
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  grid-auto-rows: 643px;
   gap: 12px;
   flex: 1;
   min-height: 0;
@@ -721,6 +720,7 @@ const projects = computed(() =>
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  aspect-ratio: 2 / 3;
 }
 
 .cartridge-card:hover {
@@ -785,12 +785,14 @@ const projects = computed(() =>
   display: flex;
   flex-direction: column;
   gap: 8px;
+  flex: 1;
 }
 
 .cart-sticker {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  flex: 1;
   background: rgba(0, 0, 0, 0.05);
   border: 1px dashed var(--bg-darkest);
   padding: 8px;
@@ -798,7 +800,8 @@ const projects = computed(() =>
 
 .sticker-art {
   width: 100%;
-  height: 80px;
+  flex: 1;
+  min-height: 0;
   background: var(--bg-darkest);
   display: flex;
   align-items: center;
