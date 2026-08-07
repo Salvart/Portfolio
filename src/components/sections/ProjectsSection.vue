@@ -720,7 +720,7 @@ const projects = computed(() =>
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  aspect-ratio: 2 / 3;
+  aspect-ratio: 3 / 2;
 }
 
 .cartridge-card:hover {
@@ -814,7 +814,7 @@ const projects = computed(() =>
 .preview-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 
