@@ -702,7 +702,7 @@ const projects = computed(() =>
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(643px, 1fr));
   gap: 12px;
   flex: 1;
   min-height: 0;
