@@ -702,7 +702,7 @@ const projects = computed(() =>
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 12px;
   flex: 1;
   min-height: 0;
@@ -719,7 +719,6 @@ const projects = computed(() =>
   transition: transform 0.15s ease, box-shadow 0.15s ease;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   aspect-ratio: 3 / 2;
 }
 
@@ -750,6 +749,7 @@ const projects = computed(() =>
   align-items: center;
   justify-content: space-between;
   font-size: 8px;
+  border-radius: 3px 3px 0 0;
 }
 
 .cart-label {
