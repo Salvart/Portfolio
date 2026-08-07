@@ -800,8 +800,8 @@ const projects = computed(() =>
 
 .sticker-art {
   width: 100%;
-  flex: 1;
-  min-height: 0;
+  aspect-ratio: 16 / 9;
+  flex-shrink: 0;
   background: var(--bg-darkest);
   display: flex;
   align-items: center;
