@@ -87,11 +87,6 @@
             </div>
           </div>
 
-          <!-- Ground shadow shrinks as the character rises -->
-          <div
-            class="hero-shadow"
-            :style="{ transform: `scaleX(${shadowScale})`, opacity: shadowOpacity }"
-          ></div>
           <div v-if="landingDust" class="landing-dust"></div>
         </div>
       </div>
@@ -278,8 +273,6 @@ const GRAVITY = 2000 // px/s² — gravity makes the arc feel natural
 const jumpHeight = ref(0)
 const heroScaleY = ref(1)
 const heroScaleX = ref(1)
-const shadowScale = ref(1)
-const shadowOpacity = ref(1)
 const landingDust = ref(false)
 
 let jumpAnimId = null
@@ -345,9 +338,6 @@ function startJump() {
       heroScaleY.value = clampScale(stretch)
       heroScaleX.value = clampScale(2 - stretch)
       jumpHeight.value = y
-      const t = Math.min(y / 46, 1)
-      shadowScale.value = 1 - t * 0.45
-      shadowOpacity.value = 1 - t * 0.35
       jumpAnimId = requestAnimationFrame(air)
     }
     jumpAnimId = requestAnimationFrame(air)
@@ -366,8 +356,6 @@ function startJump() {
       if (t >= 1) {
         heroScaleY.value = 1
         heroScaleX.value = 1
-        shadowScale.value = 1
-        shadowOpacity.value = 1
         landingDust.value = false
         isJumping.value = false
         return
@@ -570,19 +558,6 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
   transform-origin: 50% 100%;
-}
-
-/* Ground shadow — shrinks/fades as the character rises */
-.hero-shadow {
-  position: absolute;
-  bottom: -6px;
-  left: 50%;
-  margin-left: -10px;
-  width: 20px;
-  height: 5px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 50%;
-  pointer-events: none;
 }
 
 /* Dust puff kicked up on landing */

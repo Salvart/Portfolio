@@ -15,11 +15,10 @@
         :class="{ featured: project.featured }"
         @click="selectProject(project)"
       >
-        <span v-if="project.featured" class="featured-badge">★ {{ featuredLabel }}</span>
         <!-- Game Boy Cartridge Shape -->
         <div class="cartridge-top">
           <span class="notch"></span>
-          <span class="cart-label">GAME CARTRIDGE</span>
+          <span class="cart-label">{{ project.title }}</span>
         </div>
 
         <div class="cartridge-body">
@@ -36,10 +35,7 @@
                 >
                 <span v-else class="art-emoji">{{ project.icon }}</span>
               </div>
-              <div class="sticker-meta">
-                <h4 class="project-title">{{ project.title }}</h4>
-                <span class="project-genre">{{ project.genre }}</span>
-              </div>
+              <span class="project-genre">{{ project.genre }}</span>
             </div>
 
           <div class="cart-footer">
@@ -112,7 +108,6 @@ const hasArtStationLink = computed(() =>
 )
 
 const vaultLabel = t('PROYECTOS', 'PROJECTS')
-const featuredLabel = t('DESTACADO', 'FEATURED')
 const noLinkLabel = t('NO HAY ENLACE DISPONIBLE', 'NO LINK AVAILABLE')
 
 function selectProject(proj) {
@@ -745,28 +740,22 @@ const projects = computed(() =>
   background: var(--bg-dark);
 }
 
-.featured-badge {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  background: var(--bg-lightest);
-  color: var(--bg-darkest);
-  border: 2px solid var(--bg-darkest);
-  font-size: 8px;
-  font-weight: bold;
-  padding: 3px 6px;
-  box-shadow: 2px 2px 0 var(--bg-dark);
-  z-index: 2;
-}
-
 .cartridge-top {
   background: var(--bg-darkest);
   color: var(--bg-lightest);
   padding: 5px 8px;
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
   font-size: 8px;
+}
+
+.cart-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 }
 
 .cartridge-top .notch {
@@ -774,6 +763,20 @@ const projects = computed(() =>
   height: 5px;
   background: var(--bg-dark);
   border-radius: 1px;
+}
+
+.cartridge-card.featured .notch {
+  background: #ff3b3b;
+  animation: featured-notch-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes featured-notch-glow {
+  from {
+    box-shadow: 0 0 2px rgba(255, 60, 60, 0.6);
+  }
+  to {
+    box-shadow: 0 0 8px rgba(255, 60, 60, 0.95);
+  }
 }
 
 .cartridge-body {
@@ -813,18 +816,6 @@ const projects = computed(() =>
 
 .art-emoji {
   font-size: 24px;
-}
-
-.sticker-meta {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.project-title {
-  font-size: 11px;
-  color: var(--bg-darkest);
 }
 
 .project-genre {
