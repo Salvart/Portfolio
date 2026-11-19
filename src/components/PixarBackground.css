@@ -1,0 +1,77 @@
+.pixar-background {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  background-color: #070a13;
+}
+
+.bg-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  will-change: opacity, transform;
+  transition: opacity 0.15s ease-out;
+}
+
+.bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  filter: saturate(1.05) contrast(1.02);
+}
+
+/* High-tech overlays for contrast and readability */
+.tech-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: linear-gradient(
+    180deg,
+    rgba(7, 10, 19, 0.45) 0%,
+    rgba(7, 10, 19, 0.65) 45%,
+    rgba(7, 10, 19, 0.82) 100%
+  );
+  backdrop-filter: blur(1.5px);
+}
+
+.tech-grid-pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  background-image: 
+    linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.6;
+}
+
+.tech-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  background: radial-gradient(
+    circle at 50% 40%,
+    transparent 35%,
+    rgba(5, 7, 14, 0.75) 100%
+  );
+}
+
+@media (max-width: 768px) {
+  .bg-img {
+    object-position: 60% center;
+  }
+  .tech-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(7, 10, 19, 0.6) 0%,
+      rgba(7, 10, 19, 0.75) 50%,
+      rgba(7, 10, 19, 0.9) 100%
+    );
+  }
+}

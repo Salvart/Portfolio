@@ -1,0 +1,136 @@
+.app-viewport {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  color: var(--text-main);
+}
+
+.content-stream {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+.snap-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 1.5rem;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.section-inner {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Scroll Cue Hint */
+.scroll-cue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2rem;
+  color: var(--accent-cyan);
+  opacity: 0.8;
+  animation: floatBounce 2.4s infinite ease-in-out;
+}
+
+.cue-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+}
+
+.cue-arrow {
+  font-size: 1.1rem;
+}
+
+@keyframes floatBounce {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 1;
+  }
+}
+
+/* Technological Footer */
+.app-footer {
+  width: 100%;
+  padding: 2rem 1.5rem 3rem 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-content {
+  width: 100%;
+  max-width: 1050px;
+  padding: 1.25rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  border-radius: var(--radius-full);
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.footer-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan);
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-link {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-main);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: var(--accent-cyan);
+}
+
+@media (max-width: 680px) {
+  .snap-section {
+    padding: 5rem 1rem 3rem 1rem;
+    min-height: auto;
+  }
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    border-radius: var(--radius-md);
+  }
+}

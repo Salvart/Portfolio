@@ -1,0 +1,259 @@
+.info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  padding: 2.5rem;
+  max-width: 900px;
+  width: 100%;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border-glass);
+  padding-bottom: 1.25rem;
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan);
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.5; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-emerald);
+  box-shadow: 0 0 8px var(--accent-emerald);
+}
+
+/* Profile Hero */
+.profile-hero {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.profile-avatar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.avatar-ring {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo));
+  box-shadow: 0 0 20px var(--accent-cyan-glow);
+}
+
+.avatar-core {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #090e1c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-initials {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.05em;
+  background: linear-gradient(135deg, #ffffff, var(--accent-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.role-pill {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-glass);
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.profile-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dev-name {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.dev-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--accent-cyan);
+  letter-spacing: 0.02em;
+}
+
+.tagline {
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+/* Telemetry Gauges */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+.metric-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+}
+
+.metric-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  margin-bottom: 6px;
+}
+
+.metric-label {
+  color: var(--text-dim);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.metric-val {
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+.meter-bar {
+  height: 5px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.meter-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 1s ease;
+}
+
+.hp-fill {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.mp-fill {
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
+}
+
+.exp-fill {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+/* Bio Section */
+.bio-wrapper {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-glass);
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.bio-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent-cyan);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.25rem;
+}
+
+.bio-paragraph {
+  font-size: 0.96rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+/* Quick Facts */
+.quick-facts-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.fact-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-glass);
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.fact-icon {
+  font-size: 0.95rem;
+}
+
+@media (max-width: 680px) {
+  .info-container {
+    padding: 1.5rem;
+  }
+  .profile-hero {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .dev-name {
+    font-size: 1.75rem;
+  }
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
