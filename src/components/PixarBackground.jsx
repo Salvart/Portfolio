@@ -43,6 +43,8 @@ export default function PixarBackground() {
   const op2 = clamp(progress - 1, 0, 1)
   const op3 = clamp(progress - 2, 0, 1)
 
+  const baseUrl = import.meta.env.BASE_URL || '/'
+
   return (
     <div className="pixar-background" aria-hidden="true">
       {/* Layer 0: Info (Armchair / Newspaper) */}
@@ -54,7 +56,7 @@ export default function PixarBackground() {
           transform: `scale(${1 + progress * 0.01})`
         }}
       >
-        <img src="images/scene-info.jpg" alt="Info Scene" className="bg-img" />
+        <img src={`${baseUrl}images/scene-info.jpg`} alt="Info Scene" className="bg-img" />
       </div>
 
       {/* Layer 1: Tech (PC Workstation) */}
@@ -66,7 +68,7 @@ export default function PixarBackground() {
           transform: `scale(${1 + progress * 0.012})`
         }}
       >
-        <img src="images/scene-tech.jpg" alt="Tech Scene" className="bg-img" />
+        <img src={`${baseUrl}images/scene-tech.jpg`} alt="Tech Scene" className="bg-img" />
       </div>
 
       {/* Layer 2: Studies (Desk / Books & Schematics) */}
@@ -78,7 +80,7 @@ export default function PixarBackground() {
           transform: `scale(${1 + progress * 0.014})`
         }}
       >
-        <img src="images/scene-studies.jpg" alt="Studies Scene" className="bg-img" />
+        <img src={`${baseUrl}images/scene-studies.jpg`} alt="Studies Scene" className="bg-img" />
       </div>
 
       {/* Layer 3: Projects (Electronics Maker Workbench) */}
@@ -90,7 +92,7 @@ export default function PixarBackground() {
           transform: `scale(${1 + progress * 0.016})`
         }}
       >
-        <img src="images/scene-projects.jpg" alt="Projects Scene" className="bg-img" />
+        <img src={`${baseUrl}images/scene-projects.jpg`} alt="Projects Scene" className="bg-img" />
       </div>
 
       {/* High-Tech Overlays for Readability and Mood */}
