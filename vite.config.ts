@@ -2,7 +2,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
-export default defineConfig(({ command }) => ({
+export default defineConfig(({ mode }) => ({
   plugins: [react()],
-  base: command === 'build' ? '/Portfolio/' : '/',
+  // Build y preview usan la base del repo; dev se sirve desde '/'.
+  base: mode === 'production' ? '/Portfolio/' : '/',
 }))

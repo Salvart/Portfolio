@@ -4,10 +4,11 @@ import './Navbar.css'
 
 export default function Navbar() {
   const { isEs, toggleLang, t } = useI18n()
-  const [activeSection, setActiveSection] = useState('info')
+  const [activeSection, setActiveSection] = useState('home')
   const [mobileOpen, setMobileOpen] = useState(false)
 
   const navItems = [
+    { id: 'home', icon: '▣', label: t('Inicio', 'Home') },
     { id: 'info', icon: '◈', label: t('Información', 'About') },
     { id: 'tech', icon: '⚡', label: t('Tecnologías', 'Tech') },
     { id: 'studies', icon: '✦', label: t('Estudios', 'Education') },
@@ -29,7 +30,7 @@ export default function Navbar() {
   }
 
   useEffect(() => {
-    const sectionIds = ['info', 'tech', 'studies', 'projects']
+    const sectionIds = ['home', 'info', 'tech', 'studies', 'projects']
     const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean)
 
     if ('IntersectionObserver' in window && sections.length > 0) {
@@ -72,7 +73,7 @@ export default function Navbar() {
         <button
           type="button"
           className="nav-logo"
-          onClick={() => scrollToSection('info')}
+          onClick={() => scrollToSection('home')}
           aria-label="Ir al inicio"
         >
           <span className="logo-dot"></span>

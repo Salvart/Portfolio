@@ -416,3 +416,264 @@
     max-width: 100px;
   }
 }
+
+/* ─── Retro-minimalist skin (edh.dev style) ─────────────────── */
+.projects-container {
+  background: var(--cream);
+}
+
+.projects-container .card-header {
+  border-bottom: 2px dashed var(--ink);
+}
+
+.projects-container .pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 0;
+  background: var(--cream);
+  box-shadow: none;
+  animation: none;
+}
+
+.projects-container .filter-btn {
+  background: var(--cream);
+  border: 1px solid var(--ink);
+  box-shadow: var(--shadow-hard);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 0;
+}
+
+.projects-container .filter-btn:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.projects-container .filter-btn.active {
+  background: var(--ink);
+  color: var(--cream);
+  box-shadow: var(--shadow-hard);
+}
+
+.project-compact-card {
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  box-shadow: var(--shadow-hard);
+  border-radius: 0;
+  padding: 0.9rem 1rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.project-compact-card:hover {
+  background: var(--paper);
+  border-color: var(--ink);
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 var(--shadow);
+}
+
+.card-top {
+  font-family: var(--font-ui);
+  font-size: 0.6rem;
+  color: var(--ink);
+}
+
+.project-icon {
+  color: var(--ink);
+  font-family: var(--font-ui);
+}
+
+.genre-mini-pill {
+  background: transparent;
+  border: 1px dashed var(--ink);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.52rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 0;
+}
+
+.date-tag {
+  font-family: var(--font-ui);
+  font-size: 0.58rem;
+  color: var(--ink);
+}
+
+.project-title {
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.project-summary {
+  font-family: var(--font-main);
+  font-size: 0.74rem;
+  color: var(--ink);
+}
+
+.card-bottom {
+  border-top: 1px dashed var(--ink);
+}
+
+.mini-tag {
+  background: var(--cream);
+  border: 1px dashed var(--ink);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.5rem;
+  padding: 1px 4px;
+  border-radius: 0;
+}
+
+.inspect-btn {
+  font-family: var(--font-ui);
+  font-size: 0.58rem;
+  color: var(--ink);
+}
+
+/* Pagination */
+.page-nav-btn {
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  box-shadow: var(--shadow-hard);
+  color: var(--ink);
+  border-radius: 0;
+  font-family: var(--font-ui);
+}
+
+.page-nav-btn:hover:not(:disabled) {
+  background: var(--ink);
+  color: var(--cream);
+  border-color: var(--ink);
+}
+
+.page-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 0;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+}
+
+.page-dot.active {
+  background: var(--ink);
+  box-shadow: var(--shadow-hard);
+  transform: none;
+}
+
+/* Modal */
+.modal-overlay {
+  background: rgba(82, 82, 82, 0.75);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.modal-content {
+  background: var(--cream);
+  border: 1px solid var(--ink);
+  box-shadow: 8px 8px 0 rgba(82, 82, 82, 0.6);
+  border-radius: 0;
+}
+
+.modal-header,
+.modal-actions {
+  border-bottom: 1px dashed var(--ink);
+  border-top: 1px dashed var(--ink);
+}
+
+.modal-tag,
+.highlights-title {
+  font-family: var(--font-ui);
+  font-size: 0.6rem;
+  color: var(--ink);
+}
+
+.modal-title {
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.close-btn {
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  box-shadow: var(--shadow-hard);
+  color: var(--ink);
+  border-radius: 0;
+  font-family: var(--font-ui);
+}
+
+.close-btn:hover {
+  background: var(--ink);
+  color: var(--cream);
+}
+
+.modal-description {
+  font-family: var(--font-main);
+  font-size: 0.84rem;
+  color: var(--ink);
+}
+
+.highlights-list li {
+  font-family: var(--font-main);
+  font-size: 0.8rem;
+  color: var(--ink);
+}
+
+.highlights-list li::before {
+  color: var(--ink);
+}
+
+.modal-tag-chip {
+  background: var(--paper);
+  border: 1px dashed var(--ink);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.56rem;
+  padding: 3px 6px;
+  border-radius: 0;
+}
+
+.action-btn {
+  border-radius: 0;
+  font-family: var(--font-ui);
+  font-size: 0.6rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-hard);
+}
+
+.link-btn {
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  color: var(--cream);
+}
+
+.link-btn:hover {
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 5px 5px 0 var(--shadow);
+}
+
+.fallback-btn {
+  background: var(--cream);
+  border: 1px solid var(--ink);
+  color: var(--ink);
+}
+
+.fallback-btn:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.no-link {
+  font-family: var(--font-main);
+  font-size: 0.78rem;
+  color: var(--ink);
+}

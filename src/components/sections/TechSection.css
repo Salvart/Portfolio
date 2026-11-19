@@ -5,6 +5,7 @@
   padding: 1.75rem 2rem;
   max-width: 860px;
   width: 100%;
+  background: var(--cream);
 }
 
 .card-header {
@@ -13,16 +14,17 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 0.75rem;
-  border-bottom: 1px solid var(--border-glass);
+  border-bottom: 2px dashed var(--ink);
   padding-bottom: 0.85rem;
 }
 
 .pulse-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent-cyan);
-  box-shadow: 0 0 8px var(--accent-cyan);
+  width: 8px;
+  height: 8px;
+  border-radius: 0;
+  background: var(--cream);
+  box-shadow: none;
+  animation: none;
 }
 
 .category-tabs {
@@ -31,115 +33,113 @@
   gap: 6px;
 }
 
-.tab-btn {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border-glass);
-  color: var(--text-muted);
-  font-family: var(--font-main);
-  font-size: 0.74rem;
-  font-weight: 600;
-  padding: 5px 12px;
-  border-radius: var(--radius-full);
+.tab-btn,
+.filter-btn {
+  background: var(--cream);
+  border: 1px solid var(--ink);
+  box-shadow: var(--shadow-hard);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 0;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
 
-.tab-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+.tab-btn:hover,
+.filter-btn:hover {
+  background: var(--paper);
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--shadow);
 }
 
-.tab-btn.active {
-  background: rgba(56, 189, 248, 0.16);
-  border-color: var(--border-tech);
-  color: #ffffff;
-  box-shadow: 0 0 10px var(--accent-cyan-glow);
+.tab-btn.active,
+.filter-btn.active {
+  background: var(--ink);
+  color: var(--cream);
+  box-shadow: var(--shadow-hard);
 }
 
-/* Compressed Skills Grid */
+/* Skills grid */
 .skills-compact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   gap: 8px;
-  max-height: 280px;
-  overflow-y: auto;
-  padding-right: 4px;
+  overflow-y: visible;
 }
 
 .skill-chip {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border-glass);
-  padding: 8px 12px;
-  border-radius: var(--radius-sm);
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  box-shadow: var(--shadow-hard);
+  padding: 8px 10px;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.2s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .skill-chip:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: var(--border-tech);
-  transform: translateY(-1px);
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--shadow);
 }
 
 .chip-icon {
-  color: var(--accent-cyan);
-  font-size: 0.82rem;
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
   flex-shrink: 0;
 }
 
 .chip-name {
-  font-size: 0.8rem;
+  font-family: var(--font-main);
+  font-size: 0.78rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--ink);
   flex: 1;
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .chip-level {
-  font-size: 0.65rem;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: var(--radius-full);
-  background: rgba(56, 189, 248, 0.08);
-  color: var(--accent-cyan);
-  border: 1px solid rgba(56, 189, 248, 0.15);
+  font-family: var(--font-ui);
+  font-size: 0.52rem;
+  font-weight: 700;
+  padding: 2px 4px;
+  background: var(--ink);
+  color: var(--cream);
+  border: 1px solid var(--ink);
+  border-radius: 0;
   flex-shrink: 0;
 }
 
-.chip-level.expert {
-  color: #38bdf8;
-  border-color: rgba(56, 189, 248, 0.3);
-}
-
-.chip-level.advanced {
-  color: #818cf8;
-  border-color: rgba(129, 140, 248, 0.3);
-}
-
+.chip-level.expert,
+.chip-level.advanced,
 .chip-level.proficient {
-  color: #34d399;
-  border-color: rgba(52, 211, 153, 0.3);
+  color: var(--cream);
+  border-color: var(--ink);
+  background: var(--ink);
 }
 
-/* Footer Stack */
+/* Footer stack */
 .equipment-compact-row {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 2px dashed var(--ink);
   padding-top: 0.75rem;
 }
 
 .equipment-label {
-  font-size: 0.72rem;
+  font-family: var(--font-ui);
+  font-size: 0.6rem;
   font-weight: 700;
-  color: var(--accent-cyan);
-  letter-spacing: 0.06em;
+  color: var(--ink);
 }
 
 .equipment-pills {
@@ -149,12 +149,12 @@
 }
 
 .mini-pill {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border-glass);
-  padding: 3px 10px;
-  border-radius: var(--radius-full);
-  font-size: 0.72rem;
-  color: var(--text-muted);
+  background: var(--cream);
+  border: 1px dashed var(--ink);
+  padding: 3px 8px;
+  font-family: var(--font-ui);
+  font-size: 0.58rem;
+  color: var(--ink);
 }
 
 @media (max-width: 680px) {
@@ -162,7 +162,11 @@
     padding: 1.25rem;
   }
   .skills-compact-grid {
-    grid-template-columns: 1fr;
-    max-height: 220px;
+    grid-template-columns: 1fr 1fr;
+    overflow-y: auto;
+    max-height: 240px;
+  }
+  .chip-name {
+    font-size: 0.7rem;
   }
 }

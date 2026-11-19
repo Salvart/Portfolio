@@ -1,99 +1,50 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './PixarBackground.css'
 
-function clamp(val, min, max) {
-  return Math.min(Math.max(val, min), max)
-}
+const SCENES = ['info', 'tech', 'studies', 'projects']
 
 export default function PixarBackground() {
-  const [progress, setProgress] = useState(0)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const baseUrl = import.meta.env.BASE_URL || '/'
 
   useEffect(() => {
-    let ticking = false
+    const sections = SCENES.map((id) => document.getElementById(id)).filter(Boolean)
+    if (!sections.length) return
 
-    const updateScrollProgress = () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = SCENES.indexOf(entry.target.id)
+            if (idx !== -1) setActiveIndex(idx)
+          }
+        })
+      },
+      { threshold: 0.5 }
+    )
 
-      if (docHeight > 0) {
-        const rawP = (scrollTop / docHeight) * 3
-        setProgress(clamp(rawP, 0, 3))
-      }
-      ticking = false
-    }
-
-    const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateScrollProgress)
-        ticking = true
-      }
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll, { passive: true })
-    updateScrollProgress()
-
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-    }
+    sections.forEach((sec) => observer.observe(sec))
+    return () => observer.disconnect()
   }, [])
 
-  const op1 = clamp(progress - 0, 0, 1)
-  const op2 = clamp(progress - 1, 0, 1)
-  const op3 = clamp(progress - 2, 0, 1)
-
-  const baseUrl = import.meta.env.BASE_URL || '/'
+  const images = [
+    { src: `${baseUrl}images/scene-info.jpg`, alt: 'Info Scene' },
+    { src: `${baseUrl}images/scene-tech.jpg`, alt: 'Tech Scene' },
+    { src: `${baseUrl}images/scene-studies.jpg`, alt: 'Studies Scene' },
+    { src: `${baseUrl}images/scene-projects.jpg`, alt: 'Projects Scene' }
+  ]
 
   return (
     <div className="pixar-background" aria-hidden="true">
-      {/* Layer 0: Info (Armchair / Newspaper) */}
-      <div
-        className="bg-layer"
-        style={{
-          opacity: 1,
-          zIndex: 1,
-          transform: `scale(${1 + progress * 0.01})`
-        }}
-      >
-        <img src={`${baseUrl}images/scene-info.jpg`} alt="Info Scene" className="bg-img" />
-      </div>
-
-      {/* Layer 1: Tech (PC Workstation) */}
-      <div
-        className="bg-layer"
-        style={{
-          opacity: op1,
-          zIndex: 2,
-          transform: `scale(${1 + progress * 0.012})`
-        }}
-      >
-        <img src={`${baseUrl}images/scene-tech.jpg`} alt="Tech Scene" className="bg-img" />
-      </div>
-
-      {/* Layer 2: Studies (Desk / Books & Schematics) */}
-      <div
-        className="bg-layer"
-        style={{
-          opacity: op2,
-          zIndex: 3,
-          transform: `scale(${1 + progress * 0.014})`
-        }}
-      >
-        <img src={`${baseUrl}images/scene-studies.jpg`} alt="Studies Scene" className="bg-img" />
-      </div>
-
-      {/* Layer 3: Projects (Electronics Maker Workbench) */}
-      <div
-        className="bg-layer"
-        style={{
-          opacity: op3,
-          zIndex: 4,
-          transform: `scale(${1 + progress * 0.016})`
-        }}
-      >
-        <img src={`${baseUrl}images/scene-projects.jpg`} alt="Projects Scene" className="bg-img" />
-      </div>
+      {images.map((img, i) => (
+        <div
+          key={img.src}
+          className={`bg-layer ${activeIndex === i ? 'active' : ''}`}
+          style={{ zIndex: i + 1 }}
+        >
+          <img src={img.src} alt={img.alt} className="bg-img" />
+        </div>
+      ))}
 
       {/* High-Tech Overlays for Readability and Mood */}
       <div className="tech-overlay"></div>
