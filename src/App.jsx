@@ -20,14 +20,14 @@ export default function App() {
       {/* Persistent Top-Right Contextual Navigation */}
       <Navbar />
 
-      {/* Main Scrollable Content Stream */}
+      {/* Main Scrollable Content Stream (Snap Viewport) */}
       <main className="content-stream">
         {/* Section 1: Información / Sobre mí */}
         <section id="info" className="snap-section">
           <div className="section-inner">
             <InfoSection />
             <div className="scroll-cue">
-              <span className="cue-label">SCROLL TO EXPLORE</span>
+              <span className="cue-label">SCROLL</span>
               <span className="cue-arrow">↓</span>
             </div>
           </div>
@@ -51,19 +51,12 @@ export default function App() {
         <section id="projects" className="snap-section">
           <div className="section-inner">
             <ProjectsSection />
-          </div>
-        </section>
-
-        {/* Modern Technological Footer */}
-        <footer className="app-footer">
-          <div className="footer-content glass-panel">
-            <div className="footer-left">
+            {/* Integrated Minimalist Footer */}
+            <div className="compact-footer">
               <span className="footer-dot"></span>
               <span className="footer-copy">
                 &copy; {new Date().getFullYear()} Salvador Ruiz &bull; Technical Artist &amp; Software Programmer
               </span>
-            </div>
-            <div className="footer-links">
               <a
                 href="https://www.artstation.com/salv_art"
                 target="_blank"
@@ -73,11 +66,11 @@ export default function App() {
                 ArtStation ↗
               </a>
               <button type="button" className="footer-link top-btn" onClick={scrollToTop}>
-                Subir ↑
+                Inicio ↑
               </button>
             </div>
           </div>
-        </footer>
+        </section>
       </main>
     </div>
   )

@@ -6,141 +6,93 @@ export default function TechSection() {
   const { t } = useI18n()
   const [activeTab, setActiveTab] = useState('all')
 
-  const equipmentLabel = t('EQUIPAMIENTO & STACK DOMINADO', 'MASTERED STACK & EQUIPMENT')
-
   const categories = useMemo(
     () => [
       { id: 'all', label: t('Todo', 'All') },
+      { id: '3d', label: t('3D & Motores', '3D & Engines') },
       { id: 'frontend', label: t('Frontend', 'Frontend') },
       { id: 'backend', label: t('Backend', 'Backend') },
-      { id: '3d', label: t('3D & Motores', '3D & Engines') },
       { id: 'tools', label: t('Herramientas', 'Tools') }
     ],
     [t]
   )
 
-  const activeCategoryLabel = useMemo(() => {
-    const current = categories.find((c) => c.id === activeTab)
-    return current ? current.label : ''
-  }, [categories, activeTab])
-
   const skills = [
+    // 3D & Engines (Primary specialty)
+    { name: 'Unreal Engine 4 & 5', category: '3d', icon: '✦', level: 'Expert' },
+    { name: 'Unity 3D', category: '3d', icon: '⬢', level: 'Advanced' },
+    { name: 'Autodesk 3ds Max', category: '3d', icon: '◈', level: 'Expert' },
+    { name: 'ZBrush (Escultura)', category: '3d', icon: '❖', level: 'Advanced' },
+    { name: 'Substance Painter (PBR)', category: '3d', icon: '◈', level: 'Advanced' },
+    { name: 'Modelado High/Low Poly', category: '3d', icon: '✦', level: 'Expert' },
+    { name: 'Rigging & Shaders', category: '3d', icon: '⚡', level: 'Proficient' },
+    { name: 'Photoshop / After Effects', category: '3d', icon: '◈', level: 'Expert' },
+
     // Frontend
-    { name: 'Vue.js 3', category: 'frontend', icon: '✦', percent: 95, experience: 'Expert' },
-    { name: 'JavaScript (ES6+)', category: 'frontend', icon: '⚡', percent: 92, experience: 'Advanced' },
-    { name: 'HTML5 & CSS3', category: 'frontend', icon: '◈', percent: 96, experience: 'Expert' },
-    { name: 'TypeScript', category: 'frontend', icon: '◆', percent: 85, experience: 'Proficient' },
-    { name: 'Tailwind / Modern CSS', category: 'frontend', icon: '✦', percent: 90, experience: 'Advanced' },
+    { name: 'React', category: 'frontend', icon: '⚛', level: 'Advanced' },
+    { name: 'Vue.js 3', category: 'frontend', icon: '✦', level: 'Expert' },
+    { name: 'JavaScript (ES6+)', category: 'frontend', icon: '⚡', level: 'Advanced' },
+    { name: 'HTML5 & CSS3', category: 'frontend', icon: '◈', level: 'Expert' },
+    { name: 'TypeScript', category: 'frontend', icon: '◆', level: 'Proficient' },
 
     // Backend
-    { name: 'Node.js & Express', category: 'backend', icon: '⬢', percent: 88, experience: 'Advanced' },
-    { name: 'REST APIs & WebSockets', category: 'backend', icon: '❖', percent: 92, experience: 'Expert' },
-    { name: 'SQL & Database Systems', category: 'backend', icon: '🗄', percent: 80, experience: 'Proficient' },
-    { name: 'C++ & C# Scripting', category: 'backend', icon: '⚙', percent: 85, experience: 'Advanced' },
-
-    // 3D
-    { name: 'Unreal Engine 4 & 5', category: '3d', icon: '✦', percent: 92, experience: 'Expert' },
-    { name: 'Unity 3D', category: '3d', icon: '⬢', percent: 85, experience: 'Advanced' },
-    { name: 'Autodesk 3ds Max', category: '3d', icon: '◈', percent: 92, experience: 'Expert' },
-    { name: 'ZBrush (Escultura Digital)', category: '3d', icon: '❖', percent: 86, experience: 'Advanced' },
-    { name: 'Photoshop & After Effects', category: '3d', icon: '◈', percent: 90, experience: 'Expert' },
-    { name: 'Substance Painter (PBR)', category: '3d', icon: '◈', percent: 88, experience: 'Advanced' },
-    { name: 'Modelado High/Low Poly & UV', category: '3d', icon: '✦', percent: 92, experience: 'Expert' },
-    { name: 'Rigging, Skeletons & Shaders', category: '3d', icon: '⚡', percent: 82, experience: 'Proficient' },
+    { name: 'C++ & C# Scripting', category: 'backend', icon: '⚙', level: 'Advanced' },
+    { name: 'Node.js & Express', category: 'backend', icon: '⬢', level: 'Advanced' },
+    { name: 'REST APIs & WebSockets', category: 'backend', icon: '❖', level: 'Expert' },
+    { name: 'SQL & Databases', category: 'backend', icon: '🗄', level: 'Proficient' },
 
     // Tools
-    { name: 'Git & GitHub Workflow', category: 'tools', icon: '❖', percent: 90, experience: 'Advanced' },
-    { name: 'Vite & Modern Tooling', category: 'tools', icon: '⚡', percent: 88, experience: 'Advanced' },
-    { name: 'Marmoset Toolbag Rendering', category: 'tools', icon: '❖', percent: 84, experience: 'Advanced' },
-    { name: 'Figma & UI Prototyping', category: 'tools', icon: '◆', percent: 82, experience: 'Proficient' }
+    { name: 'Git & GitHub', category: 'tools', icon: '❖', level: 'Advanced' },
+    { name: 'Vite & Tooling', category: 'tools', icon: '⚡', level: 'Advanced' },
+    { name: 'Marmoset Toolbag', category: 'tools', icon: '❖', level: 'Advanced' },
+    { name: 'Figma & UI', category: 'tools', icon: '◆', level: 'Proficient' }
   ]
-
-  const totalSkills = skills.length
 
   const filteredSkills = useMemo(() => {
     if (activeTab === 'all') return skills
     return skills.filter((s) => s.category === activeTab)
   }, [activeTab])
 
-  const mainEquipment = [
-    'React',
-    'Vue.js 3',
-    'JavaScript ES6+',
-    'Unreal Engine 5',
-    'Unity 3D',
-    '3ds Max',
-    'ZBrush',
-    'Substance Painter',
-    'Node.js',
-    'C++',
-    'C#',
-    'Git & GitHub',
-    'REST APIs',
-    'Figma'
-  ]
-
   return (
     <div className="tech-container glass-panel">
-      {/* Section Header Badge */}
+      {/* Header */}
       <div className="card-header">
         <div className="tech-badge">
           <span className="pulse-dot"></span>
-          <span>STACK &amp; SKILLS // {totalSkills} TECHNOLOGIES</span>
+          <span>STACK &amp; SKILLS // {skills.length} TECNOLOGÍAS</span>
         </div>
-        <div className="active-category-pill">
-          <span>FILTRADO: {activeCategoryLabel}</span>
+        {/* Category Tabs */}
+        <div className="category-tabs">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              type="button"
+              className={`tab-btn ${activeTab === cat.id ? 'active' : ''}`}
+              onClick={() => setActiveTab(cat.id)}
+            >
+              {cat.label}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Category Filter Tabs */}
-      <div className="category-tabs">
-        {categories.map((cat) => (
-          <button
-            key={cat.id}
-            type="button"
-            className={`tab-btn ${activeTab === cat.id ? 'active' : ''}`}
-            onClick={() => setActiveTab(cat.id)}
-          >
-            {cat.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Skills Interactive Grid */}
-      <div className="skills-grid">
+      {/* Compressed Skills Grid */}
+      <div className="skills-compact-grid">
         {filteredSkills.map((skill) => (
-          <div key={skill.name} className="skill-item">
-            <div className="skill-top">
-              <div className="skill-name-group">
-                <span className="skill-icon">{skill.icon}</span>
-                <span className="skill-title">{skill.name}</span>
-              </div>
-              <span className="skill-badge">{skill.experience}</span>
-            </div>
-
-            <div className="skill-progress-bar">
-              <div className="skill-fill" style={{ width: `${skill.percent}%` }}></div>
-            </div>
-
-            <div className="skill-footer">
-              <span className="skill-cat-tag">{skill.category.toUpperCase()}</span>
-              <span className="skill-percentage">{skill.percent}%</span>
-            </div>
+          <div key={skill.name} className="skill-chip">
+            <span className="chip-icon">{skill.icon}</span>
+            <span className="chip-name">{skill.name}</span>
+            <span className={`chip-level ${skill.level.toLowerCase()}`}>{skill.level}</span>
           </div>
         ))}
       </div>
 
-      {/* Equipped Main Stack */}
-      <div className="equipment-section">
-        <div className="equipment-title">
-          <span className="accent-symbol">✦</span>
-          <span>{equipmentLabel}</span>
-        </div>
-        <div className="tags-cloud">
-          {mainEquipment.map((tag) => (
-            <span key={tag} className="tech-tag-chip">
-              {tag}
-            </span>
+      {/* Main Stack Footer */}
+      <div className="equipment-compact-row">
+        <span className="equipment-label">STACK CLAVE:</span>
+        <div className="equipment-pills">
+          {['Unreal Engine 5', 'Unity', '3ds Max', 'ZBrush', 'C++', 'C#', 'React', 'Vue', 'Node.js', 'Git'].map((item) => (
+            <span key={item} className="mini-pill">{item}</span>
           ))}
         </div>
       </div>

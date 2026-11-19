@@ -3,16 +3,18 @@ import confetti from 'canvas-confetti'
 import { useI18n } from '../../utils/i18n.jsx'
 import './ProjectsSection.css'
 
+const ITEMS_PER_PAGE = 6
+
 export default function ProjectsSection() {
   const { lang, t } = useI18n()
   const [activeProject, setActiveProject] = useState(null)
   const [currentFilter, setCurrentFilter] = useState('all')
+  const [currentPage, setCurrentPage] = useState(1)
 
   const artStationProfile = 'https://www.artstation.com/salv_art'
   const artStationProfileLabel = t('Ver Perfil en ArtStation', 'View ArtStation Profile')
-  const vaultLabel = t('PROYECTOS & PRODUCCIONES', 'PROJECTS & PRODUCTIONS')
+  const vaultLabel = t('PROYECTOS', 'PROJECTS')
   const noLinkLabel = t('No hay enlace directo disponible', 'No direct link available')
-  const viewDetailsLabel = t('Ver Detalles', 'View Details')
   const highlightsLabel = t('Aspectos destacados', 'Key Highlights')
 
   const filterOptions = [
@@ -56,7 +58,7 @@ export default function ProjectsSection() {
           'Published on PS4, PS5, Steam and Nintendo Switch'
         ]
       },
-      tags: ['Unreal Engine 4', '3ds Max', 'ZBrush', 'Substance', 'Rigging'],
+      tags: ['Unreal Engine 4', '3ds Max', 'ZBrush', 'Substance'],
       links: [
         { label: 'PlayStation Store', url: 'https://store.playstation.com/es-es/product/EP0811-CUSA25829_00-6756474835074646' },
         { label: 'Nintendo Switch', url: 'https://www.nintendo.com/es-es/Juegos/Programas-descargables-Nintendo-Switch/Insomnis-2281154.html?srsltid=AfmBOoqsdivojGRs0CYNu4T8-pkKgbf9J1dJqWRYVnTtNj9HADPuuLJP' },
@@ -66,143 +68,93 @@ export default function ProjectsSection() {
     },
     {
       id: 2,
+      title: 'Valdecarros Digital Twin (PPG Studios)',
+      icon: '⚙',
+      date: '2023 - Act.',
+      category: 'games',
+      genre: { es: 'Gemelo Digital / Tiempo Real', en: 'Digital Twin / Real-Time' },
+      description: {
+        es: 'Gemelo digital creado con Unreal Engine 5 para el proyecto de desarrollo urbano de Valdecarros. Senior Technical Artist y programador.',
+        en: 'Digital twin created with Unreal Engine 5 for the Valdecarros urban development. Senior Technical Artist and programmer.'
+      },
+      highlights: {
+        es: ['Gemelo digital en Unreal Engine 5', 'Entorno urbano navegable', 'C++, Python y React'],
+        en: ['Digital twin in Unreal Engine 5', 'Interactive urban environment', 'C++, Python and React']
+      },
+      tags: ['Unreal Engine 5', '3ds Max', 'C++', 'Python'],
+      links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/Rq36kA' }]
+    },
+    {
+      id: 3,
       title: 'WEWORK FACTORY',
       icon: '◈',
       date: '2023',
       category: 'env',
-      genre: { es: 'Escenas Demo Quixel / Entorno', en: 'Quixel Demo Scenes / Environment' },
+      genre: { es: 'Escenas Quixel / Entorno', en: 'Quixel Scenes / Environment' },
       description: {
-        es: 'Escenas demo de entorno con Quixel Megascans de la WeWork Factory: creación de escenarios modulares con iluminación y material setup para su visualización en tiempo real.',
-        en: 'Environment demo scenes with Quixel Megascans of the WeWork Factory: creation of modular sets with lighting and material setup for real-time visualization.'
+        es: 'Escenas demo de entorno con Quixel Megascans de la WeWork Factory: escenarios modulares con iluminación y materiales en tiempo real.',
+        en: 'Environment demo scenes with Quixel Megascans of WeWork Factory: modular sets with lighting and real-time materials.'
       },
       highlights: {
-        es: [
-          'Montaje de escenas con Quixel Megascans',
-          'Entornos modulares para visualización en tiempo real',
-          'Iluminación y set-up de materiales',
-          'Optimización gráfica en Unreal Engine'
-        ],
-        en: [
-          'Scene assembly with Quixel Megascans',
-          'Modular environments for real-time visualization',
-          'Lighting and material setup',
-          'Graphical optimization in Unreal Engine'
-        ]
+        es: ['Escenarios modulares en UE', 'Iluminación y shaders Quixel', 'Optimización gráfica'],
+        en: ['Modular environments in UE', 'Quixel lighting and shaders', 'Graphical optimization']
       },
-      tags: ['Unreal Engine', 'Quixel', '3ds Max', 'Material Setup'],
+      tags: ['Unreal Engine', 'Quixel', '3ds Max'],
       links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/w8zvNV' }]
     },
     {
-      id: 3,
+      id: 4,
       title: 'Warzone Abandoned',
       icon: '★',
       date: '2023',
       category: 'env',
       genre: { es: 'Environment Art', en: 'Environment Art' },
       description: {
-        es: 'Entorno bélico abandonado: modelado de escenario y props, composición de iluminación dramática y texturizado para conseguir una atmósfera de guerra post-apocalíptica.',
-        en: 'Abandoned war environment: set and props modeling, dramatic lighting composition and texturing to achieve a post-apocalyptic war atmosphere.'
+        es: 'Entorno bélico abandonado: modelado de escenario y props, composición de iluminación dramática y texturizado post-apocalíptico.',
+        en: 'Abandoned war environment: set and props modeling, dramatic lighting composition and post-apocalyptic texturing.'
       },
       highlights: {
-        es: [
-          'Escenario y props de zona de guerra',
-          'Iluminación dramática y atmósfera',
-          'Modelado + texturizado completo',
-          'Presentado en ArtStation'
-        ],
-        en: [
-          'War zone set and props',
-          'Dramatic lighting and atmosphere',
-          'Full modeling + texturing',
-          'Featured on ArtStation'
-        ]
+        es: ['Escenario bélico y props', 'Iluminación volumétrica', 'PBR en Substance'],
+        en: ['Warzone set and props', 'Volumetric lighting', 'PBR in Substance']
       },
-      tags: ['3ds Max', 'ZBrush', 'Substance', 'Unreal Engine'],
+      tags: ['3ds Max', 'ZBrush', 'Substance', 'UE'],
       links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/1xL1wZ' }]
     },
     {
-      id: 4,
+      id: 5,
       title: 'Medical Horror Kit',
       icon: '❖',
       date: '2021',
       category: 'props',
-      genre: { es: 'Props / Pack de Terror', en: 'Props / Horror Asset Pack' },
+      genre: { es: 'Props / Terror', en: 'Props / Horror' },
       description: {
-        es: 'Kit de props médicos con estética de terror, diseñados para el universo de INSOMNIS: instrumental quirúrgico envejecido y mobiliario hospitalario de alta poligonización.',
-        en: 'Medical props kit with a horror aesthetic, designed for the INSOMNIS universe: aged surgical instruments and high-poly hospital furniture.'
+        es: 'Kit de props médicos con estética de terror diseñados para INSOMNIS: instrumental quirúrgico envejecido y mobiliario.',
+        en: 'Medical props kit with horror aesthetic designed for INSOMNIS: aged surgical instruments and furniture.'
       },
       highlights: {
-        es: [
-          'Instrumental médico horror y mobiliario',
-          'High poly con detalle de desgaste',
-          'Texturizado PBR en Substance Painter',
-          'Render de presentación en Marmoset'
-        ],
-        en: [
-          'Horror medical instruments and furniture',
-          'High poly with wear detail',
-          'PBR texturing in Substance Painter',
-          'Presentation render in Marmoset'
-        ]
+        es: ['High poly con desgaste', 'Texturizado PBR', 'Marmoset Toolbag render'],
+        en: ['High poly with wear', 'PBR texturing', 'Marmoset Toolbag render']
       },
-      tags: ['3ds Max', 'ZBrush', 'Substance Painter', 'Marmoset'],
+      tags: ['3ds Max', 'ZBrush', 'Substance', 'Marmoset'],
       links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/klZ0bd' }]
     },
     {
-      id: 5,
+      id: 6,
       title: 'Apartment Level VR',
       icon: '◈',
       date: '2018',
       category: 'games',
       genre: { es: 'Entorno VR', en: 'VR Environment' },
       description: {
-        es: 'Nivel de apartamento para realidad virtual desarrollado durante mi etapa en LEVEL-VR: modelado, texturizado con Substance y optimización gráfica para UE4.',
-        en: 'Apartment level for virtual reality developed during my time at LEVEL-VR: modeling, Substance texturing and graphical optimization for UE4.'
+        es: 'Nivel de apartamento para realidad virtual desarrollado durante mi etapa en LEVEL-VR: modelado, texturizado y optimización gráfica en UE4.',
+        en: 'Apartment level for VR developed at LEVEL-VR: modeling, texturing and graphical optimization for UE4.'
       },
       highlights: {
-        es: [
-          'Escenario VR de apartamento',
-          'Modelado 3D y texturizado Substance',
-          'Materiales de arquitectura en Unreal',
-          'Optimización gráfica para VR'
-        ],
-        en: [
-          'VR apartment environment',
-          '3D modeling and Substance texturing',
-          'Architecture materials in Unreal',
-          'Graphical optimization for VR'
-        ]
+        es: ['Escenario VR en Unreal Engine 4', 'Materiales arquitectónicos', 'Optimización 90fps VR'],
+        en: ['VR environment in UE4', 'Architectural materials', '90fps VR optimization']
       },
       tags: ['Unreal Engine 4', '3ds Max', 'Substance', 'VR'],
       links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/Yk2yb' }]
-    },
-    {
-      id: 6,
-      title: 'Valdecarros Digital Twin (PPG Studios)',
-      icon: '⚙',
-      date: '2023 - Actualidad',
-      category: 'games',
-      genre: { es: 'Gemelo Digital / Arquitectura en Tiempo Real', en: 'Digital Twin / Real-Time Architecture' },
-      description: {
-        es: 'Gemelo digital creado con Unreal Engine 5 para el proyecto de construcción del barrio de Valdecarros, el primer desarrollo urbano que puede recorrerse virtualmente. Rol de Senior Technical Artist / Programador de software.',
-        en: 'Digital twin created with Unreal Engine 5 for the construction project of the Valdecarros neighborhood, the first urban development that can be toured virtually. Role of Senior Technical Artist / Software Programmer.'
-      },
-      highlights: {
-        es: [
-          'Gemelo digital en Unreal Engine 5',
-          'Primer desarrollo urbano que puede recorrerse virtualmente',
-          'Aplicaciones de visualización con base de datos para clientes',
-          'Rol: Senior Technical Artist / Programador de software'
-        ],
-        en: [
-          'Digital twin in Unreal Engine 5',
-          'First urban development that can be toured virtually',
-          'Visualization applications with client database',
-          'Role: Senior Technical Artist / Software Programmer'
-        ]
-      },
-      tags: ['Unreal Engine 5', '3ds Max', 'SQL Server', 'C++', 'Python', 'React'],
-      links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/Rq36kA' }]
     },
     {
       id: 7,
@@ -210,16 +162,16 @@ export default function ProjectsSection() {
       icon: '✦',
       date: '2023',
       category: 'props',
-      genre: { es: 'Modelo de Arma / Hard Surface', en: 'Weapon Model / Hard Surface' },
+      genre: { es: 'Arma / Hard Surface', en: 'Weapon / Hard Surface' },
       description: {
         es: 'Modelo high y low poly del fusil M4A1: modelado hard surface, texturizado PBR y render de presentación.',
         en: 'High and low poly model of the M4A1 rifle: hard surface modeling, PBR texturing and presentation render.'
       },
       highlights: {
-        es: ['Modelado hard surface', 'Low poly con bake de texturas', 'Texturizado PBR en Substance Painter'],
-        en: ['Hard surface modeling', 'Low poly with texture baking', 'PBR texturing in Substance Painter']
+        es: ['Modelado hard surface', 'Bake de texturas', 'Texturizado PBR'],
+        en: ['Hard surface modeling', 'Texture baking', 'PBR texturing']
       },
-      tags: ['3ds Max', 'ZBrush', 'Substance Painter', 'Hard Surface'],
+      tags: ['3ds Max', 'ZBrush', 'Substance Painter'],
       links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/4JzRW' }]
     },
     {
@@ -234,8 +186,8 @@ export default function ProjectsSection() {
         en: 'Low poly gun optimized for games: clean topology, UVs and light texturing.'
       },
       highlights: {
-        es: ['Modelado low poly', 'Topología optimizada para juegos', 'Unwrap de UVs'],
-        en: ['Low poly modeling', 'Game-ready topology', 'UV unwrapping']
+        es: ['Topología limpia para juegos', 'Unwrap de UVs', 'Texturizado optimizado'],
+        en: ['Clean game topology', 'UV unwrapping', 'Optimized texturing']
       },
       tags: ['3ds Max', 'Low Poly', 'UV Mapping'],
       links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/X0Xxl' }]
@@ -246,14 +198,14 @@ export default function ProjectsSection() {
       icon: '★',
       date: '2019',
       category: 'env',
-      genre: { es: 'Comercial / Animación TV', en: 'Commercial / Christmas Animation' },
+      genre: { es: 'Comercial / Animación TV', en: 'Commercial / TV Animation' },
       description: {
-        es: 'Participación en el anuncio de Navidad de Campofrío: creación de entornos y props navideños para el spot publicitario.',
-        en: 'Work on the Campofrío Christmas ad: creation of Christmas environments and props for the commercial spot.'
+        es: 'Entornos y props navideños para el spot publicitario de Campofrío "FAKE ME".',
+        en: 'Christmas environments and props for Campofrío commercial spot "FAKE ME".'
       },
       highlights: {
-        es: ['Entornos y props para spot publicitario', 'Estética navideña retro', 'Producción para TV'],
-        en: ['Environments and props for a TV spot', 'Retro Christmas aesthetic', 'TV production']
+        es: ['Entornos para spot publicitario', 'Estética navideña', 'Producción para TV'],
+        en: ['Sets for commercial spot', 'Christmas aesthetic', 'TV production']
       },
       tags: ['3ds Max', 'Substance', 'Set Design'],
       links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/RY4ane' }]
@@ -266,14 +218,14 @@ export default function ProjectsSection() {
       category: 'env',
       genre: { es: 'Escena Navideña / Entorno', en: 'Christmas Scene / Environment' },
       description: {
-        es: 'Versión navideña nevada del entorno de WEWORK Factory: nieve, decoración navideña e iluminación festiva.',
-        en: 'Snowy Christmas version of the WEWORK Factory environment: snow, Christmas decoration and festive lighting.'
+        es: 'Versión invernal con nieve, decoración navideña e iluminación festiva del entorno WEWORK Factory.',
+        en: 'Winter snowy version with Christmas decoration and festive lighting of WEWORK Factory.'
       },
       highlights: {
-        es: ['Escena invernal con nieve', 'Decoración navideña', 'Iluminación festiva'],
-        en: ['Winter scene with snow', 'Christmas decoration', 'Festive lighting']
+        es: ['Escena invernal con nieve', 'Iluminación festiva', 'Quixel Megascans'],
+        en: ['Winter snowy environment', 'Festive lighting', 'Quixel Megascans']
       },
-      tags: ['Unreal Engine', 'Quixel', '3ds Max', 'Iluminación'],
+      tags: ['Unreal Engine', 'Quixel', '3ds Max'],
       links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/A9bgvo' }]
     },
     {
@@ -284,14 +236,14 @@ export default function ProjectsSection() {
       category: 'props',
       genre: { es: 'Props / Terror', en: 'Props / Horror' },
       description: {
-        es: 'Props especiales de la edición de Halloween de Insomnis: objetos de terror con estética envejecida.',
-        en: 'Special props for the Halloween edition of Insomnis: horror props with an aged aesthetic.'
+        es: 'Props temáticos especiales para la edición de Halloween de Insomnis con estética envejecida.',
+        en: 'Special themed props for the Halloween edition of Insomnis with aged aesthetic.'
       },
       highlights: {
-        es: ['Props temáticos de Halloween', 'Texturizado envejecido', 'Ambientación de terror'],
-        en: ['Halloween themed props', 'Aged texturing', 'Horror atmosphere']
+        es: ['Objetos de terror envejecidos', 'PBR texturing', 'In-game ready'],
+        en: ['Aged horror objects', 'PBR texturing', 'In-game ready']
       },
-      tags: ['3ds Max', 'Substance', 'Insomnis', 'Props'],
+      tags: ['3ds Max', 'Substance', 'Insomnis'],
       links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/3ooRzY' }]
     },
     {
@@ -302,14 +254,14 @@ export default function ProjectsSection() {
       category: 'props',
       genre: { es: 'Prop / Insomnis', en: 'Prop / Insomnis' },
       description: {
-        es: 'Proyector antiguo para el universo de Insomnis: modelado detallado y texturizado con desgaste del tiempo.',
-        en: 'Old projector for the Insomnis universe: detailed modeling and aged texturing.'
+        es: 'Proyector antiguo para Insomnis: modelado detallado y texturizado con desgaste del tiempo.',
+        en: 'Old projector for Insomnis: detailed modeling and aged texturing.'
       },
       highlights: {
-        es: ['Prop high poly detallado', 'Texturizado de desgaste', 'Integrado en Insomnis'],
-        en: ['Detailed high poly prop', 'Wear texturing', 'Integrated in Insomnis']
+        es: ['High poly detallado', 'Textura con pátina de tiempo', 'Integrado en juego'],
+        en: ['Detailed high poly', 'Weathered patina texture', 'In-game integrated']
       },
-      tags: ['3ds Max', 'ZBrush', 'Substance', 'Insomnis'],
+      tags: ['3ds Max', 'ZBrush', 'Substance'],
       links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/dOONNe' }]
     },
     {
@@ -320,14 +272,14 @@ export default function ProjectsSection() {
       category: 'props',
       genre: { es: 'Props / Insomnis', en: 'Props / Insomnis' },
       description: {
-        es: 'Colección de puertas antiguas para la mansión de Insomnis: modelado y texturizado con aspecto deteriorado.',
-        en: 'Collection of old doors for the Insomnis mansion: modeling and texturing with a weathered look.'
+        es: 'Colección de puertas antiguas deterioradas para la mansión de Insomnis.',
+        en: 'Collection of weathered old doors for the Insomnis mansion.'
       },
       highlights: {
-        es: ['Varias puertas con variaciones', 'Estética deteriorada', 'Listas para el juego'],
-        en: ['Multiple door variations', 'Weathered aesthetic', 'Game-ready']
+        es: ['Variaciones modulares', 'Desgaste en madera y herrajes', 'Optimizado'],
+        en: ['Modular variations', 'Wood and metal wear', 'Optimized']
       },
-      tags: ['3ds Max', 'Substance', 'Insomnis', 'Props'],
+      tags: ['3ds Max', 'Substance', 'Props'],
       links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/Qzz4Nx' }]
     },
     {
@@ -336,16 +288,16 @@ export default function ProjectsSection() {
       icon: '✦',
       date: '2018',
       category: 'props',
-      genre: { es: 'Props / Insomnis', en: 'Props / Insomnis' },
+      genre: { es: 'Props / Iluminación', en: 'Props / Lighting' },
       description: {
-        es: 'Lámparas antiguas para Insomnis: props de iluminación con materiales y desgaste de época.',
-        en: 'Old lamps for Insomnis: lighting props with period materials and wear.'
+        es: 'Lámparas de época victorianas para Insomnis con materiales translúcidos y desgaste.',
+        en: 'Victorian lamps for Insomnis with translucent materials and aged brass.'
       },
       highlights: {
-        es: ['Props de iluminación antiguos', 'Materiales de época', 'Texturizado con desgaste'],
-        en: ['Old lighting props', 'Period materials', 'Aged texturing']
+        es: ['Shaders de cristal y latón', 'Iluminación de época', 'Game-ready'],
+        en: ['Glass and brass shaders', 'Period lighting', 'Game-ready']
       },
-      tags: ['3ds Max', 'Substance', 'Insomnis', 'Props'],
+      tags: ['3ds Max', 'Substance', 'Props'],
       links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/rRR3v2' }]
     },
     {
@@ -356,14 +308,14 @@ export default function ProjectsSection() {
       category: 'env',
       genre: { es: 'Entorno Modular / UE4', en: 'Modular Environment / UE4' },
       description: {
-        es: 'Entorno modular creado en Unreal Engine 4: kit de piezas para construir escenarios de forma flexible y optimizada.',
-        en: 'Modular environment built in Unreal Engine 4: a kit of pieces to build sets flexibly and efficiently.'
+        es: 'Kit de piezas modulares para construcción rápida de escenarios flexibles en Unreal Engine 4.',
+        en: 'Kit of modular pieces for fast, flexible environment assembly in Unreal Engine 4.'
       },
       highlights: {
-        es: ['Kit modular de piezas', 'Ensamblaje en UE4', 'Optimización de assets'],
-        en: ['Modular kit of pieces', 'UE4 assembly', 'Asset optimization']
+        es: ['Kit modular de piezas', 'Snap de rejilla perfecto', 'Optimización de draw calls'],
+        en: ['Modular pieces kit', 'Grid-snapping', 'Draw call optimization']
       },
-      tags: ['Unreal Engine 4', '3ds Max', 'Modular', 'Environment'],
+      tags: ['Unreal Engine 4', '3ds Max', 'Modular'],
       links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/8nmnw' }]
     },
     {
@@ -374,32 +326,32 @@ export default function ProjectsSection() {
       category: 'props',
       genre: { es: 'Props / Insomnis', en: 'Props / Insomnis' },
       description: {
-        es: 'Marcos antiguos para las paredes de la mansión de Insomnis: variaciones con cuadros y texturizado desgastado.',
-        en: 'Old frames for the walls of the Insomnis mansion: variations with paintings and weathered texturing.'
+        es: 'Marcos y lienzos antiguos para ambientar la mansión de Insomnis.',
+        en: 'Old frames and canvas paintings for the Insomnis mansion atmosphere.'
       },
       highlights: {
-        es: ['Marcos con variaciones', 'Cuadros integrados', 'Estética desgastada'],
-        en: ['Frames with variations', 'Integrated paintings', 'Weathered aesthetic']
+        es: ['Marcos con variaciones', 'Texturas de óleo envejecido', 'Props ligeros'],
+        en: ['Frame variations', 'Aged oil painting textures', 'Lightweight props']
       },
-      tags: ['3ds Max', 'Substance', 'Insomnis', 'Props'],
+      tags: ['3ds Max', 'Substance', 'Props'],
       links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/0XXWLV' }]
     },
     {
       id: 17,
-      title: 'Low Poly Cardboard Boxes & Paper Cards',
+      title: 'Low Poly Boxes & Cards',
       icon: '❖',
       date: '2018',
       category: 'props',
-      genre: { es: 'Props Low Poly / Insomnis', en: 'Low Poly Props / Insomnis' },
+      genre: { es: 'Props Low Poly', en: 'Low Poly Props' },
       description: {
-        es: 'Cajas de cartón y cartas de papel low poly para Insomnis: props ligeros y optimizados para el juego.',
-        en: 'Low poly cardboard boxes and paper cards for Insomnis: light props optimized for the game.'
+        es: 'Cajas de cartón y cartas de papel optimizadas para rendimiento en Insomnis.',
+        en: 'Cardboard boxes and paper cards optimized for high performance in Insomnis.'
       },
       highlights: {
-        es: ['Props low poly', 'Cajas y cartas de papel', 'Optimizados para juegos'],
-        en: ['Low poly props', 'Boxes and paper cards', 'Game optimized']
+        es: ['Ultra low poly', 'Atlases de textura compactos', 'Físicas integradas'],
+        en: ['Ultra low poly', 'Compact texture atlases', 'Physics ready']
       },
-      tags: ['3ds Max', 'Low Poly', 'Insomnis', 'Props'],
+      tags: ['3ds Max', 'Low Poly', 'Props'],
       links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/588GPJ' }]
     },
     {
@@ -408,14 +360,14 @@ export default function ProjectsSection() {
       icon: '⚙',
       date: '2018',
       category: 'props',
-      genre: { es: 'Prop / Hard Surface', en: 'Prop / Hard Surface' },
+      genre: { es: 'Hard Surface', en: 'Hard Surface' },
       description: {
-        es: 'Portátil modelado como prop hard surface: detalle de teclado, bisagras y texturizado realista.',
-        en: 'Laptop modeled as a hard surface prop: keyboard detail, hinges and realistic texturing.'
+        es: 'Portátil modelado hard surface con detalle de puertos, teclado y bisagras.',
+        en: 'Hard surface laptop modeled with port, keyboard and hinge detail.'
       },
       highlights: {
-        es: ['Modelado hard surface', 'Detalle de teclado y bisagras', 'Texturizado realista'],
-        en: ['Hard surface modeling', 'Keyboard and hinge detail', 'Realistic texturing']
+        es: ['Hard surface preciso', 'Materiales PBR metálicos y plásticos', 'Render Marmoset'],
+        en: ['Precise hard surface', 'Metallic & plastic PBR materials', 'Marmoset render']
       },
       tags: ['3ds Max', 'Substance', 'Hard Surface'],
       links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/zoAZ4' }]
@@ -426,16 +378,16 @@ export default function ProjectsSection() {
       icon: '✦',
       date: '2017',
       category: 'props',
-      genre: { es: 'Prop / Insomnis', en: 'Prop / Insomnis' },
+      genre: { es: 'Prop / Terror', en: 'Prop / Horror' },
       description: {
-        es: 'Jaula antigua para Insomnis: prop metálico con óxido y detalle de época.',
-        en: 'Old cage for Insomnis: metal prop with rust and period detail.'
+        es: 'Jaula metálica con óxido y pátina de época para Insomnis.',
+        en: 'Metal cage with rust and period patina for Insomnis.'
       },
       highlights: {
-        es: ['Prop metálico detallado', 'Texturizado con óxido', 'Estética de época'],
-        en: ['Detailed metal prop', 'Rust texturing', 'Period aesthetic']
+        es: ['Modelado de barrotes y cerradura', 'Texturas de óxido realista', 'Ambiente tétrico'],
+        en: ['Bars and lock modeling', 'Realistic rust textures', 'Gloomy atmosphere']
       },
-      tags: ['3ds Max', 'Substance', 'Insomnis', 'Props'],
+      tags: ['3ds Max', 'Substance', 'Props'],
       links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/qR5wR' }]
     },
     {
@@ -446,14 +398,14 @@ export default function ProjectsSection() {
       category: 'env',
       genre: { es: 'Escena / Entorno', en: 'Scene / Environment' },
       description: {
-        es: 'Escena de templo antiguo: composición de entorno con columnas, iluminación volumétrica y atmósfera.',
-        en: 'Ancient temple scene: environment composition with columns, volumetric lighting and atmosphere.'
+        es: 'Escena de templo antiguo con columnas de piedra e iluminación volumétrica dramática.',
+        en: 'Ancient temple scene with stone columns and dramatic volumetric lighting.'
       },
       highlights: {
-        es: ['Entorno de templo antiguo', 'Iluminación volumétrica', 'Composición de escena'],
-        en: ['Ancient temple environment', 'Volumetric lighting', 'Scene composition']
+        es: ['Composición e iluminación volumétrica', 'Modelado arquitectónico', 'Atmósfera'],
+        en: ['Composition & volumetric lighting', 'Architectural modeling', 'Atmosphere']
       },
-      tags: ['3ds Max', 'Substance', 'Environment', 'Iluminación'],
+      tags: ['3ds Max', 'Substance', 'Environment'],
       links: [{ label: 'ArtStation', url: 'https://www.artstation.com/artwork/KByVx' }]
     }
   ]
@@ -475,17 +427,29 @@ export default function ProjectsSection() {
     return projects.filter((p) => p.category === currentFilter)
   }, [currentFilter, projects])
 
+  const totalPages = Math.ceil(filteredProjects.length / ITEMS_PER_PAGE)
+
+  const paginatedProjects = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE
+    return filteredProjects.slice(start, start + ITEMS_PER_PAGE)
+  }, [filteredProjects, currentPage])
+
+  const handleFilterChange = (filterId) => {
+    setCurrentFilter(filterId)
+    setCurrentPage(1)
+  }
+
   const hasArtStationLink = activeProject
     ? activeProject.links.some((l) => l.url.includes('artstation.com'))
     : false
 
   return (
     <div className="projects-container glass-panel">
-      {/* Header Badge */}
+      {/* Header */}
       <div className="card-header">
         <div className="tech-badge">
           <span className="pulse-dot"></span>
-          <span>VAULT // {projects.length} {vaultLabel}</span>
+          <span>{vaultLabel} // {filteredProjects.length} PRODUCCIONES</span>
         </div>
         <div className="filter-group">
           {filterOptions.map((f) => (
@@ -493,7 +457,7 @@ export default function ProjectsSection() {
               key={f.id}
               type="button"
               className={`filter-btn ${currentFilter === f.id ? 'active' : ''}`}
-              onClick={() => setCurrentFilter(f.id)}
+              onClick={() => handleFilterChange(f.id)}
             >
               {f.label}
             </button>
@@ -501,51 +465,69 @@ export default function ProjectsSection() {
         </div>
       </div>
 
-      {/* Projects Grid */}
-      <div className="projects-grid">
-        {filteredProjects.map((project) => (
+      {/* Compact 3x2 Grid */}
+      <div className="projects-compact-grid">
+        {paginatedProjects.map((project) => (
           <div
             key={project.id}
-            className="project-card"
+            className="project-compact-card"
             onClick={() => setActiveProject(project)}
           >
             <div className="card-top">
-              <div className="card-identity">
-                <span className="project-icon">{project.icon}</span>
-                <span className="project-date">{project.date}</span>
+              <span className="project-icon">{project.icon}</span>
+              <span className="genre-mini-pill">{project.genre}</span>
+              <span className="date-tag">{project.date}</span>
+            </div>
+
+            <h3 className="project-title">{project.title}</h3>
+            <p className="project-summary">{project.description}</p>
+
+            <div className="card-bottom">
+              <div className="mini-tags">
+                {project.tags.slice(0, 2).map((t) => (
+                  <span key={t} className="mini-tag">{t}</span>
+                ))}
               </div>
-              <span className="genre-pill">{project.genre}</span>
-            </div>
-
-            <div className="card-main">
-              <h3 className="project-title">{project.title}</h3>
-              <p className="project-desc">{project.description}</p>
-            </div>
-
-            <div className="card-tags">
-              {project.tags.slice(0, 3).map((t) => (
-                <span key={t} className="project-tag">
-                  {t}
-                </span>
-              ))}
-              {project.tags.length > 3 && (
-                <span className="project-tag more-tag">
-                  +{project.tags.length - 3}
-                </span>
-              )}
-            </div>
-
-            <div className="card-footer">
-              <span className="inspect-text">
-                <span>{viewDetailsLabel}</span>
-                <span className="arrow-icon">→</span>
-              </span>
+              <span className="inspect-btn">Ver ↗</span>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Project Detail Modal */}
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="pagination-bar">
+          <button
+            type="button"
+            className="page-nav-btn"
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+          >
+            ‹
+          </button>
+          <div className="page-dots">
+            {Array.from({ length: totalPages }).map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                className={`page-dot ${currentPage === idx + 1 ? 'active' : ''}`}
+                onClick={() => setCurrentPage(idx + 1)}
+                aria-label={`Página ${idx + 1}`}
+              />
+            ))}
+          </div>
+          <button
+            type="button"
+            className="page-nav-btn"
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+          >
+            ›
+          </button>
+        </div>
+      )}
+
+      {/* Modal */}
       {activeProject && (
         <div className="modal-overlay" onClick={() => setActiveProject(null)}>
           <div className="modal-content glass-panel" onClick={(e) => e.stopPropagation()}>

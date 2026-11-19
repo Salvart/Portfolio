@@ -42,6 +42,7 @@
 html {
   font-family: var(--font-main);
   scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
   background-color: var(--bg-dark);
   color: var(--text-main);
   -webkit-font-smoothing: antialiased;
