@@ -96,6 +96,7 @@ export default function MotherboardScene({ index, reducedMotion }) {
     const composer = new EffectComposer(renderer)
     composer.addPass(new RenderPass(scene, camera))
     const lensPass = new ShaderPass(LensVhsShader)
+    lensPass.uniforms.uResolution.value = new THREE.Vector2(host.clientWidth, host.clientHeight)
     composer.addPass(lensPass)
     composer.addPass(new OutputPass())
 
@@ -202,6 +203,7 @@ export default function MotherboardScene({ index, reducedMotion }) {
       current.renderer.setSize(width, height)
       current.composer.setPixelRatio(pixelRatio)
       current.composer.setSize(width, height)
+      current.lensPass.uniforms.uResolution.value.set(width, height)
     }
     const onVisibility = () => {
       if (document.hidden) stopLoop()

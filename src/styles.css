@@ -614,10 +614,24 @@ a:focus-visible {
   background:
     repeating-linear-gradient(
       0deg,
-      rgba(0, 0, 0, 0.28) 0px,
-      rgba(0, 0, 0, 0.28) 4px,
-      transparent 4px,
-      transparent 9px
+      rgba(0, 0, 0, 0.34) 0px,
+      rgba(0, 0, 0, 0.34) 3px,
+      transparent 3px,
+      transparent 5px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 45, 95, 0.22) 0px,
+      rgba(255, 45, 95, 0.22) 3px,
+      transparent 3px,
+      transparent 5px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(45, 225, 255, 0.22) 0px,
+      rgba(45, 225, 255, 0.22) 3px,
+      transparent 3px,
+      transparent 5px
     ),
     linear-gradient(
       90deg,
@@ -626,14 +640,16 @@ a:focus-visible {
       transparent 82%,
       rgba(0, 220, 255, 0.035)
     );
-  background-position: 0 0, 0 0;
-  animation: vhs-scanlines 0.7s linear infinite;
+  background-position: 0 0, -1px 0, 1px 0, 0 0;
+  background-blend-mode: normal, screen, screen, normal;
+  filter: blur(0.6px);
+  animation: vhs-scanlines 0.3s linear infinite;
 }
 
-/* Las líneas de TV se desplazan verticalmente de forma continua. */
+/* Líneas juntas, gruesas y desenfocadas, con franjas roja y cian desplazadas. */
 @keyframes vhs-scanlines {
-  from { background-position: 0 0, 0 0; }
-  to { background-position: 0 9px, 0 0; }
+  from { background-position: 0 0, -1px 0, 1px 0, 0 0; }
+  to { background-position: 0 5px, -1px 5px, 1px 5px, 0 0; }
 }
 
 .vhs-overlay::before {
