@@ -22,7 +22,7 @@ Una landing de una sola pantalla construida desde cero alrededor de una **placa 
 
 La PCB es más grande y sigue una distribución lógica de placa de consola: zócalo de CPU, bloque gráfico con disipador, banco de memoria, sector de alimentación con condensadores y bobinas, conector de expansión, puertos laterales y buses ortogonales en grupo, con espacio entre los cuatro chips. La serigrafía con caracteres chinos es solo decoración.
 
-La iluminación es más realista: luces atenuadas, sombras proyectadas y un foco ligado al cursor que recorre la placa. El ratón **no mueve la cámara**, solo mueve esa luz. El chip activo brilla suavemente. Se respeta `prefers-reduced-motion` y hay fallback si WebGL no está disponible.
+La iluminación es más realista: luces de fondo muy bajas, sombras proyectadas y un foco ligado al cursor que recorre la placa y es la fuente principal. El ratón **no mueve la cámara**, solo mueve esa luz y el destello de la lente. Sobre toda la web hay un efecto VHS (líneas de exploración, grano, cromática y seguimiento) y la cámara tiene viñeta y destello anamórfico. El chip activo brilla suavemente. Se respeta `prefers-reduced-motion` y hay fallback si WebGL no está disponible.
 
 ---
 

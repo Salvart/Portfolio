@@ -91,6 +91,62 @@ a:focus-visible {
     var(--bg);
 }
 
+/* --- Lente de cámara: viñeta, destello y raya anamórfica --- */
+
+.camera-lens {
+  --lens-x: 50%;
+  --lens-y: 50%;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    transparent 32%,
+    rgba(2, 7, 5, 0.28) 72%,
+    rgba(1, 4, 3, 0.62) 100%
+  );
+  box-shadow: inset 0 0 140px rgba(4, 16, 12, 0.55);
+}
+
+.camera-lens::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at var(--lens-x) var(--lens-y),
+      rgba(255, 240, 205, 0.26) 0,
+      rgba(255, 214, 158, 0.12) 3%,
+      transparent 11%
+    ),
+    radial-gradient(
+      ellipse 34% 3% at var(--lens-x) var(--lens-y),
+      rgba(255, 224, 170, 0.22),
+      transparent 72%
+    );
+  mix-blend-mode: screen;
+  animation: lens-breathe 5s ease-in-out infinite;
+}
+
+.camera-lens::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    transparent 55%,
+    rgba(120, 200, 180, 0.07) 82%,
+    transparent 100%
+  );
+  mix-blend-mode: screen;
+}
+
+@keyframes lens-breathe {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+
 /* --- Texto: solo letra, sin contenedores visibles --- */
 
 .scene-text {
@@ -508,12 +564,100 @@ a:focus-visible {
   }
 }
 
+/* --- VHS global: líneas de exploración, grano, cromática y seguimiento --- */
+
+.scene-text,
+.minimal-nav {
+  text-shadow:
+    0.6px 0 rgba(255, 60, 90, 0.35),
+    -0.6px 0 rgba(80, 220, 255, 0.35);
+}
+
+.experience {
+  animation: vhs-jitter 9s linear infinite;
+}
+
+.vhs-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.16) 0px,
+      rgba(0, 0, 0, 0.16) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 0, 60, 0.035),
+      transparent 18%,
+      transparent 82%,
+      rgba(0, 220, 255, 0.035)
+    );
+}
+
+.vhs-overlay::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.11;
+  animation: vhs-grain 0.22s steps(3) infinite;
+}
+
+.vhs-overlay::after {
+  content: '';
+  position: absolute;
+  top: -12%;
+  left: 0;
+  right: 0;
+  height: 12%;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(255, 255, 255, 0.045) 45%,
+    rgba(160, 240, 220, 0.03) 60%,
+    transparent
+  );
+  mix-blend-mode: screen;
+  animation: vhs-tracking 7s linear infinite;
+}
+
+@keyframes vhs-grain {
+  0% { transform: translate(0, 0); }
+  33% { transform: translate(-3%, 2%); }
+  66% { transform: translate(2%, -3%); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes vhs-tracking {
+  0%, 78% { top: -12%; opacity: 0; }
+  80% { opacity: 1; }
+  100% { top: 108%; opacity: 0; }
+}
+
+@keyframes vhs-jitter {
+  0%, 96%, 100% { transform: translateX(0); }
+  96.5% { transform: translateX(-2px); }
+  97% { transform: translateX(2px); }
+  97.5% { transform: translateX(-1px); }
+  98% { transform: translateX(0); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .scene-text {
     transition: none;
   }
 
-  .nav-cue {
+  .nav-cue,
+  .experience,
+  .camera-lens::before,
+  .vhs-overlay::before,
+  .vhs-overlay::after {
     animation: none;
   }
 }

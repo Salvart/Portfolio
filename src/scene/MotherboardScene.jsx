@@ -26,7 +26,7 @@ export default function MotherboardScene({ index, reducedMotion }) {
     renderer.setSize(host.clientWidth, Math.max(1, host.clientHeight))
     renderer.outputColorSpace = THREE.SRGBColorSpace
     renderer.toneMapping = THREE.ACESFilmicToneMapping
-    renderer.toneMappingExposure = 1.45
+    renderer.toneMappingExposure = 1.25
     renderer.shadowMap.enabled = true
     renderer.shadowMap.type = THREE.PCFSoftShadowMap
     host.appendChild(renderer.domElement)
@@ -44,11 +44,11 @@ export default function MotherboardScene({ index, reducedMotion }) {
     camera.position.copy(VIEWS[index].camera)
     camera.lookAt(VIEWS[index].look)
 
-    // Iluminación a la mitad que en la versión anterior, con la principal proyectando sombras.
-    scene.add(new THREE.AmbientLight(0xa9c4b6, 0.675))
-    scene.add(new THREE.HemisphereLight(0xd4efe3, 0x0c2018, 0.55))
+    // Iluminación de fondo muy baja: el foco del cursor es la fuente principal.
+    scene.add(new THREE.AmbientLight(0xa9c4b6, 0.3))
+    scene.add(new THREE.HemisphereLight(0xd4efe3, 0x0c2018, 0.25))
 
-    const keyLight = new THREE.DirectionalLight(0xffe8c4, 1.2)
+    const keyLight = new THREE.DirectionalLight(0xffe8c4, 0.7)
     keyLight.position.set(5, 9, 7)
     keyLight.castShadow = true
     keyLight.shadow.mapSize.set(2048, 2048)
@@ -61,10 +61,10 @@ export default function MotherboardScene({ index, reducedMotion }) {
     keyLight.shadow.bias = -0.0005
     scene.add(keyLight)
 
-    const rimLight = new THREE.DirectionalLight(0x74e3c9, 0.575)
+    const rimLight = new THREE.DirectionalLight(0x74e3c9, 0.25)
     rimLight.position.set(-6, 5, -4)
     scene.add(rimLight)
-    const fillLight = new THREE.PointLight(0xffd9a0, 35, 40)
+    const fillLight = new THREE.PointLight(0xffd9a0, 16, 40)
     fillLight.position.set(0, 7, 8)
     scene.add(fillLight)
 
