@@ -166,9 +166,6 @@ a:focus-visible {
 }
 
 .body-line {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 6;
   font-size: clamp(0.82rem, 1.05vw, 1rem);
   line-height: 1.5;
 }
