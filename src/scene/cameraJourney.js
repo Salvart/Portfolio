@@ -2,7 +2,7 @@
 
 import * as THREE from 'three'
 
-export const TRANSITION_MS = 1900
+export const TRANSITION_MS = 2200
 
 // Posición de cada chip sobre la placa (coincide con Motherboard.js).
 export const CHIP_POSITIONS = {
@@ -25,12 +25,18 @@ export const VIEWS = [
   view('io', [6.0, 9.45, 0.8], [6.0, 0.35, -0.5])
 ]
 
-const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
+// Smootherstep: posición, velocidad y aceleración cero en los extremos.
+// Evita el arranque y el frenado bruscos al entrar o salir de cada recorrido.
+const smootherstep = (t) => t * t * t * (t * (t * 6 - 15) + 10)
 
-// Se retrocede alejando la cámara del chip (+Z), nunca cruzando por detrás:
-// cruzar el objetivo provocaría un giro brusco de 180° al mirar siempre al chip.
-const pulledBack = (vector) => new THREE.Vector3(vector.x, vector.y + 6.4, vector.z + 4.4)
-const boardLevel = (vector) => new THREE.Vector3(vector.x, 0.35, vector.z)
+// Parábola invertida: 0 al empezar, 1 en el punto medio y 0 al terminar.
+// Aplicada al tiempo suavizado, describe el arco de alejamiento y acercamiento.
+const parabola = (u) => 4 * u * (1 - u)
+
+// Retroceso máximo en el vértice de la parábola. Nunca cruza el objetivo,
+// para que la cámara no dé un giro de 180° al mirar siempre al chip.
+const PULL_BACK_Y = 6.4
+const PULL_BACK_Z = 4.4
 
 export function createJourney(fromIndex, toIndex) {
   const from = VIEWS[fromIndex]
@@ -38,8 +44,10 @@ export function createJourney(fromIndex, toIndex) {
 
   return {
     duration: TRANSITION_MS,
-    camera: [from.camera, pulledBack(from.camera), pulledBack(to.camera), to.camera],
-    look: [from.look, boardLevel(from.look), boardLevel(to.look), to.look],
+    fromCamera: from.camera,
+    toCamera: to.camera,
+    fromLook: from.look,
+    toLook: to.look,
     fromChip: from.chip,
     chip: to.chip
   }
@@ -50,12 +58,15 @@ const scratchLook = new THREE.Vector3()
 
 export function sampleJourney(journey, elapsed) {
   const progress = Math.min(1, Math.max(0, elapsed / journey.duration))
-  const scaled = progress * 3
-  const segment = Math.min(2, Math.floor(scaled))
-  const local = easeInOutCubic(scaled - segment)
+  const u = smootherstep(progress)
+  const pull = parabola(u)
 
-  scratchPosition.copy(journey.camera[segment]).lerp(journey.camera[segment + 1], local)
-  scratchLook.copy(journey.look[segment]).lerp(journey.look[segment + 1], local)
+  // Desplazamiento lateral continuo entre chips, sin pausas intermedias.
+  scratchPosition.copy(journey.fromCamera).lerp(journey.toCamera, u)
+  scratchPosition.y += PULL_BACK_Y * pull
+  scratchPosition.z += PULL_BACK_Z * pull
+
+  scratchLook.copy(journey.fromLook).lerp(journey.toLook, u)
 
   return { position: scratchPosition, lookAt: scratchLook, progress }
 }
