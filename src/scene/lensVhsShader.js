@@ -39,43 +39,51 @@ export const LensVhsShader = {
                  + sin(vUv.y * 53.0 - uTime * 6.0) * 0.007;
       uv.x += bandActive * tear * 2.2;
 
-      // Glitch errático: rejilla que cambia de tamaño y salta a cada tick.
-      float gTick = floor(uTime * 3.4);
+      // Glitch atenuado: ráfagas menos frecuentes sobre celdas grandes tipo píxel.
+      float gTick = floor(uTime * 1.7);
       float gRand = fract(sin(gTick * 127.1) * 43758.5453);
-      float glitchOn = step(0.72, gRand);
+      float glitchOn = step(0.86, gRand);
 
-      float sliceId = floor(vUv.y * (16.0 + gRand * 30.0) + gTick * 3.0);
-      float sRand = fract(sin(sliceId * 78.233 + gTick * 1.7) * 12345.6789);
-      float sliceOn = step(0.5, sRand);
-      float burst = glitchOn * sliceOn;
+      vec2 grid = vec2(9.0, 6.0);
+      vec2 cell = floor(vUv * grid + vec2(gTick * 0.5, gTick * 0.25));
+      float colParity = mod(cell.x + gTick, 2.0);
+      float colSign = mix(-1.0, 1.0, colParity);
+      float cellRand = fract(sin(dot(cell, vec2(12.9898, 78.233)) + gTick * 1.7) * 43758.5453);
+      float cellOn = step(0.55 + colParity * 0.12, cellRand);
+      float burst = glitchOn * cellOn;
 
-      // Desplazamiento brusco en X y pequeño salto vertical en las rodajas.
-      float shiftX = burst * (sRand - 0.5) * 0.3;
-      float shiftY = burst * (fract(sRand * 9.7) - 0.5) * 0.025;
+      // Columnas pares e impares se desplazan en direcciones contrarias.
+      float shiftX = burst * colSign * (0.02 + cellRand * 0.035);
+      float shiftY = burst * (cellRand - 0.5) * 0.012;
       uv += vec2(shiftX, shiftY);
+
+      // Cuadros grandes: se ajusta la muestra a una rejilla gruesa dentro de cada celda.
+      vec2 pixelGrid = vec2(24.0, 15.0);
+      vec2 pixelUv = (floor(uv * pixelGrid) + 0.5) / pixelGrid;
+      uv = mix(uv, pixelUv, burst * 0.8);
       uv = clamp(uv, 0.0, 1.0);
 
-      // Aberración cromática: radial suave + separación agresiva durante el glitch.
+      // Aberración cromática: radial suave + separación moderada durante el glitch.
       vec2 dir = normalize(centered + vec2(0.0001));
       float baseShift = uChroma * (0.25 + r2 * 1.4);
-      float burstShift = burst * (0.018 + sRand * 0.03);
-      vec2 rUv = uv + dir * (baseShift + burstShift) + vec2(shiftX * 0.45, 0.0);
-      vec2 bUv = uv - dir * (baseShift + burstShift) - vec2(shiftX * 0.45, 0.0);
+      float burstShift = burst * (0.009 + cellRand * 0.015);
+      vec2 rUv = uv + dir * (baseShift + burstShift) + vec2(shiftX * 0.4, 0.0);
+      vec2 bUv = uv - dir * (baseShift + burstShift) - vec2(shiftX * 0.4, 0.0);
       float red = texture2D(tDiffuse, clamp(rUv, 0.0, 1.0)).r;
       float green = texture2D(tDiffuse, uv).g;
       float blue = texture2D(tDiffuse, clamp(bUv, 0.0, 1.0)).b;
 
       vec3 color = vec3(red, green, blue);
 
-      // Tintado de color errático: los canales se desbalancean por rodaja.
-      float tint = fract(sin(gTick * 39.425 + sliceId) * 23421.631);
-      color.r += burst * tint * 0.3;
-      color.b += burst * (1.0 - tint) * 0.3;
-      color.g *= 1.0 - burst * 0.18;
+      // Tintado suave: los canales se desbalancean por columna alterna.
+      float tint = fract(sin(dot(cell, vec2(39.425, 11.135)) + gTick) * 23421.631);
+      color.r += burst * tint * 0.15;
+      color.b += burst * (1.0 - tint) * 0.15;
+      color.g *= 1.0 - burst * 0.09;
 
-      // Bloques ocasionales que se encienden o se apagan.
-      float block = step(0.93, fract(sin(sliceId * 13.13 + gTick * 7.7) * 7891.23));
-      float blockSign = mix(-0.12, 0.22, step(0.5, fract(tint * 3.0)));
+      // Píxeles ocasionales que se encienden o apagan.
+      float block = step(0.965, fract(sin(dot(cell, vec2(13.13, 7.7)) + gTick * 7.7) * 7891.23));
+      float blockSign = mix(-0.06, 0.11, step(0.5, fract(tint * 3.0)));
       color += burst * block * blockSign;
 
       gl_FragColor = vec4(color, 1.0);
