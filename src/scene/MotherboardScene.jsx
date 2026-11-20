@@ -6,7 +6,6 @@ import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
 import { BOARD_DEPTH, BOARD_WIDTH, createMotherboard } from './Motherboard.js'
 import { VIEWS, createJourney, sampleJourney } from './cameraJourney.js'
-import { ColorGradeShader } from './colorGradeShader.js'
 import { LensVhsShader } from './lensVhsShader.js'
 import { SharpenShader } from './sharpenShader.js'
 import { VignetteHorizontalBlurShader, VignetteVerticalBlurShader } from './vignetteBlurShader.js'
@@ -102,16 +101,14 @@ export default function MotherboardScene({ index, reducedMotion }) {
     const lensPass = new ShaderPass(LensVhsShader)
     composer.addPass(lensPass)
 
-    // Gaussian blur con viñeta, realce suave y ajuste final de contraste/brillo.
+    // Gaussian blur con viñeta y realce suave.
     const blurX = new ShaderPass(VignetteHorizontalBlurShader)
     const blurY = new ShaderPass(VignetteVerticalBlurShader)
     const sharpenPass = new ShaderPass(SharpenShader)
-    const gradePass = new ShaderPass(ColorGradeShader)
     sharpenPass.uniforms.uResolution.value = new THREE.Vector2(1, 1)
     composer.addPass(blurX)
     composer.addPass(blurY)
     composer.addPass(sharpenPass)
-    composer.addPass(gradePass)
     composer.addPass(new OutputPass())
 
     const syncPostProcessing = (width, height, pixelRatio) => {
