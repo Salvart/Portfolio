@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      canvas-confetti:
-        specifier: ^1.9.4
-        version: 1.9.4
       react:
         specifier: ^19.0.0
         version: 19.3.1
@@ -464,9 +461,6 @@ packages:
 
   caniuse-lite@1.0.30001826:
     resolution: {integrity: sha512-wTB+9tIbLro/BCXwLuNV1meHE4L9dS6dArMDwgYfNBPMYScqClHyGunhkCSDtHhe/69Xl0sHlKgBVZ+fNsYtWA==}
-
-  canvas-confetti@1.9.4:
-    resolution: {integrity: sha512-yxQbJkAVrFXWNbTUjPqjF7G+g6pDotOUHGbkZq2NELZUMDpiJ85rIEazVb8GTaAptNW2miJAXbs1BtioA251Pw==}
 
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
@@ -971,8 +965,6 @@ snapshots:
       update-browserslist-db: 1.4.0(browserslist@4.29.6)
 
   caniuse-lite@1.0.30001826: {}
-
-  canvas-confetti@1.9.4: {}
 
   convert-source-map@2.0.0: {}
 
