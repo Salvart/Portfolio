@@ -16,18 +16,20 @@ const view = (chip, camera, look) => ({ chip, camera: new THREE.Vector3(...camer
 
 // Vista casi cenital: la cámara queda apenas desplazada en Z respecto al chip,
 // mirando hacia abajo con una inclinación de ~8° respecto a la vertical.
+// Distancia al chip duplicada respecto a la versión anterior: se ve más placa y los
+// chips ocupan menos pantalla, conservando la inclinación de ~8° respecto a la vertical.
 export const VIEWS = [
-  view('cpu', [-6.0, 4.9, 1.05], [-6.0, 0.35, 0.4]),
-  view('graphics', [-2.0, 5.0, -0.45], [-2.0, 0.4, -1.1]),
-  view('memory', [2.0, 4.85, 1.55], [2.0, 0.35, 0.9]),
-  view('io', [6.0, 4.9, 0.15], [6.0, 0.35, -0.5])
+  view('cpu', [-6.0, 9.45, 1.7], [-6.0, 0.35, 0.4]),
+  view('graphics', [-2.0, 9.6, 0.2], [-2.0, 0.4, -1.1]),
+  view('memory', [2.0, 9.35, 2.2], [2.0, 0.35, 0.9]),
+  view('io', [6.0, 9.45, 0.8], [6.0, 0.35, -0.5])
 ]
 
 const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 
 // Se retrocede alejando la cámara del chip (+Z), nunca cruzando por detrás:
 // cruzar el objetivo provocaría un giro brusco de 180° al mirar siempre al chip.
-const pulledBack = (vector) => new THREE.Vector3(vector.x, vector.y + 3.2, vector.z + 2.2)
+const pulledBack = (vector) => new THREE.Vector3(vector.x, vector.y + 6.4, vector.z + 4.4)
 const boardLevel = (vector) => new THREE.Vector3(vector.x, 0.35, vector.z)
 
 export function createJourney(fromIndex, toIndex) {
