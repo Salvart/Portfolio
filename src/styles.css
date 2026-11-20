@@ -111,10 +111,10 @@ a:focus-visible {
   background: radial-gradient(
     ellipse at 50% 50%,
     transparent 24%,
-    rgba(2, 7, 5, 0.45) 64%,
-    rgba(1, 4, 3, 0.86) 100%
+    rgba(0, 0, 0, 0.5) 64%,
+    rgba(0, 0, 0, 0.92) 100%
   );
-  box-shadow: inset 0 0 180px rgba(1, 6, 4, 0.85);
+  box-shadow: inset 0 0 180px rgba(0, 0, 0, 0.9);
 }
 
 .camera-lens::before {
@@ -135,19 +135,6 @@ a:focus-visible {
     );
   mix-blend-mode: screen;
   animation: lens-breathe 5s ease-in-out infinite;
-}
-
-.camera-lens::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at 50% 50%,
-    transparent 55%,
-    rgba(120, 200, 180, 0.07) 82%,
-    transparent 100%
-  );
-  mix-blend-mode: screen;
 }
 
 @keyframes lens-breathe {

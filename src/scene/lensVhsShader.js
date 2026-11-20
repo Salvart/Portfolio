@@ -26,14 +26,20 @@ export const LensVhsShader = {
     uniform float uChroma;
     varying vec2 vUv;
 
-    // Desenfoque muy suave: una cruz de 5 muestras a un píxel de distancia.
-    vec3 softBlur(vec2 uv, vec2 texel) {
+    // Desenfoque de cámara: gaussiana normalizada de 9 muestras.
+    // No suma luz: solo reparte cada píxel entre sus vecinos.
+    vec3 defocusBlur(vec2 uv, vec2 texel) {
+      vec2 o = texel * 1.2;
       vec3 sum = texture2D(tDiffuse, uv).rgb * 4.0;
-      sum += texture2D(tDiffuse, uv + vec2(texel.x, 0.0)).rgb * 2.0;
-      sum += texture2D(tDiffuse, uv - vec2(texel.x, 0.0)).rgb * 2.0;
-      sum += texture2D(tDiffuse, uv + vec2(0.0, texel.y)).rgb * 2.0;
-      sum += texture2D(tDiffuse, uv - vec2(0.0, texel.y)).rgb * 2.0;
-      return sum / 12.0;
+      sum += texture2D(tDiffuse, uv + vec2(o.x, 0.0)).rgb * 2.0;
+      sum += texture2D(tDiffuse, uv - vec2(o.x, 0.0)).rgb * 2.0;
+      sum += texture2D(tDiffuse, uv + vec2(0.0, o.y)).rgb * 2.0;
+      sum += texture2D(tDiffuse, uv - vec2(0.0, o.y)).rgb * 2.0;
+      sum += texture2D(tDiffuse, uv + o).rgb;
+      sum += texture2D(tDiffuse, uv - o).rgb;
+      sum += texture2D(tDiffuse, uv + vec2(o.x, -o.y)).rgb;
+      sum += texture2D(tDiffuse, uv + vec2(-o.x, o.y)).rgb;
+      return sum / 16.0;
     }
 
     void main() {
@@ -65,10 +71,10 @@ export const LensVhsShader = {
         texture2D(tDiffuse, bUv).b
       );
 
-      // Desenfoque ligero de cámara y realce inmediatamente después.
-      vec3 blurred = softBlur(uv, 1.0 / uResolution);
-      vec3 softened = mix(base, blurred, 0.3);
-      vec3 color = softened + (base - blurred) * 0.15;
+      // Desenfoque de cámara real, con un realce mínimo que no aclara la imagen.
+      vec3 blurred = defocusBlur(uv, 1.0 / uResolution);
+      vec3 color = mix(base, blurred, 0.42) + (base - blurred) * 0.06;
+      color = clamp(color, 0.0, 1.0);
 
       gl_FragColor = vec4(color, 1.0);
     }
