@@ -33,7 +33,6 @@ export default function App() {
         <MotherboardScene index={index} reducedMotion={reducedMotion} />
         <div ref={lensRef} className="camera-lens" aria-hidden="true" />
         <div className="vhs-overlay" aria-hidden="true" />
-        <div className="glitch-overlay" aria-hidden="true" />
       </div>
       <SceneText section={sections[index]} lang={lang} transitioning={transitioning} />
       <MinimalNav

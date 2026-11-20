@@ -184,7 +184,7 @@ a:focus-visible {
   box-shadow: 0 14px 44px rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  /* Aislamos la información de VHS, glitch, viñeta y cromática. */
+  /* Aislamos la información de VHS, viñeta, lente y cromática. */
   text-shadow: none;
 }
 
@@ -614,10 +614,10 @@ a:focus-visible {
   background:
     repeating-linear-gradient(
       0deg,
-      rgba(0, 0, 0, 0.16) 0px,
-      rgba(0, 0, 0, 0.16) 1px,
-      transparent 1px,
-      transparent 3px
+      rgba(0, 0, 0, 0.28) 0px,
+      rgba(0, 0, 0, 0.28) 4px,
+      transparent 4px,
+      transparent 9px
     ),
     linear-gradient(
       90deg,
@@ -626,6 +626,14 @@ a:focus-visible {
       transparent 82%,
       rgba(0, 220, 255, 0.035)
     );
+  background-position: 0 0, 0 0;
+  animation: vhs-scanlines 0.7s linear infinite;
+}
+
+/* Las líneas de TV se desplazan verticalmente de forma continua. */
+@keyframes vhs-scanlines {
+  from { background-position: 0 0, 0 0; }
+  to { background-position: 0 9px, 0 0; }
 }
 
 .vhs-overlay::before {
@@ -691,90 +699,6 @@ a:focus-visible {
   92% { transform: translateX(0); }
 }
 
-/* --- Glitch atenuado: rejilla de píxeles grandes con columnas alternas --- */
-
-.glitch-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  overflow: hidden;
-  pointer-events: none;
-  mix-blend-mode: screen;
-}
-
-/* Columnas rojas y cian alternas + filas: cuadros grandes, no solo líneas. */
-.glitch-overlay::before {
-  content: '';
-  position: absolute;
-  inset: -2% 0;
-  background-image:
-    repeating-linear-gradient(90deg, rgba(255, 25, 85, 0.26) 0 8%, transparent 8% 16%),
-    repeating-linear-gradient(90deg, transparent 0 8%, rgba(20, 235, 255, 0.26) 8% 16%),
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.06) 0 6%, transparent 6% 12%);
-  opacity: 0;
-  animation: glitch-grid 6.5s steps(1, end) infinite;
-}
-
-.glitch-overlay::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(90deg, rgba(255, 20, 90, 0.18), transparent 30%, transparent 70%, rgba(20, 230, 255, 0.18)),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.01));
-  opacity: 0;
-  animation: glitch-flash 6.5s steps(1, end) infinite;
-}
-
-/* Cromática del texto: salto moderado solo durante las ráfagas. */
-.scene-text,
-.minimal-nav {
-  animation: glitch-text 6.5s steps(1, end) infinite;
-}
-
-@keyframes glitch-grid {
-  0%, 5.9% { opacity: 0; transform: translate(0, 0); filter: none; }
-  6% { opacity: 0.55; transform: translate(-13px, 2px); filter: hue-rotate(0deg); }
-  6.6% { opacity: 0.45; transform: translate(9px, -2px); filter: hue-rotate(90deg); }
-  7.2%, 26.9% { opacity: 0; transform: none; filter: none; }
-  27% { opacity: 0.5; transform: translate(15px, 0); filter: hue-rotate(180deg); }
-  27.6% { opacity: 0.4; transform: translate(-7px, 3px); filter: hue-rotate(270deg); }
-  28.2%, 51.9% { opacity: 0; transform: none; filter: none; }
-  52% { opacity: 0.55; transform: translate(-17px, -2px); filter: hue-rotate(60deg); }
-  52.6% { opacity: 0.45; transform: translate(11px, 2px); filter: hue-rotate(210deg); }
-  53.2%, 77.9% { opacity: 0; transform: none; filter: none; }
-  78% { opacity: 0.5; transform: translate(12px, 1px); filter: hue-rotate(300deg); }
-  78.6%, 100% { opacity: 0; transform: none; filter: none; }
-}
-
-@keyframes glitch-flash {
-  0%, 6.1%, 6.7%, 27.1%, 27.7%, 52.1%, 52.7%, 78.1%, 100% { opacity: 0; }
-  6.3% { opacity: 0.4; }
-  27.3% { opacity: 0.28; }
-  52.3% { opacity: 0.45; }
-  78.3% { opacity: 0.3; }
-}
-
-@keyframes glitch-text {
-  0%, 5.9%, 7.2%, 26.9%, 28.2%, 51.9%, 53.2%, 77.9%, 78.6%, 100% {
-    text-shadow:
-      0.5px 0 rgba(255, 45, 85, 0.5),
-      -0.5px 0 rgba(70, 225, 255, 0.5);
-  }
-  6%, 27%, 52%, 78% {
-    text-shadow:
-      3.5px 0 rgba(255, 20, 90, 0.8),
-      -3.5px 0 rgba(20, 230, 255, 0.8),
-      0 0 14px rgba(255, 255, 255, 0.35);
-  }
-  6.6%, 27.6%, 52.6% {
-    text-shadow:
-      -4.5px 0 rgba(255, 20, 90, 0.75),
-      4.5px 0 rgba(20, 230, 255, 0.75),
-      0 0 16px rgba(255, 255, 255, 0.3);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .scene-text {
     transition: none;
@@ -785,10 +709,9 @@ a:focus-visible {
   .scene-text,
   .minimal-nav,
   .camera-lens::before,
+  .vhs-overlay,
   .vhs-overlay::before,
-  .vhs-overlay::after,
-  .glitch-overlay::before,
-  .glitch-overlay::after {
+  .vhs-overlay::after {
     animation: none;
   }
 }
