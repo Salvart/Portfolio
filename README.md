@@ -9,7 +9,7 @@
 
 ## Concepto
 
-Una landing de una sola pantalla construida desde cero alrededor de una **placa base 3D**. El scroll mueve la cámara en un recorrido **zoom out → desplazamiento → zoom in** hasta enfocar uno de los cuatro chips. La información aparece como texto plano a la izquierda y derecha del chip (arriba y abajo en la introducción), dentro de ventanas limpias y opacas que la mantienen siempre legible, con medidas para que nunca desborde.
+Una landing de una sola pantalla construida desde cero alrededor de una **placa base 3D**. El scroll mueve la cámara en un recorrido **zoom out → desplazamiento → zoom in** hasta enfocar uno de los cuatro chips. La información aparece como texto plano a la izquierda y derecha del chip (arriba y abajo en la introducción), dentro de ventanas limpias y semitransparentes (~50 %) que la mantienen siempre legible, con medidas para que nunca desborde.
 
 ### Los cuatro chips
 

@@ -180,10 +180,10 @@ a:focus-visible {
   padding: 0.85rem 1rem;
   border: 1px solid rgba(216, 166, 87, 0.22);
   border-radius: 2px;
-  background: linear-gradient(135deg, rgba(6, 16, 13, 0.96), rgba(3, 10, 8, 0.93));
-  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: linear-gradient(135deg, rgba(6, 16, 13, 0.52), rgba(3, 10, 8, 0.48));
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   /* Aislamos la información de VHS, glitch, viñeta y cromática. */
   text-shadow: none;
 }
