@@ -5,10 +5,21 @@ const SWIPE_THRESHOLD = 45
 
 export default function useSectionController(count, reducedMotion = false) {
   const [index, setIndex] = useState(0)
+  const [displayIndex, setDisplayIndex] = useState(0)
   const [transitioning, setTransitioning] = useState(false)
   const indexRef = useRef(0)
   const lockedRef = useRef(false)
   const timerRef = useRef(null)
+
+  // Se llama desde el bucle de la cámara cuando el recorrido llega a su fin.
+  // Hasta ese momento el texto sigue siendo el de la sección anterior.
+  const finishTransition = useCallback(() => {
+    if (!lockedRef.current) return
+    lockedRef.current = false
+    window.clearTimeout(timerRef.current)
+    setDisplayIndex(indexRef.current)
+    setTransitioning(false)
+  }, [])
 
   const goTo = useCallback(
     (next) => {
@@ -17,17 +28,18 @@ export default function useSectionController(count, reducedMotion = false) {
       indexRef.current = next
       setIndex(next)
 
-      if (reducedMotion) return
+      if (reducedMotion) {
+        setDisplayIndex(next)
+        return
+      }
 
       lockedRef.current = true
       setTransitioning(true)
+      // Red de seguridad si WebGL no está disponible y no hay bucle que avise.
       window.clearTimeout(timerRef.current)
-      timerRef.current = window.setTimeout(() => {
-        lockedRef.current = false
-        setTransitioning(false)
-      }, TRANSITION_MS)
+      timerRef.current = window.setTimeout(finishTransition, TRANSITION_MS + 200)
     },
-    [count, reducedMotion]
+    [count, reducedMotion, finishTransition]
   )
 
   const next = useCallback(() => goTo(indexRef.current + 1), [goTo])
@@ -100,5 +112,5 @@ export default function useSectionController(count, reducedMotion = false) {
     }
   }, [count, goTo, next, prev])
 
-  return { index, transitioning, goTo, next, prev }
+  return { index, displayIndex, transitioning, goTo, next, prev, finishTransition }
 }

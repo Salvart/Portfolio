@@ -5,6 +5,12 @@ export const BOARD_DEPTH = 10
 
 const SURFACE_Y = 0.172
 
+// La placa mide 0.32 de alto y está centrada en Y=0: su cara inferior queda en -0.16.
+const TABLE_WIDTH = 34
+const TABLE_DEPTH = 16
+const TABLE_TOP = -0.16
+const TABLE_THICKNESS = 0.45
+
 // Centros de los cuatro chips, compartidos por el serigrafado y el enrutado de pistas.
 const CPU = [-6.0, 0.4]
 const GPU = [-2.0, -1.1]
@@ -146,6 +152,54 @@ function createSilkscreenTexture() {
   return texture
 }
 
+// Veta de madera generada en canvas: tablero de nogal oscuro con vetas
+// onduladas y juntas de tabla, sin depender de archivos externos.
+function createWoodTexture() {
+  const canvas = document.createElement('canvas')
+  canvas.width = 1024
+  canvas.height = 640
+  const ctx = canvas.getContext('2d')
+  const { width, height } = canvas
+
+  ctx.fillStyle = '#4a3220'
+  ctx.fillRect(0, 0, width, height)
+
+  let seed = 17
+  const random = () => {
+    seed = (seed * 1664525 + 1013904223) % 4294967296
+    return seed / 4294967296
+  }
+
+  for (let i = 0; i < 260; i += 1) {
+    const baseY = (i / 260) * height + random() * 3
+    const drift = random() * 6.28
+    ctx.beginPath()
+    ctx.moveTo(0, baseY)
+    for (let x = 0; x <= width; x += 12) {
+      const y = baseY + Math.sin(x * 0.011 + drift) * 3.2 + Math.sin(x * 0.037 + i) * 1.4
+      ctx.lineTo(x, y)
+    }
+    const strong = i % 7 === 0
+    ctx.strokeStyle = strong ? 'rgba(26, 15, 9, 0.24)' : 'rgba(146, 101, 60, 0.075)'
+    ctx.lineWidth = strong ? 2.2 : 1
+    ctx.stroke()
+  }
+
+  // Juntas entre tablas, con un filo claro que simula el biselado.
+  for (let i = 1; i < 4; i += 1) {
+    const x = (i / 4) * width
+    ctx.fillStyle = 'rgba(18, 10, 6, 0.32)'
+    ctx.fillRect(x - 1.5, 0, 3, height)
+    ctx.fillStyle = 'rgba(180, 130, 80, 0.09)'
+    ctx.fillRect(x + 2, 0, 1.5, height)
+  }
+
+  const texture = new THREE.CanvasTexture(canvas)
+  texture.colorSpace = THREE.SRGBColorSpace
+  texture.anisotropy = 4
+  return texture
+}
+
 function addPins(group, width, depth, y) {
   const pinGeo = new THREE.BoxGeometry(0.055, 0.035, 0.16)
   const pinMat = new THREE.MeshStandardMaterial({ color: 0xe0bd74, metalness: 0.8, roughness: 0.28 })
@@ -269,11 +323,60 @@ function makeChip(type, highlightMaterial) {
   return chip
 }
 
-function addTrace(group, points, color = 0xe0b96e, opacity = 0.72) {
-  const geometry = new THREE.BufferGeometry().setFromPoints(
-    points.map(([x, z]) => new THREE.Vector3(x, SURFACE_Y + 0.012, z))
-  )
-  group.add(new THREE.Line(geometry, new THREE.LineBasicMaterial({ color, transparent: true, opacity })))
+const traceMaterials = new Map()
+
+// Las pistas son cintas y no THREE.Line: WebGL ignora `linewidth` en la mayoría
+// de los navegadores, así que solo una malla permite darles grosor real.
+function addTrace(group, points, color = 0xe0b96e, opacity = 0.72, width = 0.021) {
+  const half = width / 2
+  const y = SURFACE_Y + 0.012
+  const vertices = []
+  const indices = []
+
+  points.forEach(([x, z], i) => {
+    const before = points[i - 1] || points[i]
+    const after = points[i + 1] || points[i]
+    const inDir = normalize2([x - before[0], z - before[1]])
+    const outDir = normalize2([after[0] - x, after[1] - z])
+
+    // Normal de la unión (miter) para que los chaflanes de 45° no dejen huecos.
+    let nx = -inDir[1] - outDir[1]
+    let nz = inDir[0] + outDir[0]
+    if (Math.hypot(nx, nz) < 0.001) {
+      nx = -outDir[1]
+      nz = outDir[0]
+    }
+    const normal = normalize2([nx, nz])
+    const dir = outDir[0] || outDir[1] ? outDir : inDir
+    const cos = Math.max(0.35, normal[0] * dir[0] + normal[1] * dir[1])
+    const miter = Math.min(half / cos, half * 2)
+
+    vertices.push(x + normal[0] * miter, y, z + normal[1] * miter)
+    vertices.push(x - normal[0] * miter, y, z - normal[1] * miter)
+
+    if (i > 0) {
+      const a = (i - 1) * 2
+      indices.push(a, a + 1, a + 2, a + 1, a + 3, a + 2)
+    }
+  })
+
+  const geometry = new THREE.BufferGeometry()
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
+  geometry.setIndex(indices)
+
+  const key = `${color}-${opacity}`
+  let material = traceMaterials.get(key)
+  if (!material) {
+    material = new THREE.MeshBasicMaterial({
+      color,
+      transparent: true,
+      opacity,
+      side: THREE.DoubleSide,
+      depthWrite: false
+    })
+    traceMaterials.set(key, material)
+  }
+  group.add(new THREE.Mesh(geometry, material))
 }
 
 function addPinBus(group, count, pinStart, pinEnd, route, options = {}) {
@@ -505,6 +608,28 @@ function addBuses(group) {
 
 export function createMotherboard() {
   const group = new THREE.Group()
+
+  // Mesa de madera: la placa se apoya en ella y proyecta su sombra sobre el tablero.
+  const table = new THREE.Mesh(
+    new THREE.BoxGeometry(TABLE_WIDTH, TABLE_THICKNESS, TABLE_DEPTH),
+    new THREE.MeshStandardMaterial({
+      map: createWoodTexture(),
+      roughness: 0.86,
+      metalness: 0.02
+    })
+  )
+  table.position.y = TABLE_TOP - TABLE_THICKNESS / 2
+  group.add(table)
+
+  const legGeometry = new THREE.BoxGeometry(0.6, 2.6, 0.6)
+  const legMaterial = new THREE.MeshStandardMaterial({ color: 0x3a2718, roughness: 0.9 })
+  ;[-TABLE_WIDTH / 2 + 1.1, TABLE_WIDTH / 2 - 1.1].forEach((x) => {
+    ;[-TABLE_DEPTH / 2 + 1.1, TABLE_DEPTH / 2 - 1.1].forEach((z) => {
+      const leg = new THREE.Mesh(legGeometry, legMaterial)
+      leg.position.set(x, TABLE_TOP - TABLE_THICKNESS - 1.3, z)
+      group.add(leg)
+    })
+  })
 
   const board = new THREE.Mesh(
     new THREE.BoxGeometry(BOARD_WIDTH, 0.32, BOARD_DEPTH),

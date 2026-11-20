@@ -99,11 +99,9 @@ a:focus-visible {
     var(--bg);
 }
 
-/* --- Lente de cámara: viñeta, destello y raya anamórfica --- */
+/* --- Lente de cámara: solo viñeta negra, sin destellos que aclaren la imagen --- */
 
 .camera-lens {
-  --lens-x: 50%;
-  --lens-y: 50%;
   position: absolute;
   inset: 0;
   z-index: 1;
@@ -115,31 +113,6 @@ a:focus-visible {
     rgba(0, 0, 0, 0.92) 100%
   );
   box-shadow: inset 0 0 180px rgba(0, 0, 0, 0.9);
-}
-
-.camera-lens::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(
-      circle at var(--lens-x) var(--lens-y),
-      rgba(255, 240, 205, 0.26) 0,
-      rgba(255, 214, 158, 0.12) 3%,
-      transparent 11%
-    ),
-    radial-gradient(
-      ellipse 34% 3% at var(--lens-x) var(--lens-y),
-      rgba(255, 224, 170, 0.22),
-      transparent 72%
-    );
-  mix-blend-mode: screen;
-  animation: lens-breathe 5s ease-in-out infinite;
-}
-
-@keyframes lens-breathe {
-  0%, 100% { opacity: 0.85; }
-  50% { opacity: 1; }
 }
 
 /* --- Texto: solo letra, sin contenedores visibles --- */
@@ -171,8 +144,8 @@ a:focus-visible {
   box-shadow: 0 14px 44px rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  /* Aislamos la información de VHS, viñeta, lente y cromática. */
-  text-shadow: none;
+  /* Glow neutro y suave: la información queda limpia de VHS y cromática. */
+  text-shadow: 0 0 10px rgba(216, 166, 87, 0.28);
 }
 
 .eyebrow {
@@ -583,14 +556,7 @@ a:focus-visible {
   }
 }
 
-/* --- VHS global: líneas de exploración, grano, cromática y seguimiento --- */
-
-.scene-text,
-.minimal-nav {
-  text-shadow:
-    0.5px 0 rgba(255, 45, 85, 0.5),
-    -0.5px 0 rgba(70, 225, 255, 0.5);
-}
+/* --- VHS global: líneas de exploración, grano y seguimiento --- */
 
 .vhs-overlay {
   position: absolute;
@@ -598,45 +564,23 @@ a:focus-visible {
   z-index: 4;
   overflow: hidden;
   pointer-events: none;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0.34) 0px,
-      rgba(0, 0, 0, 0.34) 3px,
-      transparent 3px,
-      transparent 5px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      rgba(255, 45, 95, 0.22) 0px,
-      rgba(255, 45, 95, 0.22) 3px,
-      transparent 3px,
-      transparent 5px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      rgba(45, 225, 255, 0.22) 0px,
-      rgba(45, 225, 255, 0.22) 3px,
-      transparent 3px,
-      transparent 5px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(255, 0, 60, 0.035),
-      transparent 18%,
-      transparent 82%,
-      rgba(0, 220, 255, 0.035)
-    );
-  background-position: 0 0, -1px 0, 1px 0, 0 0;
-  background-blend-mode: normal, screen, screen, normal;
-  filter: blur(0.6px);
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.34) 0px,
+    rgba(0, 0, 0, 0.34) 3px,
+    transparent 3px,
+    transparent 5px
+  );
+  background-position: 0 0;
+  /* blur() de CSS es un filtro gaussiano: bordes suaves, sin aclarar la imagen. */
+  filter: blur(1.1px);
   animation: vhs-scanlines 0.3s linear infinite;
 }
 
-/* Líneas juntas, gruesas y desenfocadas, con franjas roja y cian desplazadas. */
+/* Solo líneas negras, juntas y con blur gaussiano, desplazándose en vertical. */
 @keyframes vhs-scanlines {
-  from { background-position: 0 0, -1px 0, 1px 0, 0 0; }
-  to { background-position: 0 5px, -1px 5px, 1px 5px, 0 0; }
+  from { background-position: 0 0; }
+  to { background-position: 0 5px; }
 }
 
 .vhs-overlay::before {
@@ -644,8 +588,8 @@ a:focus-visible {
   position: absolute;
   inset: -50%;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.26;
-  mix-blend-mode: screen;
+  opacity: 0.18;
+  mix-blend-mode: overlay;
   filter: contrast(1.35);
   animation: vhs-grain 0.14s steps(4) infinite;
 }
@@ -660,11 +604,11 @@ a:focus-visible {
   background: linear-gradient(
     180deg,
     transparent,
-    rgba(255, 255, 255, 0.045) 45%,
-    rgba(160, 240, 220, 0.03) 60%,
+    rgba(0, 0, 0, 0.22) 45%,
+    rgba(0, 0, 0, 0.12) 60%,
     transparent
   );
-  mix-blend-mode: screen;
+  mix-blend-mode: multiply;
   animation:
     vhs-tracking 16s linear infinite,
     vhs-band-tear 16s linear infinite;
@@ -711,7 +655,6 @@ a:focus-visible {
   .backdrop-stack,
   .scene-text,
   .minimal-nav,
-  .camera-lens::before,
   .vhs-overlay,
   .vhs-overlay::before,
   .vhs-overlay::after {

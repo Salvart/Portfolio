@@ -10,10 +10,18 @@ import { LensVhsShader } from './lensVhsShader.js'
 import { SharpenShader } from './sharpenShader.js'
 import { VignetteHorizontalBlurShader, VignetteVerticalBlurShader } from './vignetteBlurShader.js'
 
-export default function MotherboardScene({ index, reducedMotion }) {
+// Altura del foco sobre la placa; junto al ángulo del cono define el tamaño de la mancha de luz.
+const SPOT_HEIGHT = 4
+
+export default function MotherboardScene({ index, reducedMotion, onJourneyComplete }) {
   const hostRef = useRef(null)
   const stateRef = useRef(null)
   const [failed, setFailed] = useState(false)
+  const onJourneyCompleteRef = useRef(onJourneyComplete)
+
+  useEffect(() => {
+    onJourneyCompleteRef.current = onJourneyComplete
+  }, [onJourneyComplete])
 
   // Creación y limpieza de la escena. Solo se recrea si cambia la preferencia de movimiento.
   useEffect(() => {
@@ -52,8 +60,8 @@ export default function MotherboardScene({ index, reducedMotion }) {
     camera.lookAt(VIEWS[index].look)
 
     // Iluminación de fondo muy baja: el foco del cursor es la fuente principal.
-    scene.add(new THREE.AmbientLight(0xa9c4b6, 0.3))
-    scene.add(new THREE.HemisphereLight(0xd4efe3, 0x0c2018, 0.25))
+    scene.add(new THREE.AmbientLight(0xa9c4b6, 0.42))
+    scene.add(new THREE.HemisphereLight(0xd4efe3, 0x0c2018, 0.3))
 
     const keyLight = new THREE.DirectionalLight(0xffe8c4, 0.7)
     keyLight.position.set(5, 9, 7)
@@ -75,13 +83,13 @@ export default function MotherboardScene({ index, reducedMotion }) {
     fillLight.position.set(0, 7, 8)
     scene.add(fillLight)
 
-    // Foco ligado al ratón: no mueve la cámara, ilumina el punto de la placa bajo el cursor.
-    const mouseLight = new THREE.SpotLight(0xfff2d8, 35, 14, 0.55, 0.75, 2)
-    mouseLight.position.set(0, 3.4, 0)
+    // Foco ligado al ratón: cono ancho y borde muy difuso, ilumina una zona mayor de la placa.
+    const mouseLight = new THREE.SpotLight(0xfff2d8, 46, 18, 0.8, 0.82, 2)
+    mouseLight.position.set(0, SPOT_HEIGHT, 0)
     mouseLight.castShadow = true
     mouseLight.shadow.mapSize.set(1024, 1024)
     mouseLight.shadow.camera.near = 0.5
-    mouseLight.shadow.camera.far = 14
+    mouseLight.shadow.camera.far = 18
     mouseLight.shadow.bias = -0.0005
     scene.add(mouseLight)
     scene.add(mouseLight.target)
@@ -159,7 +167,10 @@ export default function MotherboardScene({ index, reducedMotion }) {
         progress = sample.progress
         fromChip = current.journey.fromChip
         toChip = current.journey.chip
-        if (progress >= 1) current.journey = null
+        if (progress >= 1) {
+          current.journey = null
+          onJourneyCompleteRef.current?.()
+        }
       }
 
       current.camera.position.set(position.x, position.y, position.z)
@@ -173,7 +184,7 @@ export default function MotherboardScene({ index, reducedMotion }) {
         current.lightTarget.set(x, 0, z)
       }
       const smoothing = reducedMotion ? 1 : 0.12
-      current.lightDesired.set(current.lightTarget.x, 3.4, current.lightTarget.z)
+      current.lightDesired.set(current.lightTarget.x, SPOT_HEIGHT, current.lightTarget.z)
       current.mouseLight.position.lerp(current.lightDesired, smoothing)
       current.mouseLight.target.position.lerp(current.lightTarget, smoothing)
       current.mouseLight.target.updateMatrixWorld()
