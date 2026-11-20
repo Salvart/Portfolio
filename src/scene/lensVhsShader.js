@@ -3,7 +3,7 @@ export const LensVhsShader = {
   uniforms: {
     tDiffuse: { value: null },
     uTime: { value: 0 },
-    uDistortion: { value: -0.2 },
+    uDistortion: { value: 0.18 },
     uChroma: { value: 0.011 }
   },
 
@@ -27,7 +27,7 @@ export const LensVhsShader = {
       vec2 centered = vUv - 0.5;
       float r2 = dot(centered, centered);
 
-      // Ojo de pez: muestreo barril, más acusado hacia los bordes.
+      // Ojo de pez: curvatura invertida, más acusada hacia los bordes.
       vec2 uv = 0.5 + centered * (1.0 + uDistortion * r2);
 
       // Banda magnética lenta: al pasar desplaza y rompe líneas horizontales.
