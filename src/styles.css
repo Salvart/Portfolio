@@ -692,7 +692,7 @@ a:focus-visible {
   92% { transform: translateX(0); }
 }
 
-/* --- Glitch global: ráfagas de bandas desplazadas y destello --- */
+/* --- Glitch global: bandas erráticas, cambios de color y cromática agresiva --- */
 
 .glitch-overlay {
   position: absolute;
@@ -706,45 +706,94 @@ a:focus-visible {
 .glitch-overlay::before {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: -4% 0;
   background: repeating-linear-gradient(
     0deg,
-    transparent 0 6%,
-    rgba(255, 45, 85, 0.16) 6% 7%,
-    transparent 7% 12%,
-    rgba(70, 225, 255, 0.16) 12% 13%,
-    transparent 13% 100%
+    transparent 0 3.5%,
+    rgba(255, 25, 85, 0.5) 3.5% 4.6%,
+    rgba(255, 255, 255, 0.16) 4.6% 5.2%,
+    transparent 5.2% 8%,
+    rgba(20, 235, 255, 0.5) 8% 9.1%,
+    rgba(255, 220, 90, 0.22) 9.1% 9.6%,
+    transparent 9.6% 13%
   );
   opacity: 0;
-  animation: glitch-bands 11s linear infinite;
+  animation: glitch-bands 6.5s steps(1, end) infinite;
 }
 
 .glitch-overlay::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+  background:
+    linear-gradient(90deg, rgba(255, 20, 90, 0.35), transparent 30%, transparent 70%, rgba(20, 230, 255, 0.35)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.02));
   opacity: 0;
-  animation: glitch-flash 11s linear infinite;
+  animation: glitch-flash 6.5s steps(1, end) infinite;
+}
+
+/* Cromática del texto: salta a varios píxeles durante las ráfagas. */
+.scene-text,
+.minimal-nav {
+  animation: glitch-text 6.5s steps(1, end) infinite;
 }
 
 @keyframes glitch-bands {
-  0%, 7.9% { opacity: 0; transform: translateX(0); }
-  8% { opacity: 1; transform: translateX(-14px); }
-  8.6% { opacity: 1; transform: translateX(9px); }
-  9.2%, 23.9% { opacity: 0; transform: translateX(0); }
-  24% { opacity: 0.9; transform: translateX(16px); }
-  24.5% { opacity: 0.9; transform: translateX(-8px); }
-  25.1%, 62.9% { opacity: 0; transform: translateX(0); }
-  63% { opacity: 1; transform: translateX(-10px); }
-  63.6%, 100% { opacity: 0; transform: translateX(0); }
+  0%, 3.9% { opacity: 0; transform: translate(0, 0) skewX(0); filter: none; }
+  4% { opacity: 1; transform: translate(-26px, 3px) skewX(-14deg); filter: hue-rotate(0deg); }
+  4.7% { opacity: 0.85; transform: translate(18px, -4px) skewX(9deg); filter: hue-rotate(120deg); }
+  5.3%, 10.9% { opacity: 0; transform: none; filter: none; }
+  11% { opacity: 1; transform: translate(30px, 0) skewX(16deg); filter: hue-rotate(240deg); }
+  11.6% { opacity: 0.75; transform: translate(-14px, 5px) skewX(-7deg); filter: hue-rotate(60deg); }
+  12.2%, 18.9% { opacity: 0; transform: none; filter: none; }
+  19% { opacity: 1; transform: translate(-34px, -3px) skewX(-18deg); filter: hue-rotate(180deg); }
+  19.8% { opacity: 0.9; transform: translate(22px, 4px) skewX(12deg); filter: hue-rotate(300deg); }
+  20.5%, 31.9% { opacity: 0; transform: none; filter: none; }
+  32% { opacity: 1; transform: translate(16px, -6px) skewX(10deg); filter: hue-rotate(90deg); }
+  32.6% { opacity: 0.8; transform: translate(-20px, 2px) skewX(-11deg); filter: hue-rotate(210deg); }
+  33.2%, 46.9% { opacity: 0; transform: none; filter: none; }
+  47% { opacity: 1; transform: translate(-28px, 5px) skewX(-15deg); filter: hue-rotate(30deg); }
+  47.7% { opacity: 1; transform: translate(24px, -2px) skewX(14deg); filter: hue-rotate(270deg); }
+  48.4%, 64.9% { opacity: 0; transform: none; filter: none; }
+  65% { opacity: 0.95; transform: translate(32px, 3px) skewX(17deg); filter: hue-rotate(150deg); }
+  65.6% { opacity: 0.7; transform: translate(-18px, -5px) skewX(-9deg); filter: hue-rotate(330deg); }
+  66.3%, 81.9% { opacity: 0; transform: none; filter: none; }
+  82% { opacity: 1; transform: translate(-22px, 2px) skewX(-13deg); filter: hue-rotate(75deg); }
+  82.7% { opacity: 0.8; transform: translate(12px, -3px) skewX(8deg); filter: hue-rotate(195deg); }
+  83.4%, 100% { opacity: 0; transform: none; filter: none; }
 }
 
 @keyframes glitch-flash {
-  0%, 8.2%, 24.2%, 63.2%, 100% { opacity: 0; }
-  8.4% { opacity: 0.65; }
-  24.4% { opacity: 0.35; }
-  63.4% { opacity: 0.5; }
+  0%, 4.1%, 4.9%, 11.1%, 11.7%, 19.1%, 19.9%, 32.1%, 32.7%, 47.1%, 47.8%, 65.1%, 65.7%, 82.1%, 82.8%, 100% { opacity: 0; }
+  4.3% { opacity: 0.8; }
+  11.3% { opacity: 0.55; }
+  19.4% { opacity: 0.9; }
+  32.3% { opacity: 0.5; }
+  47.4% { opacity: 0.75; }
+  65.3% { opacity: 0.6; }
+  82.3% { opacity: 0.85; }
+}
+
+@keyframes glitch-text {
+  0%, 3.9%, 5.3%, 10.9%, 12.2%, 18.9%, 20.5%, 31.9%, 33.2%, 46.9%, 48.4%, 64.9%, 66.3%, 81.9%, 83.4%, 100% {
+    text-shadow:
+      0.5px 0 rgba(255, 45, 85, 0.5),
+      -0.5px 0 rgba(70, 225, 255, 0.5);
+  }
+  4%, 11%, 19%, 32%, 47%, 65%, 82% {
+    text-shadow:
+      7px 0 rgba(255, 20, 90, 0.95),
+      -7px 0 rgba(20, 230, 255, 0.95),
+      3px 2px rgba(255, 230, 80, 0.7),
+      0 0 22px rgba(255, 255, 255, 0.5);
+  }
+  4.7%, 11.6%, 19.8%, 32.6%, 47.7%, 65.6%, 82.7% {
+    text-shadow:
+      -9px 0 rgba(255, 20, 90, 0.9),
+      9px 0 rgba(20, 230, 255, 0.9),
+      -3px -2px rgba(255, 230, 80, 0.6),
+      0 0 26px rgba(255, 255, 255, 0.45);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -754,6 +803,8 @@ a:focus-visible {
 
   .nav-cue,
   .experience,
+  .scene-text,
+  .minimal-nav,
   .camera-lens::before,
   .vhs-overlay::before,
   .vhs-overlay::after,
