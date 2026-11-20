@@ -179,8 +179,8 @@ a:focus-visible {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   text-shadow:
-    1px 0 rgba(255, 45, 85, 0.4),
-    -1px 0 rgba(70, 225, 255, 0.4),
+    0.5px 0 rgba(255, 45, 85, 0.4),
+    -0.5px 0 rgba(70, 225, 255, 0.4),
     0 0 12px rgba(244, 235, 208, 0.26),
     0 0 26px rgba(216, 166, 87, 0.14);
 }
@@ -598,8 +598,8 @@ a:focus-visible {
 .scene-text,
 .minimal-nav {
   text-shadow:
-    1px 0 rgba(255, 45, 85, 0.5),
-    -1px 0 rgba(70, 225, 255, 0.5);
+    0.5px 0 rgba(255, 45, 85, 0.5),
+    -0.5px 0 rgba(70, 225, 255, 0.5);
 }
 
 .experience {
@@ -633,7 +633,7 @@ a:focus-visible {
   content: '';
   position: absolute;
   inset: -50%;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   opacity: 0.26;
   mix-blend-mode: screen;
   filter: contrast(1.35);
@@ -692,6 +692,61 @@ a:focus-visible {
   92% { transform: translateX(0); }
 }
 
+/* --- Glitch global: ráfagas de bandas desplazadas y destello --- */
+
+.glitch-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.glitch-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0 6%,
+    rgba(255, 45, 85, 0.16) 6% 7%,
+    transparent 7% 12%,
+    rgba(70, 225, 255, 0.16) 12% 13%,
+    transparent 13% 100%
+  );
+  opacity: 0;
+  animation: glitch-bands 11s linear infinite;
+}
+
+.glitch-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+  opacity: 0;
+  animation: glitch-flash 11s linear infinite;
+}
+
+@keyframes glitch-bands {
+  0%, 7.9% { opacity: 0; transform: translateX(0); }
+  8% { opacity: 1; transform: translateX(-14px); }
+  8.6% { opacity: 1; transform: translateX(9px); }
+  9.2%, 23.9% { opacity: 0; transform: translateX(0); }
+  24% { opacity: 0.9; transform: translateX(16px); }
+  24.5% { opacity: 0.9; transform: translateX(-8px); }
+  25.1%, 62.9% { opacity: 0; transform: translateX(0); }
+  63% { opacity: 1; transform: translateX(-10px); }
+  63.6%, 100% { opacity: 0; transform: translateX(0); }
+}
+
+@keyframes glitch-flash {
+  0%, 8.2%, 24.2%, 63.2%, 100% { opacity: 0; }
+  8.4% { opacity: 0.65; }
+  24.4% { opacity: 0.35; }
+  63.4% { opacity: 0.5; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .scene-text {
     transition: none;
@@ -701,7 +756,9 @@ a:focus-visible {
   .experience,
   .camera-lens::before,
   .vhs-overlay::before,
-  .vhs-overlay::after {
+  .vhs-overlay::after,
+  .glitch-overlay::before,
+  .glitch-overlay::after {
     animation: none;
   }
 }

@@ -39,6 +39,7 @@ export default function App() {
         setLang={setLang}
       />
       <div className="vhs-overlay" aria-hidden="true" />
+      <div className="glitch-overlay" aria-hidden="true" />
     </main>
   )
 }

@@ -22,7 +22,7 @@ Una landing de una sola pantalla construida desde cero alrededor de una **placa 
 
 La PCB es más grande y sigue una distribución lógica de placa de consola: zócalo de CPU, bloque gráfico con disipador, banco de memoria, sector de alimentación con condensadores y bobinas, conector de expansión, puertos laterales y buses ortogonales en grupo, con espacio entre los cuatro chips. La serigrafía con caracteres chinos es solo decoración.
 
-La iluminación es más realista: luces de fondo muy bajas, sombras proyectadas y un foco ligado al cursor que recorre la placa y es la fuente principal. El ratón **no mueve la cámara**, solo mueve esa luz y el destello de la lente. Sobre toda la web hay un efecto VHS (líneas de exploración, grano intenso, cromática y una banda magnética lenta con desgarros), y la cámara tiene viñeta oscura en los bordes, destello anamórfico, ojo de pez y aberración cromática aplicados en un pase de postprocesado. La barra superior es oscura y con desenfoque; los bloques de información aparecen como ventanas sutiles con texto iluminado. El chip activo brilla suavemente. Se respeta `prefers-reduced-motion` y hay fallback si WebGL no está disponible.
+La iluminación es más realista: luces de fondo muy bajas, sombras proyectadas y un foco ligado al cursor que recorre la placa y es la fuente principal. El ratón **no mueve la cámara**, solo mueve esa luz y el destello de la lente. Sobre toda la web hay un efecto VHS (líneas de exploración, grano grueso, cromática suave, una banda magnética lenta con desgarros y ráfagas de glitch), y la cámara tiene viñeta oscura en los bordes, destello anamórfico, ojo de pez y aberración cromática reducida aplicados en un pase de postprocesado que también genera glitch. La barra superior es oscura y con desenfoque; los bloques de información aparecen como ventanas sutiles con texto iluminado. El chip activo brilla suavemente. Se respeta `prefers-reduced-motion` y hay fallback si WebGL no está disponible.
 
 ---
 
@@ -53,7 +53,7 @@ Portfolio/
 │   │   ├── Motherboard.js          # PCB, trazas, chips y serigrafía
 │   │   ├── MotherboardScene.jsx    # Render, luces, sombras, foco del cursor y limpieza
 │   │   ├── cameraJourney.js        # Poses y transiciones de cámara
-│   │   └── lensVhsShader.js        # Ojo de pez, cromática y desgarro de cinta
+│   │   └── lensVhsShader.js        # Ojo de pez, cromática, glitch y desgarro de cinta
 │   ├── utils/i18n.jsx
 │   ├── App.jsx
 │   ├── main.jsx
