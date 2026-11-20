@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
-import { createMotherboard } from './Motherboard.js'
+import { BOARD_DEPTH, BOARD_WIDTH, createMotherboard } from './Motherboard.js'
 import { VIEWS, createJourney, sampleJourney } from './cameraJourney.js'
 
 export default function MotherboardScene({ index, reducedMotion }) {
@@ -27,6 +27,8 @@ export default function MotherboardScene({ index, reducedMotion }) {
     renderer.outputColorSpace = THREE.SRGBColorSpace
     renderer.toneMapping = THREE.ACESFilmicToneMapping
     renderer.toneMappingExposure = 1.45
+    renderer.shadowMap.enabled = true
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap
     host.appendChild(renderer.domElement)
 
     const scene = new THREE.Scene()
@@ -42,20 +44,48 @@ export default function MotherboardScene({ index, reducedMotion }) {
     camera.position.copy(VIEWS[index].camera)
     camera.lookAt(VIEWS[index].look)
 
-    scene.add(new THREE.AmbientLight(0xa9c4b6, 1.35))
-    scene.add(new THREE.HemisphereLight(0xd4efe3, 0x0c2018, 1.1))
+    // Iluminación a la mitad que en la versión anterior, con la principal proyectando sombras.
+    scene.add(new THREE.AmbientLight(0xa9c4b6, 0.675))
+    scene.add(new THREE.HemisphereLight(0xd4efe3, 0x0c2018, 0.55))
 
-    const keyLight = new THREE.DirectionalLight(0xffe8c4, 2.4)
+    const keyLight = new THREE.DirectionalLight(0xffe8c4, 1.2)
     keyLight.position.set(5, 9, 7)
+    keyLight.castShadow = true
+    keyLight.shadow.mapSize.set(2048, 2048)
+    keyLight.shadow.camera.left = -11
+    keyLight.shadow.camera.right = 11
+    keyLight.shadow.camera.top = 7
+    keyLight.shadow.camera.bottom = -7
+    keyLight.shadow.camera.near = 1
+    keyLight.shadow.camera.far = 30
+    keyLight.shadow.bias = -0.0005
     scene.add(keyLight)
-    const rimLight = new THREE.DirectionalLight(0x74e3c9, 1.15)
+
+    const rimLight = new THREE.DirectionalLight(0x74e3c9, 0.575)
     rimLight.position.set(-6, 5, -4)
     scene.add(rimLight)
-    const fillLight = new THREE.PointLight(0xffd9a0, 70, 40)
+    const fillLight = new THREE.PointLight(0xffd9a0, 35, 40)
     fillLight.position.set(0, 7, 8)
     scene.add(fillLight)
 
+    // Foco ligado al ratón: no mueve la cámara, ilumina el punto de la placa bajo el cursor.
+    const mouseLight = new THREE.SpotLight(0xfff2d8, 35, 14, 0.55, 0.75, 2)
+    mouseLight.position.set(0, 3.4, 0)
+    mouseLight.castShadow = true
+    mouseLight.shadow.mapSize.set(1024, 1024)
+    mouseLight.shadow.camera.near = 0.5
+    mouseLight.shadow.camera.far = 14
+    mouseLight.shadow.bias = -0.0005
+    scene.add(mouseLight)
+    scene.add(mouseLight.target)
+
     const board = createMotherboard()
+    board.group.traverse((object) => {
+      if (!object.isMesh) return
+      const material = Array.isArray(object.material) ? object.material[0] : object.material
+      object.receiveShadow = true
+      object.castShadow = !material.transparent
+    })
     scene.add(board.group)
 
     const state = {
@@ -66,7 +96,13 @@ export default function MotherboardScene({ index, reducedMotion }) {
       highlights: board.highlights,
       currentIndex: index,
       journey: null,
-      pointer: { x: 0, y: 0, smoothX: 0, smoothY: 0 },
+      pointer: new THREE.Vector2(0, 0),
+      raycaster: new THREE.Raycaster(),
+      lightPlane: new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.18),
+      hit: new THREE.Vector3(),
+      lightTarget: new THREE.Vector3(0, 0, 0),
+      lightDesired: new THREE.Vector3(),
+      mouseLight,
       frame: 0
     }
     stateRef.current = state
@@ -91,14 +127,21 @@ export default function MotherboardScene({ index, reducedMotion }) {
         if (progress >= 1) current.journey = null
       }
 
-      const { pointer } = current
-      pointer.smoothX += (pointer.x - pointer.smoothX) * 0.06
-      pointer.smoothY += (pointer.y - pointer.smoothY) * 0.06
-      const driftX = reducedMotion ? 0 : pointer.smoothX * 0.18
-      const driftY = reducedMotion ? 0 : pointer.smoothY * 0.12
-
-      current.camera.position.set(position.x + driftX, position.y + driftY, position.z)
+      current.camera.position.set(position.x, position.y, position.z)
       current.camera.lookAt(lookAt)
+
+      // El cursor se proyecta sobre el plano de la placa; el foco sigue ese punto con inercia.
+      current.raycaster.setFromCamera(current.pointer, current.camera)
+      if (current.raycaster.ray.intersectPlane(current.lightPlane, current.hit)) {
+        const x = THREE.MathUtils.clamp(current.hit.x, -BOARD_WIDTH / 2 + 0.2, BOARD_WIDTH / 2 - 0.2)
+        const z = THREE.MathUtils.clamp(current.hit.z, -BOARD_DEPTH / 2 + 0.2, BOARD_DEPTH / 2 - 0.2)
+        current.lightTarget.set(x, 0, z)
+      }
+      const smoothing = reducedMotion ? 1 : 0.12
+      current.lightDesired.set(current.lightTarget.x, 3.4, current.lightTarget.z)
+      current.mouseLight.position.lerp(current.lightDesired, smoothing)
+      current.mouseLight.target.position.lerp(current.lightTarget, smoothing)
+      current.mouseLight.target.updateMatrixWorld()
 
       Object.entries(current.highlights).forEach(([id, material]) => {
         let intensity = 0
@@ -128,8 +171,10 @@ export default function MotherboardScene({ index, reducedMotion }) {
     const onPointerMove = (event) => {
       const current = stateRef.current
       if (!current) return
-      current.pointer.x = (event.clientX / window.innerWidth) * 2 - 1
-      current.pointer.y = -((event.clientY / window.innerHeight) * 2 - 1)
+      current.pointer.set(
+        (event.clientX / window.innerWidth) * 2 - 1,
+        -((event.clientY / window.innerHeight) * 2 - 1)
+      )
     }
     const onResize = () => {
       const current = stateRef.current

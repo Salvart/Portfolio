@@ -1,29 +1,30 @@
 import * as THREE from 'three'
 
-const BOARD_W = 12
-const BOARD_D = 7.4
+export const BOARD_WIDTH = 18
+export const BOARD_DEPTH = 10
+
 const SURFACE_Y = 0.172
 
 function silkscreenLabel(ctx, text, x, z, size = 24, color = 'rgba(244, 235, 208, 0.82)') {
-  const px = ((x + BOARD_W / 2) / BOARD_W) * ctx.canvas.width
-  const py = ((z + BOARD_D / 2) / BOARD_D) * ctx.canvas.height
+  const px = ((x + BOARD_WIDTH / 2) / BOARD_WIDTH) * ctx.canvas.width
+  const py = ((z + BOARD_DEPTH / 2) / BOARD_DEPTH) * ctx.canvas.height
   ctx.fillStyle = color
   ctx.font = `${size}px "Microsoft YaHei", "Noto Sans CJK SC", sans-serif`
   ctx.fillText(text, px, py)
 }
 
 function silkscreenBox(ctx, x, z, w, d, color = 'rgba(244, 235, 208, 0.42)') {
-  const px = ((x - w / 2 + BOARD_W / 2) / BOARD_W) * ctx.canvas.width
-  const py = ((z - d / 2 + BOARD_D / 2) / BOARD_D) * ctx.canvas.height
+  const px = ((x - w / 2 + BOARD_WIDTH / 2) / BOARD_WIDTH) * ctx.canvas.width
+  const py = ((z - d / 2 + BOARD_DEPTH / 2) / BOARD_DEPTH) * ctx.canvas.height
   ctx.strokeStyle = color
   ctx.lineWidth = 2
-  ctx.strokeRect(px, py, (w / BOARD_W) * ctx.canvas.width, (d / BOARD_D) * ctx.canvas.height)
+  ctx.strokeRect(px, py, (w / BOARD_WIDTH) * ctx.canvas.width, (d / BOARD_DEPTH) * ctx.canvas.height)
 }
 
 function createSilkscreenTexture() {
   const canvas = document.createElement('canvas')
   canvas.width = 2048
-  canvas.height = 1280
+  canvas.height = 1150
   const ctx = canvas.getContext('2d')
   ctx.clearRect(0, 0, canvas.width, canvas.height)
 
@@ -31,36 +32,35 @@ function createSilkscreenTexture() {
   const cream = 'rgba(244, 235, 208, 0.82)'
 
   // Serigrafía china: decoración de placa, organizada por zonas funcionales.
-  silkscreenLabel(ctx, '核心', -4.3, -2.25, 34, cream)
-  silkscreenLabel(ctx, '数据总线', -2.5, 1.95, 26, amber)
-  silkscreenLabel(ctx, '视频', -1.55, -2.35, 30, cream)
-  silkscreenLabel(ctx, '显存', -1.55, 2.05, 26, amber)
-  silkscreenLabel(ctx, '内存', 0.75, 2.05, 30, cream)
-  silkscreenLabel(ctx, '接口', 3.0, -1.85, 30, cream)
-  silkscreenLabel(ctx, '电源', -5.2, 2.8, 30, amber)
-  silkscreenLabel(ctx, '时钟', -2.35, -2.9, 22, amber)
-  silkscreenLabel(ctx, '复位', 4.6, 2.75, 22, amber)
+  silkscreenLabel(ctx, '核心', -7.0, -2.6, 38, cream)
+  silkscreenLabel(ctx, '数据总线', -4.0, 2.65, 30, amber)
+  silkscreenLabel(ctx, '视频', -2.7, -2.6, 34, cream)
+  silkscreenLabel(ctx, '显存', -2.7, 2.65, 30, amber)
+  silkscreenLabel(ctx, '内存', 1.1, 2.65, 34, cream)
+  silkscreenLabel(ctx, '接口', 5.1, -2.4, 34, cream)
+  silkscreenLabel(ctx, '电源', -7.9, 3.75, 34, amber)
+  silkscreenLabel(ctx, '时钟', -3.2, -3.6, 26, amber)
+  silkscreenLabel(ctx, '复位', 7.0, 3.4, 26, amber)
 
   // Referencias de componente, como en una placa real.
-  silkscreenLabel(ctx, 'U1', -4.05, -1.35, 22, amber)
-  silkscreenLabel(ctx, 'U2', -1.75, -1.35, 22, amber)
-  silkscreenLabel(ctx, 'U3', 0.65, -0.15, 22, amber)
-  silkscreenLabel(ctx, 'U4', 3.05, 0.55, 22, amber)
-  silkscreenLabel(ctx, 'BIOS', 2.95, 1.95, 22, amber)
-  silkscreenLabel(ctx, 'PWR', -4.9, 1.55, 22, amber)
-  silkscreenLabel(ctx, 'CLK', -2.35, -2.45, 20, amber)
+  silkscreenLabel(ctx, 'U1', -6.4, -0.7, 26, amber)
+  silkscreenLabel(ctx, 'U2', -2.4, -2.05, 26, amber)
+  silkscreenLabel(ctx, 'U3', 1.6, -0.45, 26, amber)
+  silkscreenLabel(ctx, 'U4', 5.6, 0.85, 26, amber)
+  silkscreenLabel(ctx, 'BIOS', 5.1, 3.3, 26, amber)
+  silkscreenLabel(ctx, 'PWR', -7.5, 2.3, 26, amber)
+  silkscreenLabel(ctx, 'CLK', -3.2, -3.2, 24, amber)
 
-  // Contornos de las zonas y del conector de expansión.
-  silkscreenBox(ctx, -3.2, 0.3, 2.5, 2.5)
-  silkscreenBox(ctx, -1.0, -0.6, 2.7, 1.8)
-  silkscreenBox(ctx, 1.4, 0.6, 2.8, 1.9)
-  silkscreenBox(ctx, 3.6, -0.2, 2.0, 1.6)
-  silkscreenBox(ctx, -0.5, 3.32, 5.0, 0.55)
+  // Contornos de los cuatro chips y del conector de expansión.
+  silkscreenBox(ctx, -6.0, 0.4, 2.8, 2.8)
+  silkscreenBox(ctx, -2.0, -1.1, 2.7, 1.8)
+  silkscreenBox(ctx, 2.0, 0.9, 3.1, 2.1)
+  silkscreenBox(ctx, 6.0, -0.5, 2.0, 1.6)
+  silkscreenBox(ctx, 0, 4.55, 8.5, 0.6)
 
-  // Pequeños caracteres alineados en los bordes, como serigrafía de fabricación.
   const glyphs = '电源时钟数据复位内存总线信号核心接口输入输出地压控使能缓存地址读写同步'
-  for (let i = 0; i < 16; i += 1) {
-    silkscreenLabel(ctx, glyphs[i], -5.5 + i * 0.7, -3.45, 16, 'rgba(244, 235, 208, 0.38)')
+  for (let i = 0; i < 22; i += 1) {
+    silkscreenLabel(ctx, glyphs[i % glyphs.length], -8.4 + i * 0.8, -4.6, 18, 'rgba(244, 235, 208, 0.38)')
   }
 
   const texture = new THREE.CanvasTexture(canvas)
@@ -210,10 +210,10 @@ function addMountingHoles(group) {
   const ringMat = new THREE.MeshStandardMaterial({ color: 0xc9a45c, metalness: 0.85, roughness: 0.3 })
   const holeMat = new THREE.MeshStandardMaterial({ color: 0x030806, metalness: 0.1, roughness: 1 })
   ;[
-    [-5.55, -3.25],
-    [5.55, -3.25],
-    [-5.55, 3.25],
-    [5.55, 3.25]
+    [-8.45, -4.5],
+    [8.45, -4.5],
+    [-8.45, 4.5],
+    [8.45, 4.5]
   ].forEach(([x, z]) => {
     const ring = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.03, 16), ringMat)
     ring.position.set(x, 0.2, z)
@@ -232,19 +232,18 @@ function addPowerSection(group) {
   // Condensadores alineados en el riel de alimentación.
   for (let i = 0; i < 9; i += 1) {
     const cap = new THREE.Mesh(capGeo, capMat)
-    cap.position.set(-4.9 + i * 0.55, 0.35, 2.35)
+    cap.position.set(-7.5 + i * 0.55, 0.35, 3.35)
     group.add(cap)
   }
   for (let i = 0; i < 4; i += 1) {
     const cap = new THREE.Mesh(capGeo, capMat)
-    cap.position.set(4.15 + i * 0.42, 0.35, 2.15)
+    cap.position.set(5.6 + i * 0.62, 0.35, 3.35)
     group.add(cap)
   }
 
-  // Bobinas de la sección de alimentación.
-  ;[-4.25, -3.35].forEach((x) => {
+  ;[-6.8, -5.8].forEach((x) => {
     const coil = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.26, 18), coilMat)
-    coil.position.set(x, 0.31, 3.0)
+    coil.position.set(x, 0.31, 4.25)
     group.add(coil)
   })
 }
@@ -253,12 +252,12 @@ function addEdgeConnectors(group) {
   const plastic = new THREE.MeshStandardMaterial({ color: 0x14211b, metalness: 0.2, roughness: 0.8 })
   const gold = new THREE.MeshStandardMaterial({ color: 0xe0bd74, metalness: 0.85, roughness: 0.25 })
 
-  const expansion = new THREE.Mesh(new THREE.BoxGeometry(4.8, 0.12, 0.32), plastic)
-  expansion.position.set(-0.5, 0.23, 3.32)
+  const expansion = new THREE.Mesh(new THREE.BoxGeometry(8.5, 0.12, 0.32), plastic)
+  expansion.position.set(0, 0.23, 4.55)
   group.add(expansion)
-  for (let i = 0; i < 28; i += 1) {
+  for (let i = 0; i < 44; i += 1) {
     const pin = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.025, 0.22), gold)
-    pin.position.set(-2.75 + i * 0.166, 0.3, 3.32)
+    pin.position.set(-4.1 + i * 0.19, 0.3, 4.55)
     group.add(pin)
   }
 
@@ -266,30 +265,29 @@ function addEdgeConnectors(group) {
   const portShell = new THREE.MeshStandardMaterial({ color: 0x8f9d94, metalness: 0.8, roughness: 0.35 })
   const portHole = new THREE.MeshStandardMaterial({ color: 0x0b1410, metalness: 0.2, roughness: 0.9 })
   for (let i = 0; i < 4; i += 1) {
-    const z = -1.5 + i * 0.75
+    const z = -2.2 + i * 1.1
     const shell = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.26, 0.5), portShell)
-    shell.position.set(5.62, 0.31, z)
+    shell.position.set(8.62, 0.31, z)
     group.add(shell)
     const hole = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.15, 0.32), portHole)
-    hole.position.set(5.92, 0.31, z)
+    hole.position.set(8.92, 0.31, z)
     group.add(hole)
   }
 }
 
 function addAuxiliaryComponents(group) {
-  // BIOS y oscilador de cristal: referencias visuales de una placa de consola.
-  addSmallChip(group, 3.4, 2.05, 0.62, 0.44)
+  addSmallChip(group, 5.4, 2.5, 0.62, 0.44)
   const crystal = new THREE.Mesh(
     new THREE.CylinderGeometry(0.22, 0.22, 0.24, 16),
     new THREE.MeshStandardMaterial({ color: 0x9aa79f, metalness: 0.85, roughness: 0.3 })
   )
-  crystal.position.set(-1.95, 0.3, -2.6)
+  crystal.position.set(-2.9, 0.3, -3.0)
   group.add(crystal)
 
   const vias = []
-  for (let x = -5.1; x <= 5.1; x += 0.85) vias.push([x, 3.15])
-  for (let z = -3.0; z <= 2.8; z += 0.9) vias.push([-5.15, z])
-  for (let z = -3.0; z <= 2.8; z += 0.9) vias.push([5.15, z])
+  for (let x = -8.0; x <= 8.0; x += 1) vias.push([x, 4.0])
+  for (let z = -4.0; z <= 4.0; z += 1) vias.push([-8.4, z])
+  for (let z = -4.0; z <= 4.0; z += 1) vias.push([8.4, z])
   const viaGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.02, 8)
   const viaMat = new THREE.MeshStandardMaterial({ color: 0xe0bd74, metalness: 0.9, roughness: 0.22 })
   vias.forEach(([x, z]) => {
@@ -302,29 +300,37 @@ function addAuxiliaryComponents(group) {
 function addBuses(group) {
   // Rutas ortogonales con esquinas a 45°, agrupadas en buses paralelos.
   const buses = [
-    [[-2.35, 0.3], [-1.95, 0.3], [-1.6, -0.05], [-1.6, -0.6], [-1.85, -0.6]],
-    [[-2.35, 0.62], [-1.9, 0.62], [-1.5, 1.02], [0.85, 1.02], [1.15, 0.6]],
-    [[-1.0, 0.12], [-1.0, 1.05], [-1.35, 1.4], [-1.35, 1.72]],
-    [[2.15, 0.6], [2.55, 0.6], [2.85, 0.3], [3.12, -0.2]],
-    [[4.35, -0.2], [4.85, -0.2], [5.15, -0.5], [5.45, -0.5]],
-    [[-3.2, 1.6], [-3.2, 2.45], [-2.75, 2.9], [4.9, 2.9]],
-    [[-1.0, -1.3], [-1.0, -2.05], [-1.65, -2.6]],
-    [[3.6, 0.72], [3.6, 1.75], [4.05, 2.2]]
+    // CPU → gráficos.
+    [[-4.75, 0.2], [-4.3, 0.2], [-3.75, -0.35], [-3.2, -0.35], [-3.2, -0.9]],
+    // CPU → memoria, rodeando el borde superior del banco.
+    [[-4.75, 0.8], [-4.1, 0.8], [-3.4, 1.5], [-3.4, 2.5], [0.5, 2.5], [1.0, 2.0], [1.0, 1.85]],
+    // Gráficos → memoria.
+    [[-0.8, -1.1], [-0.2, -1.1], [0.3, -0.6], [0.3, -0.1]],
+    // Memoria → E/S.
+    [[3.45, 0.9], [4.1, 0.9], [4.6, 0.4], [5.2, 0.4]],
+    // E/S → puertos laterales.
+    [[6.8, -0.5], [7.6, -0.5], [8.1, -1.0], [8.5, -1.0]],
+    // Bus del conector de expansión.
+    [[-4.25, 4.55], [-4.25, 3.2], [-3.5, 2.9], [7.5, 2.9], [7.5, 3.6], [7.8, 3.9]],
+    // Gráficos → oscilador.
+    [[-2.0, -1.85], [-2.0, -2.4], [-2.9, -3.0]],
+    // CPU → alimentación.
+    [[-6.0, 1.65], [-6.0, 2.6], [-6.6, 3.2]]
   ]
-  buses.forEach((points, index) => addBus(group, points, index === 5 ? 6 : 4))
+  buses.forEach((points, index) => addBus(group, points, index === 1 || index === 5 ? 6 : 4))
 }
 
 export function createMotherboard() {
   const group = new THREE.Group()
 
   const board = new THREE.Mesh(
-    new THREE.BoxGeometry(BOARD_W, 0.32, BOARD_D),
+    new THREE.BoxGeometry(BOARD_WIDTH, 0.32, BOARD_DEPTH),
     new THREE.MeshStandardMaterial({ color: 0x0e2119, metalness: 0.2, roughness: 0.78 })
   )
   group.add(board)
 
   const surface = new THREE.Mesh(
-    new THREE.PlaneGeometry(BOARD_W - 0.2, BOARD_D - 0.2),
+    new THREE.PlaneGeometry(BOARD_WIDTH - 0.2, BOARD_DEPTH - 0.2),
     new THREE.MeshStandardMaterial({ color: 0x164436, metalness: 0.15, roughness: 0.8 })
   )
   surface.rotation.x = -Math.PI / 2
@@ -332,7 +338,7 @@ export function createMotherboard() {
   group.add(surface)
 
   const silk = new THREE.Mesh(
-    new THREE.PlaneGeometry(BOARD_W - 0.2, BOARD_D - 0.2),
+    new THREE.PlaneGeometry(BOARD_WIDTH - 0.2, BOARD_DEPTH - 0.2),
     new THREE.MeshBasicMaterial({
       map: createSilkscreenTexture(),
       transparent: true,
@@ -352,10 +358,10 @@ export function createMotherboard() {
 
   const chipDefs = [
     // Y = 0.17: los chips se apoyan sobre la superficie de la PCB (Y = 0.165).
-    { id: 'cpu', type: 'cpu', position: [-3.2, 0.17, 0.3] },
-    { id: 'graphics', type: 'graphics', position: [-1.0, 0.17, -0.6] },
-    { id: 'memory', type: 'memory', position: [1.4, 0.17, 0.6] },
-    { id: 'io', type: 'io', position: [3.6, 0.17, -0.2] }
+    { id: 'cpu', type: 'cpu', position: [-6.0, 0.17, 0.4] },
+    { id: 'graphics', type: 'graphics', position: [-2.0, 0.17, -1.1] },
+    { id: 'memory', type: 'memory', position: [2.0, 0.17, 0.9] },
+    { id: 'io', type: 'io', position: [6.0, 0.17, -0.5] }
   ]
 
   const highlights = {}

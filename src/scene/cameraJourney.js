@@ -6,10 +6,10 @@ export const TRANSITION_MS = 1900
 
 // Posición de cada chip sobre la placa (coincide con Motherboard.js).
 export const CHIP_POSITIONS = {
-  cpu: new THREE.Vector3(-3.2, 0.42, 0.3),
-  graphics: new THREE.Vector3(-1.0, 0.45, -0.6),
-  memory: new THREE.Vector3(1.4, 0.4, 0.6),
-  io: new THREE.Vector3(3.6, 0.4, -0.2)
+  cpu: new THREE.Vector3(-6.0, 0.42, 0.4),
+  graphics: new THREE.Vector3(-2.0, 0.45, -1.1),
+  memory: new THREE.Vector3(2.0, 0.4, 0.9),
+  io: new THREE.Vector3(6.0, 0.4, -0.5)
 }
 
 const view = (chip, camera, look) => ({ chip, camera: new THREE.Vector3(...camera), look: new THREE.Vector3(...look) })
@@ -17,10 +17,10 @@ const view = (chip, camera, look) => ({ chip, camera: new THREE.Vector3(...camer
 // Vista casi cenital: la cámara queda apenas desplazada en Z respecto al chip,
 // mirando hacia abajo con una inclinación de ~8° respecto a la vertical.
 export const VIEWS = [
-  view('cpu', [-3.2, 4.9, 0.95], [-3.2, 0.35, 0.3]),
-  view('graphics', [-1.0, 5.0, 0.05], [-1.0, 0.4, -0.6]),
-  view('memory', [1.4, 4.85, 1.25], [1.4, 0.35, 0.6]),
-  view('io', [3.6, 4.9, 0.45], [3.6, 0.35, -0.2])
+  view('cpu', [-6.0, 4.9, 1.05], [-6.0, 0.35, 0.4]),
+  view('graphics', [-2.0, 5.0, -0.45], [-2.0, 0.4, -1.1]),
+  view('memory', [2.0, 4.85, 1.55], [2.0, 0.35, 0.9]),
+  view('io', [6.0, 4.9, 0.15], [6.0, 0.35, -0.5])
 ]
 
 const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)

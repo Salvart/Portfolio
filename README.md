@@ -20,7 +20,9 @@ Una landing de una sola pantalla construida desde cero alrededor de una **placa 
 | Memory | Formación | Tres titulaciones |
 | I/O | Proyectos | Siete destacados y enlaces |
 
-La PCB sigue una distribución lógica de placa de consola: zócalo de CPU, bloque gráfico con disipador, banco de memoria, sector de alimentación con condensadores y bobinas, conector de expansión, puertos laterales y buses ortogonales en grupo. La serigrafía con caracteres chinos es solo decoración. El chip activo brilla suavemente y el ratón desplaza la cámara con amortiguación. Se respeta `prefers-reduced-motion` y hay fallback si WebGL no está disponible.
+La PCB es más grande y sigue una distribución lógica de placa de consola: zócalo de CPU, bloque gráfico con disipador, banco de memoria, sector de alimentación con condensadores y bobinas, conector de expansión, puertos laterales y buses ortogonales en grupo, con espacio entre los cuatro chips. La serigrafía con caracteres chinos es solo decoración.
+
+La iluminación es más realista: luces atenuadas, sombras proyectadas y un foco ligado al cursor que recorre la placa. El ratón **no mueve la cámara**, solo mueve esa luz. El chip activo brilla suavemente. Se respeta `prefers-reduced-motion` y hay fallback si WebGL no está disponible.
 
 ---
 
@@ -49,7 +51,7 @@ Portfolio/
 │   │   └── useSectionController.js # Rueda, teclado y swipe
 │   ├── scene/
 │   │   ├── Motherboard.js          # PCB, trazas, chips y serigrafía
-│   │   ├── MotherboardScene.jsx    # Render, luces, parallax y limpieza
+│   │   ├── MotherboardScene.jsx    # Render, luces, sombras, foco del cursor y limpieza
 │   │   └── cameraJourney.js        # Poses y transiciones de cámara
 │   ├── utils/i18n.jsx
 │   ├── App.jsx
