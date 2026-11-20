@@ -2,7 +2,7 @@
 
 import * as THREE from 'three'
 
-export const TRANSITION_MS = 2200
+export const TRANSITION_MS = 1400
 
 // Posición de cada chip sobre la placa (coincide con Motherboard.js).
 export const CHIP_POSITIONS = {
