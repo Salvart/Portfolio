@@ -4,12 +4,12 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
-import { HorizontalBlurShader } from 'three/examples/jsm/shaders/HorizontalBlurShader.js'
-import { VerticalBlurShader } from 'three/examples/jsm/shaders/VerticalBlurShader.js'
 import { BOARD_DEPTH, BOARD_WIDTH, createMotherboard } from './Motherboard.js'
 import { VIEWS, createJourney, sampleJourney } from './cameraJourney.js'
+import { ColorGradeShader } from './colorGradeShader.js'
 import { LensVhsShader } from './lensVhsShader.js'
 import { SharpenShader } from './sharpenShader.js'
+import { VignetteHorizontalBlurShader, VignetteVerticalBlurShader } from './vignetteBlurShader.js'
 
 export default function MotherboardScene({ index, reducedMotion }) {
   const hostRef = useRef(null)
@@ -102,21 +102,23 @@ export default function MotherboardScene({ index, reducedMotion }) {
     const lensPass = new ShaderPass(LensVhsShader)
     composer.addPass(lensPass)
 
-    // Gaussian blur real en dos pasos separables, seguido de un realce suave.
-    const blurX = new ShaderPass(HorizontalBlurShader)
-    const blurY = new ShaderPass(VerticalBlurShader)
+    // Gaussian blur con viñeta, realce suave y ajuste final de contraste/brillo.
+    const blurX = new ShaderPass(VignetteHorizontalBlurShader)
+    const blurY = new ShaderPass(VignetteVerticalBlurShader)
     const sharpenPass = new ShaderPass(SharpenShader)
+    const gradePass = new ShaderPass(ColorGradeShader)
     sharpenPass.uniforms.uResolution.value = new THREE.Vector2(1, 1)
     composer.addPass(blurX)
     composer.addPass(blurY)
     composer.addPass(sharpenPass)
+    composer.addPass(gradePass)
     composer.addPass(new OutputPass())
 
     const syncPostProcessing = (width, height, pixelRatio) => {
       const renderWidth = Math.max(1, Math.round(width * pixelRatio))
       const renderHeight = Math.max(1, Math.round(height * pixelRatio))
-      blurX.uniforms.h.value = 1.5 / renderWidth
-      blurY.uniforms.v.value = 1.5 / renderHeight
+      blurX.uniforms.uTexel.value = 1 / renderWidth
+      blurY.uniforms.uTexel.value = 1 / renderHeight
       sharpenPass.uniforms.uResolution.value.set(renderWidth, renderHeight)
     }
     const initialPixelRatio = Math.min(window.devicePixelRatio || 1, 1.75)
