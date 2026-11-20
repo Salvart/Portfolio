@@ -25,8 +25,10 @@ function normalize2([x, z]) {
   return [x / length, z / length]
 }
 
-// Esquinas achamferadas a 45°, como en el trazado real de una PCB.
-function chamferPath(points, radius = 0.2) {
+// Todas las rutas usan puntos de anclaje alineados a ejes. Cada esquina se
+// sustituye por una diagonal exacta de 45°, por lo que nunca aparecen ángulos
+// arbitrarios (solo 0°, 90° y los chaflanes a 45°).
+function chamferPath(points, radius = 0.16) {
   if (points.length < 3) return points
   const result = [points[0]]
   for (let i = 1; i < points.length - 1; i += 1) {
@@ -106,21 +108,21 @@ function createSilkscreenTexture() {
   const amber = 'rgba(232, 186, 110, 0.78)'
   const cream = 'rgba(244, 235, 208, 0.82)'
 
-  // Serigrafía china: decoración de placa, organizada por zonas funcionales.
+  // Serigrafía china: solo en zonas libres de pistas y componentes.
   silkscreenLabel(ctx, '核心', -7.0, -2.6, 38, cream)
-  silkscreenLabel(ctx, '数据总线', -4.0, 2.65, 30, amber)
+  silkscreenLabel(ctx, '数据总线', 1.6, 3.25, 30, amber)
   silkscreenLabel(ctx, '视频', -2.7, -2.6, 34, cream)
-  silkscreenLabel(ctx, '显存', -2.7, 2.65, 30, amber)
-  silkscreenLabel(ctx, '内存', 1.1, 2.65, 34, cream)
+  silkscreenLabel(ctx, '显存', 0.6, -2.6, 30, amber)
+  silkscreenLabel(ctx, '内存', 3.8, 3.25, 34, cream)
   silkscreenLabel(ctx, '接口', 5.1, -2.4, 34, cream)
   silkscreenLabel(ctx, '电源', -7.9, 3.75, 34, amber)
   silkscreenLabel(ctx, '时钟', -3.2, -3.6, 26, amber)
-  silkscreenLabel(ctx, '复位', 7.0, 3.4, 26, amber)
+  silkscreenLabel(ctx, '复位', 7.8, -3.6, 26, amber)
 
   // Referencias de componente, como en una placa real.
   silkscreenLabel(ctx, 'U1', -6.4, -0.7, 26, amber)
   silkscreenLabel(ctx, 'U2', -2.4, -2.05, 26, amber)
-  silkscreenLabel(ctx, 'U3', 1.6, -0.45, 26, amber)
+  silkscreenLabel(ctx, 'U3', 1.6, -1.9, 26, amber)
   silkscreenLabel(ctx, 'U4', 5.6, 0.85, 26, amber)
   silkscreenLabel(ctx, 'BIOS', 5.1, 3.3, 26, amber)
   silkscreenLabel(ctx, 'PWR', -7.5, 2.3, 26, amber)
@@ -280,7 +282,10 @@ function addPinBus(group, count, pinStart, pinEnd, route, options = {}) {
     const end = pinEnd(i)
     const path = chamferPath(route(start, end, i))
     addTrace(group, path, options.color, options.opacity)
-    ;(options.vias || []).forEach((index) => addVia(group, path[index]))
+    if (options.vias) {
+      addVia(group, path[2] || path[1])
+      addVia(group, path[path.length - 3] || path[path.length - 2])
+    }
   }
 }
 
@@ -376,21 +381,26 @@ function addAuxiliaryComponents(group) {
 }
 
 function addBuses(group) {
-  // Cada bus nace en un pin real de un chip y termina en el pin de destino.
-  // CPU → gráficos: datos desde el lateral derecho al borde frontal del GPU.
+  // Cada bus nace en un pin real y termina en el pin de destino. Los carriles
+  // se ordenan de menor a mayor índice para que nunca se crucen entre sí.
+  // CPU → gráficos.
   addPinBus(
     group,
     4,
     (i) => cpuPin('right', 5 + i),
     (i) => gpuPin('front', 6 + i),
-    ([sx, sz], [ex, ez]) => [
-      [sx, sz],
-      [-4.6, sz],
-      [-4.6 + (sz + 0.35), -0.35],
-      [-3.45, -0.35],
-      [ex, ez]
-    ],
-    { vias: [1, 3] }
+    ([sx, sz], [ex, ez], i) => {
+      const channelX = -3.5 + i * 0.25
+      const channelZ = -0.32 + i * 0.09
+      return [
+        [sx, sz],
+        [channelX, sz],
+        [channelX, channelZ],
+        [ex, channelZ],
+        [ex, ez]
+      ]
+    },
+    { vias: true }
   )
 
   // CPU → memoria: bus de direcciones por el canal superior.
@@ -399,44 +409,58 @@ function addBuses(group) {
     6,
     (i) => cpuPin('front', 2 + i),
     (i) => ramPad('left', i),
-    ([sx, sz], [ex, ez]) => [
-      [sx, sz],
-      [sx, 2.55],
-      [0.15, 2.55],
-      [0.15, ez],
-      [ex, ez]
-    ],
-    { color: 0x9ed8c4, opacity: 0.6, vias: [1, 2] }
+    ([sx, sz], [ex, ez], i) => {
+      const channelZ = 2.75 - i * 0.13
+      const channelX = 0.15 - i * 0.13
+      return [
+        [sx, sz],
+        [sx, channelZ],
+        [channelX, channelZ],
+        [channelX, ez],
+        [ex, ez]
+      ]
+    },
+    { color: 0x9ed8c4, opacity: 0.6, vias: true }
   )
 
-  // Gráficos → memoria: bus de vídeo desde el lateral derecho del GPU.
+  // Gráficos → memoria: bus de vídeo.
   addPinBus(
     group,
     4,
     (i) => gpuPin('right', 3 + i),
     (i) => ramPad('bottom', i),
-    ([sx, sz], [ex, ez]) => [
-      [sx, sz],
-      [-0.3, sz],
-      [0.35, ez],
-      [ex, ez]
-    ],
-    { vias: [1] }
+    ([sx, sz], [ex, ez], i) => {
+      const channelX = -0.3 + i * 0.15
+      const channelZ = -0.6 + i * 0.14
+      return [
+        [sx, sz],
+        [channelX, sz],
+        [channelX, channelZ],
+        [ex, channelZ],
+        [ex, ez]
+      ]
+    },
+    { vias: true }
   )
 
-  // Memoria → E/S: bus de datos hacia el controlador de entradas.
+  // Memoria → E/S: bus de datos.
   addPinBus(
     group,
     4,
     (i) => ramPad('right', i),
     (i) => ioPad('left', i),
-    ([sx, sz], [ex, ez]) => [
-      [sx, sz],
-      [4.05, sz],
-      [4.55, ez],
-      [ex, ez]
-    ],
-    { vias: [1] }
+    ([sx, sz], [ex, ez], i) => {
+      const channelX = 3.9 + i * 0.15
+      const channelZ = -0.1 + i * 0.1
+      return [
+        [sx, sz],
+        [channelX, sz],
+        [channelX, channelZ],
+        [ex, channelZ],
+        [ex, ez]
+      ]
+    },
+    { vias: true }
   )
 
   // E/S → puertos laterales: una línea por conector.
@@ -445,30 +469,37 @@ function addBuses(group) {
     3,
     (i) => ioPad('right', 1 + i),
     (i) => [8.9, -2.2 + i * 1.1],
-    ([sx, sz], [ex, ez]) => [
-      [sx, sz],
-      [7.45, sz],
-      [8.1, ez],
-      [ex, ez]
-    ],
-    { color: 0x9ed8c4, opacity: 0.6, vias: [1] }
+    ([sx, sz], [ex, ez], i) => {
+      const channelX = 7.3 + i * 0.25
+      return [
+        [sx, sz],
+        [channelX, sz],
+        [channelX, ez],
+        [ex, ez]
+      ]
+    },
+    { color: 0x9ed8c4, opacity: 0.6, vias: true }
   )
 
-  // CPU → conector de expansión.
+  // CPU → conector de expansión: sale por los pines traseros y rodea el
+  // bus de direcciones por un carril propio en el lateral izquierdo.
   addPinBus(
     group,
     3,
-    (i) => cpuPin('front', 8 + i),
+    (i) => cpuPin('back', 8 + i),
     (i) => [-3.5 + i * 0.7, 4.55],
-    ([sx, sz], [ex, ez]) => [
-      [sx, sz],
-      [sx, 2.95],
-      [-3.9, 2.95],
-      [-3.9, 4.25],
-      [ex, 4.25],
-      [ex, ez]
-    ],
-    { color: 0x7fbfa8, opacity: 0.55, vias: [1, 2, 3] }
+    ([sx, sz], [ex, ez], i) => {
+      const channelX = -7.6
+      const channelZ = 3.15 - i * 0.1
+      return [
+        [sx, sz],
+        [channelX, sz],
+        [channelX, channelZ],
+        [ex, channelZ],
+        [ex, ez]
+      ]
+    },
+    { color: 0x7fbfa8, opacity: 0.55, vias: true }
   )
 }
 
