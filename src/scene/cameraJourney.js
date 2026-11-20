@@ -23,8 +23,10 @@ export const VIEWS = [
 
 const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 
-const pulledBack = (vector) => new THREE.Vector3(vector.x, vector.y + 2.6, vector.z - 4.5)
-const boardLevel = (vector) => new THREE.Vector3(vector.x, 0, vector.z)
+// Se retrocede alejando la cámara del chip (+Z), nunca cruzando por detrás:
+// cruzar el objetivo provocaría un giro brusco de 180° al mirar siempre al chip.
+const pulledBack = (vector) => new THREE.Vector3(vector.x, vector.y + 2.4, vector.z + 4.6)
+const boardLevel = (vector) => new THREE.Vector3(vector.x, 0.25, vector.z)
 
 export function createJourney(fromIndex, toIndex) {
   const from = VIEWS[fromIndex]

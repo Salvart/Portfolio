@@ -26,12 +26,12 @@ export default function MotherboardScene({ index, reducedMotion }) {
     renderer.setSize(host.clientWidth, Math.max(1, host.clientHeight))
     renderer.outputColorSpace = THREE.SRGBColorSpace
     renderer.toneMapping = THREE.ACESFilmicToneMapping
-    renderer.toneMappingExposure = 1.15
+    renderer.toneMappingExposure = 1.45
     host.appendChild(renderer.domElement)
 
     const scene = new THREE.Scene()
     scene.background = new THREE.Color(0x050b09)
-    scene.fog = new THREE.FogExp2(0x050b09, 0.035)
+    scene.fog = new THREE.FogExp2(0x050b09, 0.018)
 
     const camera = new THREE.PerspectiveCamera(
       45,
@@ -42,13 +42,18 @@ export default function MotherboardScene({ index, reducedMotion }) {
     camera.position.copy(VIEWS[index].camera)
     camera.lookAt(VIEWS[index].look)
 
-    scene.add(new THREE.AmbientLight(0x7d9a8b, 0.7))
-    const keyLight = new THREE.DirectionalLight(0xffe0b0, 1.25)
-    keyLight.position.set(4, 8, 6)
+    scene.add(new THREE.AmbientLight(0xa9c4b6, 1.35))
+    scene.add(new THREE.HemisphereLight(0xd4efe3, 0x0c2018, 1.1))
+
+    const keyLight = new THREE.DirectionalLight(0xffe8c4, 2.4)
+    keyLight.position.set(5, 9, 7)
     scene.add(keyLight)
-    const rimLight = new THREE.DirectionalLight(0x49c9b2, 0.55)
-    rimLight.position.set(-6, 4, -5)
+    const rimLight = new THREE.DirectionalLight(0x74e3c9, 1.15)
+    rimLight.position.set(-6, 5, -4)
     scene.add(rimLight)
+    const fillLight = new THREE.PointLight(0xffd9a0, 70, 40)
+    fillLight.position.set(0, 7, 8)
+    scene.add(fillLight)
 
     const board = createMotherboard()
     scene.add(board.group)

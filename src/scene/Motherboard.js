@@ -20,7 +20,7 @@ function createSilkscreenTexture() {
   const glyphs = '电源时钟数据复位内存总线信号核心接口输入输出地压控使能缓存地址读写同步检测驱动模块主板芯片组供电'
 
   ctx.clearRect(0, 0, canvas.width, canvas.height)
-  ctx.fillStyle = 'rgba(226, 214, 180, 0.55)'
+  ctx.fillStyle = 'rgba(245, 236, 208, 0.82)'
   ctx.font = '26px "Microsoft YaHei", "Noto Sans CJK SC", sans-serif'
   ctx.textBaseline = 'top'
 
@@ -33,7 +33,7 @@ function createSilkscreenTexture() {
   }
 
   // Trazas y marcas de serigrafía: pura decoración de placa.
-  ctx.strokeStyle = 'rgba(226, 214, 180, 0.28)'
+  ctx.strokeStyle = 'rgba(245, 236, 208, 0.5)'
   ctx.lineWidth = 2
   for (let i = 0; i < 45; i += 1) {
     const x = rand() * canvas.width
@@ -56,7 +56,7 @@ function createSilkscreenTexture() {
 
 function addPins(group, width, depth, y) {
   const pinGeo = new THREE.BoxGeometry(0.055, 0.035, 0.16)
-  const pinMat = new THREE.MeshStandardMaterial({ color: 0xc9a45c, metalness: 0.85, roughness: 0.3 })
+  const pinMat = new THREE.MeshStandardMaterial({ color: 0xe0bd74, metalness: 0.8, roughness: 0.28 })
   const count = Math.floor(width / 0.14)
   for (let i = 0; i < count; i += 1) {
     const x = -width / 2 + 0.07 + i * (width - 0.14) / Math.max(1, count - 1)
@@ -79,8 +79,8 @@ function addPins(group, width, depth, y) {
 
 function makeChip(type, highlightMaterial) {
   const chip = new THREE.Group()
-  const dark = new THREE.MeshStandardMaterial({ color: 0x161c1a, metalness: 0.55, roughness: 0.45 })
-  const metal = new THREE.MeshStandardMaterial({ color: 0x39423d, metalness: 0.7, roughness: 0.35 })
+  const dark = new THREE.MeshStandardMaterial({ color: 0x29332d, metalness: 0.4, roughness: 0.5 })
+  const metal = new THREE.MeshStandardMaterial({ color: 0x68766c, metalness: 0.55, roughness: 0.38 })
 
   const base = (w, h, d, y = h / 2) => {
     const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), dark)
@@ -111,7 +111,7 @@ function makeChip(type, highlightMaterial) {
       for (let j = 0; j < 6; j += 1) {
         const contact = new THREE.Mesh(
           new THREE.BoxGeometry(0.2, 0.03, 0.06),
-          new THREE.MeshStandardMaterial({ color: 0xc9a45c, metalness: 0.85, roughness: 0.3 })
+          new THREE.MeshStandardMaterial({ color: 0xe0bd74, metalness: 0.8, roughness: 0.28 })
         )
         contact.position.set(-0.48 + i * 0.32, 0.05, -0.95 + j * 0.12)
         chip.add(contact)
@@ -147,13 +147,13 @@ export function createMotherboard() {
 
   const board = new THREE.Mesh(
     new THREE.BoxGeometry(12, 0.32, 7.4),
-    new THREE.MeshStandardMaterial({ color: 0x08140f, metalness: 0.25, roughness: 0.82 })
+    new THREE.MeshStandardMaterial({ color: 0x0e2119, metalness: 0.2, roughness: 0.78 })
   )
   group.add(board)
 
   const surface = new THREE.Mesh(
     new THREE.PlaneGeometry(11.8, 7.2),
-    new THREE.MeshStandardMaterial({ color: 0x0c2119, metalness: 0.2, roughness: 0.9 })
+    new THREE.MeshStandardMaterial({ color: 0x164436, metalness: 0.15, roughness: 0.8 })
   )
   surface.rotation.x = -Math.PI / 2
   surface.position.y = 0.165
@@ -164,7 +164,7 @@ export function createMotherboard() {
     new THREE.MeshBasicMaterial({
       map: createSilkscreenTexture(),
       transparent: true,
-      opacity: 0.72,
+      opacity: 0.95,
       depthWrite: false
     })
   )
@@ -188,13 +188,13 @@ export function createMotherboard() {
   }
   const traceGeo = new THREE.BufferGeometry()
   traceGeo.setAttribute('position', new THREE.Float32BufferAttribute(tracePoints, 3))
-  group.add(new THREE.LineSegments(traceGeo, new THREE.LineBasicMaterial({ color: 0xb99055, transparent: true, opacity: 0.5 })))
+  group.add(new THREE.LineSegments(traceGeo, new THREE.LineBasicMaterial({ color: 0xe0b96e, transparent: true, opacity: 0.8 })))
 
   // Puntos de soldadura y condensadores.
   const viaGeo = new THREE.CylinderGeometry(0.045, 0.045, 0.02, 8)
-  const viaMat = new THREE.MeshStandardMaterial({ color: 0xc9a45c, metalness: 0.9, roughness: 0.25 })
+  const viaMat = new THREE.MeshStandardMaterial({ color: 0xe0bd74, metalness: 0.85, roughness: 0.22 })
   const capGeo = new THREE.CylinderGeometry(0.11, 0.11, 0.28, 10)
-  const capMat = new THREE.MeshStandardMaterial({ color: 0x1b2b28, metalness: 0.4, roughness: 0.5 })
+  const capMat = new THREE.MeshStandardMaterial({ color: 0x314840, metalness: 0.35, roughness: 0.45 })
   for (let i = 0; i < 55; i += 1) {
     const via = new THREE.Mesh(viaGeo, viaMat)
     via.position.set(-5.5 + rand() * 11, 0.18, -3.3 + rand() * 6.6)
@@ -216,8 +216,8 @@ export function createMotherboard() {
   const highlights = {}
   chipDefs.forEach((def) => {
     const highlightMaterial = new THREE.MeshStandardMaterial({
-      color: 0x0c2119,
-      emissive: new THREE.Color(0xd8a657),
+      color: 0x164436,
+      emissive: new THREE.Color(0xf0bf6d),
       emissiveIntensity: 0,
       transparent: true,
       opacity: 0.9

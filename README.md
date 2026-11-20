@@ -29,7 +29,7 @@ La placa usa trazas doradas, serigrafía con caracteres chinos como decoración 
 - **React 19** con Context API para ES/EN.
 - **Three.js** para la placa, los chips y la cámara.
 - **Vite 6** con base `/Portfolio/` para GitHub Pages.
-- **CSS** de sistema monospace, sin fuentes ni assets externos.
+- **CSS** con Montserrat autoalojada (Medium 500 para texto y Black 900 para títulos), sin assets externos.
 - **GitHub Actions** (`.github/workflows/deploy.yml`) publica `dist/` en cada push a `main`.
 
 ---
