@@ -28,8 +28,13 @@ export default function App() {
 
   return (
     <main className="experience">
-      <MotherboardScene index={index} reducedMotion={reducedMotion} />
-      <div ref={lensRef} className="camera-lens" aria-hidden="true" />
+      {/* La escena y todos los efectos quedan aislados debajo del texto. */}
+      <div className="backdrop-stack">
+        <MotherboardScene index={index} reducedMotion={reducedMotion} />
+        <div ref={lensRef} className="camera-lens" aria-hidden="true" />
+        <div className="vhs-overlay" aria-hidden="true" />
+        <div className="glitch-overlay" aria-hidden="true" />
+      </div>
       <SceneText section={sections[index]} lang={lang} transitioning={transitioning} />
       <MinimalNav
         index={index}
@@ -38,8 +43,6 @@ export default function App() {
         lang={lang}
         setLang={setLang}
       />
-      <div className="vhs-overlay" aria-hidden="true" />
-      <div className="glitch-overlay" aria-hidden="true" />
     </main>
   )
 }

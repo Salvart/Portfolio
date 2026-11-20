@@ -68,6 +68,14 @@ a:focus-visible {
   background: radial-gradient(circle at 50% 55%, #0a1913 0%, var(--bg) 70%);
 }
 
+/* Escena y efectos: todo el ruido visual queda por debajo del texto informativo. */
+.backdrop-stack {
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+  animation: vhs-jitter 16s linear infinite;
+}
+
 /* --- Escena 3D --- */
 
 .scene-canvas {
@@ -170,19 +178,14 @@ a:focus-visible {
   position: absolute;
   overflow: hidden;
   padding: 0.85rem 1rem;
-  border: 1px solid rgba(216, 166, 87, 0.16);
+  border: 1px solid rgba(216, 166, 87, 0.22);
   border-radius: 2px;
-  background: linear-gradient(135deg, rgba(8, 20, 16, 0.78), rgba(4, 12, 10, 0.62));
-  box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.38),
-    inset 0 0 34px rgba(95, 208, 187, 0.05);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  text-shadow:
-    0.5px 0 rgba(255, 45, 85, 0.4),
-    -0.5px 0 rgba(70, 225, 255, 0.4),
-    0 0 12px rgba(244, 235, 208, 0.26),
-    0 0 26px rgba(216, 166, 87, 0.14);
+  background: linear-gradient(135deg, rgba(6, 16, 13, 0.96), rgba(3, 10, 8, 0.93));
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  /* Aislamos la información de VHS, glitch, viñeta y cromática. */
+  text-shadow: none;
 }
 
 .eyebrow {
@@ -602,10 +605,6 @@ a:focus-visible {
     -0.5px 0 rgba(70, 225, 255, 0.5);
 }
 
-.experience {
-  animation: vhs-jitter 16s linear infinite;
-}
-
 .vhs-overlay {
   position: absolute;
   inset: 0;
@@ -782,7 +781,7 @@ a:focus-visible {
   }
 
   .nav-cue,
-  .experience,
+  .backdrop-stack,
   .scene-text,
   .minimal-nav,
   .camera-lens::before,

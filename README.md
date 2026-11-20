@@ -9,7 +9,7 @@
 
 ## Concepto
 
-Una landing de una sola pantalla construida desde cero alrededor de una **placa base 3D**. No hay tarjetas, paneles ni ventanas: el scroll mueve la cámara en un recorrido **zoom out → desplazamiento → zoom in** hasta enfocar uno de los cuatro chips. La información aparece únicamente como texto plano a la izquierda y derecha del chip (arriba y abajo en la introducción), sin contenedores visibles y con medidas para que nunca desborde.
+Una landing de una sola pantalla construida desde cero alrededor de una **placa base 3D**. El scroll mueve la cámara en un recorrido **zoom out → desplazamiento → zoom in** hasta enfocar uno de los cuatro chips. La información aparece como texto plano a la izquierda y derecha del chip (arriba y abajo en la introducción), dentro de ventanas limpias y opacas que la mantienen siempre legible, con medidas para que nunca desborde.
 
 ### Los cuatro chips
 
@@ -20,9 +20,9 @@ Una landing de una sola pantalla construida desde cero alrededor de una **placa 
 | Memory | Formación | Tres titulaciones |
 | I/O | Proyectos | Siete destacados y enlaces |
 
-La PCB es más grande y sigue una distribución lógica de placa de consola: zócalo de CPU, bloque gráfico con disipador, banco de memoria, sector de alimentación con condensadores y bobinas, conector de expansión, puertos laterales y buses ortogonales en grupo, con espacio entre los cuatro chips. La serigrafía con caracteres chinos es solo decoración.
+La PCB es más grande y sigue una distribución lógica de placa de consola: zócalo de CPU, bloque gráfico con disipador, banco de memoria, sector de alimentación con condensadores y bobinas, conector de expansión y puertos laterales. Las pistas salen de pines reales de cada chip y unen unos con otros siguiendo un orden lógico (CPU → gráficos → memoria → E/S → puertos, más el bus de expansión), con esquinas a 45° y vías. La serigrafía con caracteres chinos es solo decoración.
 
-La iluminación es más realista: luces de fondo muy bajas, sombras proyectadas y un foco ligado al cursor que recorre la placa y es la fuente principal. El ratón **no mueve la cámara**, solo mueve esa luz y el destello de la lente. Sobre toda la web hay un efecto VHS (líneas de exploración, grano grueso, cromática suave, una banda magnética lenta con desgarros y ráfagas de glitch atenuadas en forma de rejilla de píxeles grandes con columnas de color alternas), y la cámara tiene viñeta oscura en los bordes, destello anamórfico, ojo de pez y aberración cromática reducida aplicados en un pase de postprocesado que también genera un glitch suave con bloques cuadriculados, separación de canales y tintado de color. La barra superior es oscura y con desenfoque; los bloques de información aparecen como ventanas sutiles con texto iluminado. El chip activo brilla suavemente. Se respeta `prefers-reduced-motion` y hay fallback si WebGL no está disponible.
+La iluminación es más realista: luces de fondo muy bajas, sombras proyectadas y un foco ligado al cursor que recorre la placa y es la fuente principal. El ratón **no mueve la cámara**, solo mueve esa luz y el destello de la lente. Sobre toda la web hay un efecto VHS (líneas de exploración, grano grueso, cromática suave, una banda magnética lenta con desgarros y ráfagas de glitch atenuadas en forma de rejilla de píxeles grandes con columnas de color alternas), y la cámara tiene viñeta oscura en los bordes, destello anamórfico, ojo de pez y aberración cromática reducida aplicados en un pase de postprocesado que también genera un glitch suave con bloques cuadriculados, separación de canales y tintado de color. La barra superior es oscura y con desenfoque. La escena y todos los efectos (VHS, glitch, lente y viñeta) quedan aislados en una capa inferior, de modo que las ventanas de información se ven limpias y sin cromática, grano ni destellos. El chip activo brilla suavemente. Se respeta `prefers-reduced-motion` y hay fallback si WebGL no está disponible.
 
 ---
 

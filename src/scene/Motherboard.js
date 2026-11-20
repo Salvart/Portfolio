@@ -5,6 +5,81 @@ export const BOARD_DEPTH = 10
 
 const SURFACE_Y = 0.172
 
+// Centros de los cuatro chips, compartidos por el serigrafado y el enrutado de pistas.
+const CPU = [-6.0, 0.4]
+const GPU = [-2.0, -1.1]
+const RAM = [2.0, 0.9]
+const IO = [6.0, -0.5]
+
+const viaGeometry = new THREE.CylinderGeometry(0.045, 0.045, 0.02, 8)
+const viaMaterial = new THREE.MeshStandardMaterial({ color: 0xe0bd74, metalness: 0.9, roughness: 0.22 })
+
+function addVia(group, [x, z]) {
+  const via = new THREE.Mesh(viaGeometry, viaMaterial)
+  via.position.set(x, SURFACE_Y + 0.02, z)
+  group.add(via)
+}
+
+function normalize2([x, z]) {
+  const length = Math.hypot(x, z) || 1
+  return [x / length, z / length]
+}
+
+// Esquinas achamferadas a 45°, como en el trazado real de una PCB.
+function chamferPath(points, radius = 0.2) {
+  if (points.length < 3) return points
+  const result = [points[0]]
+  for (let i = 1; i < points.length - 1; i += 1) {
+    const [px, pz] = points[i - 1]
+    const [cx, cz] = points[i]
+    const [nx, nz] = points[i + 1]
+    const incoming = Math.hypot(cx - px, cz - pz)
+    const outgoing = Math.hypot(nx - cx, nz - cz)
+    const r = Math.min(radius, incoming * 0.4, outgoing * 0.4)
+    const [ix, iz] = normalize2([cx - px, cz - pz])
+    const [ox, oz] = normalize2([nx - cx, nz - cz])
+    result.push([cx - ix * r, cz - iz * r])
+    result.push([cx + ox * r, cz + oz * r])
+  }
+  result.push(points[points.length - 1])
+  return result
+}
+
+// Posiciones de pines calculadas con el mismo paso usado en addPins().
+function cpuPin(side, index) {
+  const count = Math.floor(1.55 / 0.14)
+  const t = -1.55 / 2 + 0.07 + (index * (1.55 - 0.14)) / (count - 1)
+  if (side === 'right') return [CPU[0] + 0.875, CPU[1] + t]
+  if (side === 'left') return [CPU[0] - 0.875, CPU[1] + t]
+  if (side === 'front') return [CPU[0] + t, CPU[1] + 0.875]
+  return [CPU[0] + t, CPU[1] - 0.875]
+}
+
+function gpuPin(side, index) {
+  if (side === 'front' || side === 'back') {
+    const count = Math.floor(2.25 / 0.14)
+    const t = -2.25 / 2 + 0.07 + (index * (2.25 - 0.14)) / (count - 1)
+    return [GPU[0] + t, GPU[1] + (side === 'front' ? 0.75 : -0.75)]
+  }
+  const count = Math.floor(1.3 / 0.14)
+  const t = -1.3 / 2 + 0.07 + (index * (1.3 - 0.14)) / (count - 1)
+  return [GPU[0] + 1.225, GPU[1] + t]
+}
+
+function ramPad(side, index) {
+  if (side === 'left') return [RAM[0] - 1.45, RAM[1] - 0.6 + index * 0.3]
+  if (side === 'right') return [RAM[0] + 1.45, RAM[1] - 0.6 + index * 0.3]
+  if (side === 'bottom') return [RAM[0] - 0.9 + index * 0.6, RAM[1] - 0.95]
+  return [RAM[0] - 0.9 + index * 0.6, RAM[1] + 0.95]
+}
+
+function ioPad(side, index) {
+  if (side === 'left') return [IO[0] - 0.8, IO[1] - 0.4 + index * 0.2]
+  if (side === 'right') return [IO[0] + 0.8, IO[1] - 0.4 + index * 0.2]
+  if (side === 'bottom') return [IO[0] - 0.5 + index * 0.5, IO[1] - 0.6]
+  return [IO[0] - 0.5 + index * 0.5, IO[1] + 0.6]
+}
+
 function silkscreenLabel(ctx, text, x, z, size = 24, color = 'rgba(244, 235, 208, 0.82)') {
   const px = ((x + BOARD_WIDTH / 2) / BOARD_WIDTH) * ctx.canvas.width
   const py = ((z + BOARD_DEPTH / 2) / BOARD_DEPTH) * ctx.canvas.height
@@ -199,10 +274,13 @@ function addTrace(group, points, color = 0xe0b96e, opacity = 0.72) {
   group.add(new THREE.Line(geometry, new THREE.LineBasicMaterial({ color, transparent: true, opacity })))
 }
 
-function addBus(group, points, lanes = 4) {
-  for (let i = 0; i < lanes; i += 1) {
-    const offset = (i - (lanes - 1) / 2) * 0.075
-    addTrace(group, points.map(([x, z]) => [x + offset, z + offset]))
+function addPinBus(group, count, pinStart, pinEnd, route, options = {}) {
+  for (let i = 0; i < count; i += 1) {
+    const start = pinStart(i)
+    const end = pinEnd(i)
+    const path = chamferPath(route(start, end, i))
+    addTrace(group, path, options.color, options.opacity)
+    ;(options.vias || []).forEach((index) => addVia(group, path[index]))
   }
 }
 
@@ -298,26 +376,100 @@ function addAuxiliaryComponents(group) {
 }
 
 function addBuses(group) {
-  // Rutas ortogonales con esquinas a 45°, agrupadas en buses paralelos.
-  const buses = [
-    // CPU → gráficos.
-    [[-4.75, 0.2], [-4.3, 0.2], [-3.75, -0.35], [-3.2, -0.35], [-3.2, -0.9]],
-    // CPU → memoria, rodeando el borde superior del banco.
-    [[-4.75, 0.8], [-4.1, 0.8], [-3.4, 1.5], [-3.4, 2.5], [0.5, 2.5], [1.0, 2.0], [1.0, 1.85]],
-    // Gráficos → memoria.
-    [[-0.8, -1.1], [-0.2, -1.1], [0.3, -0.6], [0.3, -0.1]],
-    // Memoria → E/S.
-    [[3.45, 0.9], [4.1, 0.9], [4.6, 0.4], [5.2, 0.4]],
-    // E/S → puertos laterales.
-    [[6.8, -0.5], [7.6, -0.5], [8.1, -1.0], [8.5, -1.0]],
-    // Bus del conector de expansión.
-    [[-4.25, 4.55], [-4.25, 3.2], [-3.5, 2.9], [7.5, 2.9], [7.5, 3.6], [7.8, 3.9]],
-    // Gráficos → oscilador.
-    [[-2.0, -1.85], [-2.0, -2.4], [-2.9, -3.0]],
-    // CPU → alimentación.
-    [[-6.0, 1.65], [-6.0, 2.6], [-6.6, 3.2]]
-  ]
-  buses.forEach((points, index) => addBus(group, points, index === 1 || index === 5 ? 6 : 4))
+  // Cada bus nace en un pin real de un chip y termina en el pin de destino.
+  // CPU → gráficos: datos desde el lateral derecho al borde frontal del GPU.
+  addPinBus(
+    group,
+    4,
+    (i) => cpuPin('right', 5 + i),
+    (i) => gpuPin('front', 6 + i),
+    ([sx, sz], [ex, ez]) => [
+      [sx, sz],
+      [-4.6, sz],
+      [-4.6 + (sz + 0.35), -0.35],
+      [-3.45, -0.35],
+      [ex, ez]
+    ],
+    { vias: [1, 3] }
+  )
+
+  // CPU → memoria: bus de direcciones por el canal superior.
+  addPinBus(
+    group,
+    6,
+    (i) => cpuPin('front', 2 + i),
+    (i) => ramPad('left', i),
+    ([sx, sz], [ex, ez]) => [
+      [sx, sz],
+      [sx, 2.55],
+      [0.15, 2.55],
+      [0.15, ez],
+      [ex, ez]
+    ],
+    { color: 0x9ed8c4, opacity: 0.6, vias: [1, 2] }
+  )
+
+  // Gráficos → memoria: bus de vídeo desde el lateral derecho del GPU.
+  addPinBus(
+    group,
+    4,
+    (i) => gpuPin('right', 3 + i),
+    (i) => ramPad('bottom', i),
+    ([sx, sz], [ex, ez]) => [
+      [sx, sz],
+      [-0.3, sz],
+      [0.35, ez],
+      [ex, ez]
+    ],
+    { vias: [1] }
+  )
+
+  // Memoria → E/S: bus de datos hacia el controlador de entradas.
+  addPinBus(
+    group,
+    4,
+    (i) => ramPad('right', i),
+    (i) => ioPad('left', i),
+    ([sx, sz], [ex, ez]) => [
+      [sx, sz],
+      [4.05, sz],
+      [4.55, ez],
+      [ex, ez]
+    ],
+    { vias: [1] }
+  )
+
+  // E/S → puertos laterales: una línea por conector.
+  addPinBus(
+    group,
+    3,
+    (i) => ioPad('right', 1 + i),
+    (i) => [8.9, -2.2 + i * 1.1],
+    ([sx, sz], [ex, ez]) => [
+      [sx, sz],
+      [7.45, sz],
+      [8.1, ez],
+      [ex, ez]
+    ],
+    { color: 0x9ed8c4, opacity: 0.6, vias: [1] }
+  )
+
+  // CPU → conector de expansión.
+  addPinBus(
+    group,
+    3,
+    (i) => cpuPin('front', 8 + i),
+    (i) => [-3.5 + i * 0.7, 4.55],
+    ([sx, sz], [ex, ez]) => [
+      [sx, sz],
+      [sx, 2.95],
+      [-3.9, 2.95],
+      [-3.9, 4.25],
+      [ex, 4.25],
+      [ex, ez]
+    ],
+    { color: 0x7fbfa8, opacity: 0.55, vias: [1, 2, 3] }
+  )
 }
 
 export function createMotherboard() {
