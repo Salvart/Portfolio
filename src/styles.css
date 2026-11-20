@@ -569,12 +569,12 @@ a:focus-visible {
 .scene-text,
 .minimal-nav {
   text-shadow:
-    0.6px 0 rgba(255, 60, 90, 0.35),
-    -0.6px 0 rgba(80, 220, 255, 0.35);
+    1px 0 rgba(255, 45, 85, 0.5),
+    -1px 0 rgba(70, 225, 255, 0.5);
 }
 
 .experience {
-  animation: vhs-jitter 9s linear infinite;
+  animation: vhs-jitter 16s linear infinite;
 }
 
 .vhs-overlay {
@@ -605,8 +605,10 @@ a:focus-visible {
   position: absolute;
   inset: -50%;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.11;
-  animation: vhs-grain 0.22s steps(3) infinite;
+  opacity: 0.26;
+  mix-blend-mode: screen;
+  filter: contrast(1.35);
+  animation: vhs-grain 0.14s steps(4) infinite;
 }
 
 .vhs-overlay::after {
@@ -624,7 +626,9 @@ a:focus-visible {
     transparent
   );
   mix-blend-mode: screen;
-  animation: vhs-tracking 7s linear infinite;
+  animation:
+    vhs-tracking 16s linear infinite,
+    vhs-band-tear 16s linear infinite;
 }
 
 @keyframes vhs-grain {
@@ -640,12 +644,23 @@ a:focus-visible {
   100% { top: 108%; opacity: 0; }
 }
 
+@keyframes vhs-band-tear {
+  0%, 79% { transform: translateX(0) scaleX(1); }
+  82% { transform: translateX(-14px) scaleX(1.04); }
+  85% { transform: translateX(9px) scaleX(0.97); }
+  88% { transform: translateX(-5px) scaleX(1.02); }
+  92% { transform: translateX(2px) scaleX(1); }
+  100% { transform: translateX(0) scaleX(1); }
+}
+
 @keyframes vhs-jitter {
-  0%, 96%, 100% { transform: translateX(0); }
-  96.5% { transform: translateX(-2px); }
-  97% { transform: translateX(2px); }
-  97.5% { transform: translateX(-1px); }
-  98% { transform: translateX(0); }
+  0%, 81%, 100% { transform: translateX(0); }
+  82% { transform: translateX(-3px); }
+  84% { transform: translateX(4px); }
+  86% { transform: translateX(-2px); }
+  88% { transform: translateX(3px); }
+  90% { transform: translateX(-1px); }
+  92% { transform: translateX(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {

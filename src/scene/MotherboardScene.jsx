@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
+import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
 import { BOARD_DEPTH, BOARD_WIDTH, createMotherboard } from './Motherboard.js'
 import { VIEWS, createJourney, sampleJourney } from './cameraJourney.js'
+import { LensVhsShader } from './lensVhsShader.js'
 
 export default function MotherboardScene({ index, reducedMotion }) {
   const hostRef = useRef(null)
@@ -28,7 +33,7 @@ export default function MotherboardScene({ index, reducedMotion }) {
     renderer.toneMapping = THREE.ACESFilmicToneMapping
     renderer.toneMappingExposure = 1.25
     renderer.shadowMap.enabled = true
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    renderer.shadowMap.type = THREE.PCFShadowMap
     host.appendChild(renderer.domElement)
 
     const scene = new THREE.Scene()
@@ -88,9 +93,17 @@ export default function MotherboardScene({ index, reducedMotion }) {
     })
     scene.add(board.group)
 
+    const composer = new EffectComposer(renderer)
+    composer.addPass(new RenderPass(scene, camera))
+    const lensPass = new ShaderPass(LensVhsShader)
+    composer.addPass(lensPass)
+    composer.addPass(new OutputPass())
+
     const state = {
       camera,
       renderer,
+      composer,
+      lensPass,
       scene,
       board,
       highlights: board.highlights,
@@ -152,7 +165,8 @@ export default function MotherboardScene({ index, reducedMotion }) {
         material.emissiveIntensity = intensity > 0 ? intensity + Math.sin(now * 0.003) * 0.06 : 0
       })
 
-      current.renderer.render(current.scene, current.camera)
+      current.lensPass.uniforms.uTime.value = now / 1000
+      current.composer.render()
       current.frame = requestAnimationFrame(draw)
     }
 
@@ -183,8 +197,11 @@ export default function MotherboardScene({ index, reducedMotion }) {
       const height = Math.max(1, host.clientHeight)
       current.camera.aspect = width / height
       current.camera.updateProjectionMatrix()
-      current.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75))
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.75)
+      current.renderer.setPixelRatio(pixelRatio)
       current.renderer.setSize(width, height)
+      current.composer.setPixelRatio(pixelRatio)
+      current.composer.setSize(width, height)
     }
     const onVisibility = () => {
       if (document.hidden) stopLoop()
@@ -215,6 +232,7 @@ export default function MotherboardScene({ index, reducedMotion }) {
           material.dispose()
         })
       })
+      current.composer.dispose()
       current.renderer.dispose()
       if (current.renderer.domElement.parentNode === host) {
         host.removeChild(current.renderer.domElement)
