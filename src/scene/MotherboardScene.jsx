@@ -4,9 +4,12 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
+import { HorizontalBlurShader } from 'three/examples/jsm/shaders/HorizontalBlurShader.js'
+import { VerticalBlurShader } from 'three/examples/jsm/shaders/VerticalBlurShader.js'
 import { BOARD_DEPTH, BOARD_WIDTH, createMotherboard } from './Motherboard.js'
 import { VIEWS, createJourney, sampleJourney } from './cameraJourney.js'
 import { LensVhsShader } from './lensVhsShader.js'
+import { SharpenShader } from './sharpenShader.js'
 
 export default function MotherboardScene({ index, reducedMotion }) {
   const hostRef = useRef(null)
@@ -95,10 +98,29 @@ export default function MotherboardScene({ index, reducedMotion }) {
 
     const composer = new EffectComposer(renderer)
     composer.addPass(new RenderPass(scene, camera))
+
     const lensPass = new ShaderPass(LensVhsShader)
-    lensPass.uniforms.uResolution.value = new THREE.Vector2(host.clientWidth, host.clientHeight)
     composer.addPass(lensPass)
+
+    // Gaussian blur real en dos pasos separables, seguido de un realce suave.
+    const blurX = new ShaderPass(HorizontalBlurShader)
+    const blurY = new ShaderPass(VerticalBlurShader)
+    const sharpenPass = new ShaderPass(SharpenShader)
+    sharpenPass.uniforms.uResolution.value = new THREE.Vector2(1, 1)
+    composer.addPass(blurX)
+    composer.addPass(blurY)
+    composer.addPass(sharpenPass)
     composer.addPass(new OutputPass())
+
+    const syncPostProcessing = (width, height, pixelRatio) => {
+      const renderWidth = Math.max(1, Math.round(width * pixelRatio))
+      const renderHeight = Math.max(1, Math.round(height * pixelRatio))
+      blurX.uniforms.h.value = 1.5 / renderWidth
+      blurY.uniforms.v.value = 1.5 / renderHeight
+      sharpenPass.uniforms.uResolution.value.set(renderWidth, renderHeight)
+    }
+    const initialPixelRatio = Math.min(window.devicePixelRatio || 1, 1.75)
+    syncPostProcessing(host.clientWidth, host.clientHeight, initialPixelRatio)
 
     const state = {
       camera,
@@ -203,7 +225,7 @@ export default function MotherboardScene({ index, reducedMotion }) {
       current.renderer.setSize(width, height)
       current.composer.setPixelRatio(pixelRatio)
       current.composer.setSize(width, height)
-      current.lensPass.uniforms.uResolution.value.set(width, height)
+      syncPostProcessing(width, height, pixelRatio)
     }
     const onVisibility = () => {
       if (document.hidden) stopLoop()

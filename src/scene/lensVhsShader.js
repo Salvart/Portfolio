@@ -1,10 +1,9 @@
-// Postprocesado de la cámara: ojo de pez, cromática, banda magnética,
-// desenfoque muy ligero y un realce (sharpen) posterior, sin glitch.
+// Postprocesado de lente VHS: ojo de pez, aberración cromática y banda magnética.
+// El desenfoque gaussiano y el realce se aplican en pases independientes.
 export const LensVhsShader = {
   uniforms: {
     tDiffuse: { value: null },
     uTime: { value: 0 },
-    uResolution: { value: [1, 1] },
     uDistortion: { value: 0.18 },
     uChroma: { value: 0.0055 }
   },
@@ -21,26 +20,9 @@ export const LensVhsShader = {
   fragmentShader: /* glsl */ `
     uniform sampler2D tDiffuse;
     uniform float uTime;
-    uniform vec2 uResolution;
     uniform float uDistortion;
     uniform float uChroma;
     varying vec2 vUv;
-
-    // Desenfoque de cámara: gaussiana normalizada de 9 muestras.
-    // No suma luz: solo reparte cada píxel entre sus vecinos.
-    vec3 defocusBlur(vec2 uv, vec2 texel) {
-      vec2 o = texel * 1.2;
-      vec3 sum = texture2D(tDiffuse, uv).rgb * 4.0;
-      sum += texture2D(tDiffuse, uv + vec2(o.x, 0.0)).rgb * 2.0;
-      sum += texture2D(tDiffuse, uv - vec2(o.x, 0.0)).rgb * 2.0;
-      sum += texture2D(tDiffuse, uv + vec2(0.0, o.y)).rgb * 2.0;
-      sum += texture2D(tDiffuse, uv - vec2(0.0, o.y)).rgb * 2.0;
-      sum += texture2D(tDiffuse, uv + o).rgb;
-      sum += texture2D(tDiffuse, uv - o).rgb;
-      sum += texture2D(tDiffuse, uv + vec2(o.x, -o.y)).rgb;
-      sum += texture2D(tDiffuse, uv + vec2(-o.x, o.y)).rgb;
-      return sum / 16.0;
-    }
 
     void main() {
       vec2 centered = vUv - 0.5;
@@ -65,18 +47,11 @@ export const LensVhsShader = {
       vec2 rUv = clamp(uv + dir * shift, 0.0, 1.0);
       vec2 bUv = clamp(uv - dir * shift, 0.0, 1.0);
 
-      vec3 base = vec3(
-        texture2D(tDiffuse, rUv).r,
-        texture2D(tDiffuse, uv).g,
-        texture2D(tDiffuse, bUv).b
-      );
+      float red = texture2D(tDiffuse, rUv).r;
+      float green = texture2D(tDiffuse, uv).g;
+      float blue = texture2D(tDiffuse, bUv).b;
 
-      // Desenfoque de cámara real, con un realce mínimo que no aclara la imagen.
-      vec3 blurred = defocusBlur(uv, 1.0 / uResolution);
-      vec3 color = mix(base, blurred, 0.42) + (base - blurred) * 0.06;
-      color = clamp(color, 0.0, 1.0);
-
-      gl_FragColor = vec4(color, 1.0);
+      gl_FragColor = vec4(red, green, blue, 1.0);
     }
   `
 }
