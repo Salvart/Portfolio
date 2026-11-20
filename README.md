@@ -20,7 +20,7 @@ Una landing de una sola pantalla construida desde cero alrededor de una **placa 
 | Memory | Formación | Tres titulaciones |
 | I/O | Proyectos | Siete destacados y enlaces |
 
-La placa usa trazas doradas, serigrafía con caracteres chinos como decoración y un leve brillo en el chip activo. El ratón desplaza la cámara unos centímetros con amortiguación. Se respeta `prefers-reduced-motion` y hay fallback si WebGL no está disponible.
+La PCB sigue una distribución lógica de placa de consola: zócalo de CPU, bloque gráfico con disipador, banco de memoria, sector de alimentación con condensadores y bobinas, conector de expansión, puertos laterales y buses ortogonales en grupo. La serigrafía con caracteres chinos es solo decoración. El chip activo brilla suavemente y el ratón desplaza la cámara con amortiguación. Se respeta `prefers-reduced-motion` y hay fallback si WebGL no está disponible.
 
 ---
 
